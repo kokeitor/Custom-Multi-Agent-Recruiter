@@ -96,9 +96,10 @@ class Pipeline:
 
     def get_analisis(self) -> Analisis:
         """Run Pipeline -> Invoca langchain chain -> genera objeto Analisis con respuesta del modelo"""
+        logger.info(f"Análisis del candidato : \n {self.candidato}")
         self._raw_response = self.analyzer_chain.invoke(candidato=self.candidato)  # Invoca a la chain que parsea la respuesta del modelo a python dict
-        logger.info(f"Análisis del modelo: {self._raw_response}")
-        
+        logger.info(f"Análisis del modelo : \n {self._raw_response}")
+    
         # Manejo de una respuesta del modelo en un formato no correcto [no alineado con pydantic BaseModel]
         try:
             self.analisis = Analisis(**self._raw_response,id=self.candidato.id , status="OK")  # Instancia de Pydantic Analisis BaseModel object
@@ -114,7 +115,8 @@ def main() -> None:
     CONFIG_PATH = args.config_path
     pipeline = Pipeline(config_path=CONFIG_PATH)
     analisis = pipeline.get_analisis()
-    print(colored(f'Respuesta del modelo: {analisis}', 'yellow', attrs=["bold"]))
+    print(colored(f'Candidato analizado : \n {pipeline.candidato}', 'cyan', attrs=["bold"]))
+    print(colored(f'Respuesta del modelo : \n {analisis}', 'yellow', attrs=["bold"]))
 
 if __name__ == '__main__':
     main()
