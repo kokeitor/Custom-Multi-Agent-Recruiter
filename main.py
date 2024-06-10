@@ -70,7 +70,7 @@ class Pipeline:
             logger.exception("No se ha proporcionado ninguna configuracion para la generacion")
             raise AttributeError("No se ha proporcionado ninguna configuracion para la generacion")
         
-        self.chain = chains.analysis_chain # Objeto base chain para la tarea de analisis de Cvs
+        self.chain = chains.classify_chain # Objeto base chain para la tarea de analisis de Cvs
         self.cv = self.config.get("cv",None)
         self.oferta = self.config.get("oferta",None)
         if self.cv is not None and self.oferta is not None:
@@ -94,14 +94,16 @@ class Pipeline:
 
     def run(self) -> Analisis:
         """Run Pipeline -> Invoca langchain chain -> genera objeto Analisis con respuesta del modelo"""
-        self.analisis = Analisis(respuesta=self.analyzer_chain.invoke(input_chain={"cv": self.cv, "oferta": self.oferta}))
+        self.analisis = Analisis(respuesta=dict(self.analyzer_chain.invoke(input_chain={"cv": self.cv, "oferta": self.oferta})))
         logger.info(f"Analisis del modelo : {self.analisis}")
         return self.analisis
         
 
 def main() -> None:
+    CONFIG = "./config/generate.json"
     setup_logging()
-    print(chains.clasify_chain)
+    pipeline = Pipeline(config_path=CONFIG)
+    analysis = pipeline.run()
     
 if __name__ == '__main__':
     main()
