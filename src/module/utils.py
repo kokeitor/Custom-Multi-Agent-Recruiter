@@ -2,6 +2,7 @@ import os
 import json
 import pytz
 import uuid
+import argparse
 import logging
 import logging.config
 import logging.handlers
@@ -28,3 +29,11 @@ def get_current_spanish_date_iso():
 
 def get_id() -> str:
     return str(uuid.uuid4())
+
+def get_arg_parser() -> 'Parser':
+    parser = argparse.ArgumentParser( 
+                    prog='Analisis Cvs',
+                    description='Obten un analisis del Cv segun la oferta de empleo deseada usando LLms')
+    parser.add_argument('config_path', type=str, help='Ruta del archivo de configuracion [json format]')
+    return parser
+    

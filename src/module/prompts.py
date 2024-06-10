@@ -1,11 +1,14 @@
 from langchain.prompts import PromptTemplate
 
-
-# Definir la plantilla
-classify_cv = PromptTemplate(
-                template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>Eres un modelo de IA diseñado para evaluar la idoneidad de los candidatos para puestos de trabajo específicos. Recibirás el título de una oferta de trabajo y un CV completo de un candidato. Tu tarea es proporcionar una salida en formato JSON que contenga una puntuación, una lista de trabajos relacionados y una descripción de por qué el candidato obtuvo la puntuación dada.
+# Prompts
+analyze_cv = PromptTemplate(
+                template="""Eres un modelo de IA diseñado para evaluar la idoneidad de los candidatos para puestos de trabajo específicos. Recibirás el título de una oferta de trabajo y un CV completo de un candidato. Tu tarea es proporcionar una salida en formato JSON que contenga una puntuación, una lista de trabajos relacionados y una descripción de por qué el candidato obtuvo la puntuación dada.
+                                
+                Aqui esta el input:
+                Título del Trabajo: {oferta}
+                CV del Candidato: {cv}
                 
-                El formato de salida debe tener el formato siguiente :[  "puntuación": <puntuación_entera>,"trabajos_relacionados": ["trabajo1", "trabajo2", "trabajo3", ...],"descripción": "razón_de_la_puntuación"]
+                El formato de salida debe tener el formato siguiente :["puntuacion": <puntuación_entera>,"trabajos_relacionados": ["trabajo1", "trabajo2", "trabajo3", ...],"descripcion": "razón_de_la_puntuación"]
                 
                 Las instrucciones que debes seguir para el analisis son:
                 1. Lee el título del trabajo y el CV del candidato.
@@ -47,13 +50,6 @@ classify_cv = PromptTemplate(
                 ]
 
                 Por favor, proporciona la salida en formato JSON según el formato dado.
-                <|eot_id|><|start_header_id|>user<|end_header_id|>
-                
-                Aqui esta el input:
-                Título del Trabajo: {oferta}
-                CV del Candidato: {cv}
-                
                 """,
                 input_variables=["cv", "oferta"]
-            )
-
+                )
