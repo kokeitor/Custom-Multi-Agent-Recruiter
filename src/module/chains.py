@@ -2,6 +2,7 @@ import logging
 import logging.config
 import logging.handlers
 from typing import List, Dict
+from langchain.chains.llm import LLMChain
 from langchain_core.output_parsers import JsonOutputParser,StrOutputParser
 from .prompts import (
     analyze_cv
@@ -18,11 +19,11 @@ def get_chain(
                 get_model: callable = get_open_ai_json, 
                 prompt_template: str = analyze_cv, 
                 parser: JsonOutputParser = JsonOutputParser
-              ) -> 'Chain':
+              ) -> LLMChain:
     """Retorna la langchain chain"""
     
     logger.info(f"Initializing chain ...")
     model = get_model()
-    chain = analyze_cv | model | parser()
+    chain = prompt_template | model | parser()
     
     return chain
