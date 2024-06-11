@@ -1,0 +1,2 @@
+python main.py --config_path ./config/generate.json --token <tu_token>
+pyinstaller main.py --onefile --console

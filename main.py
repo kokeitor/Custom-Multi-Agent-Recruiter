@@ -17,7 +17,7 @@ from src.module.utils import (
                         get_id,
                         get_arg_parser
                         )
-import warnings
+from src.module.exceptions import NoOpenAIToken
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,8 +26,7 @@ load_dotenv()
 os.environ['LANGCHAIN_TRACING_V2'] = 'true'
 os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
 os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
-os.environ['PINECONE_API_KEY'] = os.getenv('PINECONE_API_KEY')
-os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
+#os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 os.environ['LLAMA_CLOUD_API_KEY'] = os.getenv('LLAMA_CLOUD_API_KEY')
 os.environ['HF_TOKEN'] = os.getenv('HUG_API_KEY')
 
@@ -113,6 +112,11 @@ def main() -> None:
     parser = get_arg_parser()
     args = parser.parse_args()
     CONFIG_PATH = args.config_path
+    OPENAI_API_KEY = args.token
+    if OPENAI_API_KEY is not None:
+        os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
+    else:
+        raise NoOpenAIToken("No OpenAI API token provided")
     pipeline = Pipeline(config_path=CONFIG_PATH)
     analisis = pipeline.get_analisis()
     print(colored(f'Candidato analizado : \n {pipeline.candidato}', 'cyan', attrs=["bold"]))
@@ -120,5 +124,6 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-    # terminal command : python main.py ./config/generate.json
+    # terminal command : python main.py --config_path ./config/generate.json --token <tu_token>
+
 
