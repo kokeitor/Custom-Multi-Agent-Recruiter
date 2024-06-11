@@ -36,7 +36,7 @@ logger = logging.getLogger("Main")
 class Analisis(BaseModel):
     id : str
     puntuacion: int
-    trabajos_relacionados: List[str]
+    experiencias: Dict[str,str]
     descripcion: str
     status: str
     
@@ -105,7 +105,7 @@ class Pipeline:
             return self.analisis
         except ValidationError as e:
             logger.exception(f'{e} : Formato de respuesta del modelo incorrecta')
-            return Analisis(puntuacion=0, trabajos_relacionados=list(),id=self.candidato.id, descripcion="", status="ERROR")
+            return Analisis(puntuacion=0, experiencias=list(),id=self.candidato.id, descripcion="", status="ERROR")
         
 def main() -> None:
     setup_logging() 
@@ -125,5 +125,6 @@ def main() -> None:
 if __name__ == '__main__':
     main()
     # terminal command : python main.py --config_path ./config/generate.json --token <tu_token>
+    # executable command line : main.exe --config_path ./config/generate.json --token <tu_token>
 
 

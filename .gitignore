@@ -1,7 +1,10 @@
-/env
+/cvenv
 /.env
 /logs
-/config
 /dist
+/src/module/__pycache__
 /build
 main.spec
+/_internal
+main.exe
+/main
