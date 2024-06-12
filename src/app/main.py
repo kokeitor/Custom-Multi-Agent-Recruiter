@@ -10,14 +10,19 @@ from dataclasses import dataclass
 from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar
 from langchain.chains.llm import LLMChain
 from pydantic import BaseModel, ValidationError
-from src.module import chains
-from src.module.utils import (
+from chains.chains import get_chain
+from states.states import (
+    Analisis,
+    Candidato,
+    State
+)
+from utils.utils import (
                         get_current_spanish_date_iso, 
                         setup_logging,
                         get_id,
                         get_arg_parser
                         )
-from src.module.exceptions import NoOpenAIToken
+from exceptions.exceptions import NoOpenAIToken
 
 # Load environment variables from .env file
 load_dotenv()
@@ -33,22 +38,9 @@ os.environ['HF_TOKEN'] = os.getenv('HUG_API_KEY')
 # Logging configuration
 logger = logging.getLogger("Main")
 
-class Analisis(BaseModel):
-    id : str
-    puntuacion: int
-    experiencias: List[Dict[str,str]]
-    descripcion: str
-    status: str
-    
-class Candidato(BaseModel):
-    id : str
-    cv : str
-    oferta : str
-
 @dataclass()
 class CvAnalyzer:
     chain: LLMChain
-        
     def invoke(self, candidato: Candidato) -> dict:
         return self.chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})
     
@@ -67,7 +59,7 @@ class Pipeline:
             logger.exception("No se ha proporcionado ninguna configuración para la generación")
             raise AttributeError("No se ha proporcionado ninguna configuración para la generación")
         
-        self.chain = chains.get_chain()  # Get objeto base chain para la tarea de análisis de CVs
+        self.chain = get_chain()  # Get objeto base chain para la tarea de análisis de CVs
         self.cv = self.config.get("cv", None)
         self.oferta = self.config.get("oferta", None)
         if self.cv is not None and self.oferta is not None:

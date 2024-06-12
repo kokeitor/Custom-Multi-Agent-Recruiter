@@ -4,10 +4,10 @@ import logging.handlers
 from typing import List, Dict
 from langchain.chains.llm import LLMChain
 from langchain_core.output_parsers import JsonOutputParser,StrOutputParser
-from .prompts import (
+from prompts.prompts import (
     analyze_cv
     )
-from .models import (
+from models.models import (
     get_open_ai_json,
     get_open_ai
 )
