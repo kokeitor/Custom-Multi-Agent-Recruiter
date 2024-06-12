@@ -85,15 +85,12 @@ class Pipeline:
         if not os.path.exists(self.data_path):
             logger.exception(f"Archivo de configuración no encontrado en {self.data_path}")
             raise FileNotFoundError(f"Archivo de configuración no encontrado en {self.data_path}")
-        data = []
-        if self.data_path.endswith(".jsonl"):
-            with open(self.data_path, encoding='utf-8') as file:
-                logger.info(f"Candidatos en JSONL : ")
-                for i,line in enumerate(file):
-                    logger.info(f"Candidato : {i} -> {line}")
-                    data.append(json.load(line))
-        if self.data_path.endswith(".json"):
-            data[0] = json.load(file)
+        with open(file=self.data_path, mode='r', encoding='utf-8') as file:
+            logger.info(f"Leyendo candidatos en archivo : {self.data_path} : ")
+            try:
+                data = json.load(file)
+            except Exception as e:
+                logger.exception(f"Error decoding JSON : {e}")
         return data
             
     def get_analyzer(self) -> CvAnalyzer:
@@ -157,15 +154,12 @@ class ConfigGraph:
         if not os.path.exists(self.data_path):
             logger.exception(f"Archivo de configuración no encontrado en {self.data_path}")
             raise FileNotFoundError(f"Archivo de configuración no encontrado en {self.data_path}")
-        data = []
-        if self.data_path.endswith(".jsonl"):
-            with open(self.data_path, encoding='utf-8') as file:
-                logger.info(f"Candidatos en JSONL : ")
-                for i,line in enumerate(file):
-                    logger.info(f"Candidato : {i} -> {line}")
-                    data.append(json.load(line))
-        if self.data_path.endswith(".json"):
-            data[0] = json.load(file)
+        with open(file=self.data_path, mode='r', encoding='utf-8') as file:
+            logger.info(f"Leyendo candidatos en archivo : {self.data_path} : ")
+            try:
+                data = json.load(file)
+            except Exception as e:
+                logger.exception(f"Error decoding JSON : {e}")
         return data
     
     def get_candidato(self, cv :str , oferta :str) -> Candidato:
@@ -194,7 +188,7 @@ def main() -> None:
         CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config', 'generation.json') 
         logger.info(f"{CONFIG_PATH=}")
     if not DATA_PATH:
-        DATA_PATH = os.path.join(os.path.dirname(__file__), 'config', 'data.jsonl') 
+        DATA_PATH = os.path.join(os.path.dirname(__file__), 'config', 'data.json') 
         logger.info(f"{DATA_PATH=}")
     if not MODE:
         MODE = 'graph'
