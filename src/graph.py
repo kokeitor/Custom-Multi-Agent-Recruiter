@@ -35,7 +35,7 @@ def create_graph():
         if alucinacion == 1 or alucinacion == 1.0:
             next_agent = "analyzer"
         else:
-            next_agent = "end"
+            next_agent = "report"
             
         return next_agent
 
@@ -49,7 +49,5 @@ def create_graph():
     return graph
 
 def compile_workflow(graph):
-    # memory = SqliteSaver.from_conn_string(":memory:")  # Here we only save in-memory
-    # workflow = graph.compile(checkpointer=memory, interrupt_before=["end"])
     workflow = graph.compile()
     return workflow

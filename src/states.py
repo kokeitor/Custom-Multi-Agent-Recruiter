@@ -4,6 +4,7 @@ from langgraph.graph.message import add_messages
 
 class Analisis(BaseModel):
     id : str
+    fecha : str
     puntuacion: int
     experiencias: List[Dict[str,str]]
     descripcion: str
@@ -18,5 +19,5 @@ class State(TypedDict):
     candidato : Candidato
     analisis : List[Analisis]
     alucinacion : Union[int,float] 
-    analisis_final : str
+    analisis_final : Analisis
     final : bool

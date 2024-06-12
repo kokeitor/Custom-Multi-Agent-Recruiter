@@ -26,7 +26,7 @@ def setup_logging() -> None:
 def get_current_spanish_date_iso():
     """Get the current date and time in the Europe/Madrid time zone"""
     spanish_tz = pytz.timezone('Europe/Madrid')
-    return datetime.now(spanish_tz).strftime("%Y%m%d%H%M%S")
+    return str(datetime.now(spanish_tz).strftime("%Y-%m-%d %H:%M:%S"))
 
 def get_id() -> str:
     return str(uuid.uuid4())
@@ -40,9 +40,9 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser( 
                     prog='Analisis Cvs',
                     description='Obten un analisis del Cv segun la oferta de empleo deseada usando LLms')
-    parser.add_argument('--data_path', type=str, required=True, help='Ruta del archivo de datos con el cv y oferta [json format]')
-    parser.add_argument('--token', type=str, required=True, help='Token de conexion API openAI')
-    parser.add_argument('--mode', type=str, required=True, help='Modo de generacion : "graph" "pipeline" ')
-    parser.add_argument('--config_path', type=str, required=True, help='Ruta del archivo de configuracion [json format]')
+    parser.add_argument('--data_path', type=str, required=False, help='Ruta del archivo de datos con el cv y oferta [json format]')
+    parser.add_argument('--token', type=str, required=False, help='Token de conexion API openAI')
+    parser.add_argument('--mode', type=str, required=False, help='Modo de generacion : "graph" "pipeline" ')
+    parser.add_argument('--config_path', type=str, required=False, help='Ruta del archivo de configuracion [json format]')
     
     return parser
