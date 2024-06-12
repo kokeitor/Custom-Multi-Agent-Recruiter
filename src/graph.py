@@ -20,7 +20,7 @@ from .agents import (
 
 logger = logging.getLogger(__name__)
 
-def create_graph(candidato):
+def create_graph():
     
     graph = StateGraph(State)
     graph.add_node("analyzer",lambda state: analyzer_agent(state=state))
@@ -44,7 +44,7 @@ def create_graph(candidato):
     graph.set_finish_point("end")
     graph.add_edge("analyzer", "reviewer")
     graph.add_conditional_edges( "reviewer",lambda state: pass_review(state=state),)
-    graph.add_edge("final_report", "end")
+    graph.add_edge("report", "end")
 
     return graph
 

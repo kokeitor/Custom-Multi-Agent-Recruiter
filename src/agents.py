@@ -29,7 +29,7 @@ def analyzer_agent(state:State, get_chain : Callable = get_analyzer_chain):
     candidato = state["candidato"]
     logger.info(f"Análisis del candidato : \n {candidato}")
     
-    raw_response = analyzer_chain.chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})
+    raw_response = analyzer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})
     logger.info(f"Análisis del modelo : \n {raw_response}")
     print(colored(f"Analyzer-Agent 👩🏿‍💻: {raw_response}", 'cyan'))
     
@@ -39,8 +39,12 @@ def analyzer_agent(state:State, get_chain : Callable = get_analyzer_chain):
     except ValidationError as e:
         logger.exception(f'{e} : Formato de respuesta del modelo incorrecta')
         analisis = Analisis(puntuacion=0, experiencias=list(),id=candidato.id, descripcion="", status="ERROR")
-    
-    state = {"candidato":candidato, "analisis":analisis}
+        
+        
+    if state["analisis"]:
+        state["analisis"].append(analisis)
+    else:
+        state["analisis"] = [analisis]
     logger.info(f"Estado tras Analyzer-Agent : \n {state}")
 
     return state
@@ -56,15 +60,15 @@ def reviewer_agent(state:State, get_chain : Callable = get_reviewer_chain):
     logger.info(f"Revision del candidato : \n {candidato}")
     logger.info(f"Analisis previo : \n {analisis_previo}")
     
-    alucinacion = reviewer_chain.chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta, "analisis":analisis_previo})
+    alucinacion = reviewer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta, "analisis":analisis_previo})
     logger.info(f"Revision del modelo : \n {alucinacion}")
     print(colored(f"Reviewer-Agent 👩🏽‍⚖️: {alucinacion}", 'magenta'))
     
     # Manejo de una respuesta del modelo en un formato no correcto [no alineado con tipo Union[int,float] de clave "alucinacion"]
-    if not isinstance(alucinacion, [int,float]):
+    if not isinstance(alucinacion["alucinacion"], (int,float)):
         raise ValueError(f"El  Reviewer-Agent esta devolviendo una alucionacion : {alucinacion} no alineada con tipo de dato Union[int,float]")
     
-    state = {**state, "alucinacion": alucinacion}
+    state = {**state, "alucinacion": alucinacion["alucinacion"]}
     logger.info(f"Estado tras Reviewer-Agent : \n {state}")
 
     return state

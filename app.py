@@ -171,7 +171,7 @@ def main() -> None:
 
     if MODE == 'graph':
         logger.info("Creating graph and compiling workflow...")
-        config = ConfigGraph(configpath=CONFIG_PATH)
+        config = ConfigGraph(config_path=CONFIG_PATH, data_path=DATA_PATH)
         graph = create_graph()
         workflow = compile_workflow(graph)
         logger.info("Graph and workflow created.")
@@ -183,7 +183,7 @@ def main() -> None:
         for event in workflow.stream(
             candidato, iteraciones
             ):
-            if config.verbose:
+            if config.verbose == 1:
                 print(colored(f"\nState Dictionary: {event}" ,  'cyan'))
             else:
                 print("\n")
