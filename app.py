@@ -180,7 +180,7 @@ def main() -> None:
     MODE = args.mode
     
     # Without scripts parameters mode
-    if OPENAI_API_KEY is not None:
+    if not OPENAI_API_KEY:
         os.environ['OPENAI_API_KEY'] = OPENAI_API_KEY
     else:
         os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
