@@ -36,7 +36,7 @@ logger = logging.getLogger("Main")
 class Analisis(BaseModel):
     id : str
     puntuacion: int
-    experiencias: Dict[str,str]
+    experiencias: List[Dict[str,str]]
     descripcion: str
     status: str
     
