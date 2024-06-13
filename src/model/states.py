@@ -11,7 +11,7 @@ class Analisis(BaseModel):
     status: str
     
 class Candidato(BaseModel):
-    id : str
+    id : Optional[str] = None
     cv : str
     oferta : str
 
