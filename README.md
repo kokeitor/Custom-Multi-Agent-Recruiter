@@ -32,7 +32,7 @@
    git clone 
    ```
    
-7. Virtual enviroment setup
+7.**Virtual enviroment setup**
   
   - Create your virtual enviroment
   On windowws:
@@ -48,8 +48,15 @@
   ```sh
   pip install -r requirements.txt
   ```
+*WAIT for the installation to finish ! :smiley:*
 
-7. WAIT for the installation :smiley:
+8. **Api token/keys configuration**
+   Open the *.env* file and add your OpenAI and LangChain keys
+   ```
+   OPENAI_API_KEY = "<your_openai_key>"
+   LANGCHAIN_API_KEY = "<your_langchain_key>"
+   ```
+   *You should have an account in both*
 
 
 
