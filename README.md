@@ -6,15 +6,15 @@
 
 ## Prerequisites
 
-1. Install Python version 3.11 (just in case you haven´t already installed :stuck_out_tongue_winking_eye:)
+1. **Install Python version 3.11 (just in case you haven´t already installed :stuck_out_tongue_winking_eye:)**
 
    [Python official download website](https://www.python.org/downloads/)
 
-3. Install Git
+3. **Install Git**
 
    [Git official download website](https://www.git-scm.com/downloads)
 
-4. Navigate to you local machine project directory and initialize a new git repository version control
+4. **Navigate to you local machine project directory and initialize a new git repository version control**
 
    On windows
    ```sh
@@ -23,11 +23,15 @@
    ```
    *you may have to set your username and email at this point* -> [Git config tutorial](https://www.youtube.com/watch?v=yDntCIs-IJM)
    
-5. Clone this github repository in your local machine directory
+5. **Clone this github repository in your local machine directory**
 
    [Tutorial for begginners](https://www.youtube.com/watch?v=q9wc7hUrW8U)
+   On windows:
+   `sh
+   git clone
+   `
    
-6. Virtual enviroment setup
+7. Virtual enviroment setup
   
   - Create your virtual enviroment
   On windowws:
