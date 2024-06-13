@@ -1,10 +1,10 @@
-# Custom Recruiter Agent with LangGraph
+# **Custom Recruiter Agent with LangGraph**
 
-## Introduction and motivation
+## **Introduction and motivation**
 
 ...
 
-## Prerequisites
+## **Prerequisites**
 
 1. **Install Python version 3.11 (just in case you haven´t already installed :stuck_out_tongue_winking_eye:)**
 
@@ -26,10 +26,11 @@
 5. **Clone this github repository in your local machine directory**
 
    [Tutorial for begginners](https://www.youtube.com/watch?v=q9wc7hUrW8U)
+   
    On windows:
-   `sh
-   git clone
-   `
+   ```sh
+   git clone 
+   ```
    
 7. Virtual enviroment setup
   
