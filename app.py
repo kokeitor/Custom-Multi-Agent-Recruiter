@@ -10,20 +10,20 @@ from dataclasses import dataclass
 from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar
 from langchain.chains.llm import LLMChain
 from pydantic import BaseModel, ValidationError
-from src.chains import get_analyzer_chain
-from src.graph import create_graph, compile_workflow
-from src.states import (
+from src.model.chains import get_analyzer_chain
+from src.model.graph import create_graph, compile_workflow
+from src.model.states import (
     Analisis,
     Candidato,
     State
 )
-from src.utils import (
+from src.model.utils import (
                         get_current_spanish_date_iso, 
                         setup_logging,
                         get_id,
                         get_arg_parser
                         )
-from src.exceptions import NoOpenAIToken, JsonlFormatError
+from src.model.exceptions import NoOpenAIToken, JsonlFormatError
 
 # Load environment variables from .env file
 load_dotenv()
