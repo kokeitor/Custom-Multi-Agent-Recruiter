@@ -8,7 +8,7 @@
 1. Clone this github repository in your local machine
 
 
-2. Install Python version 3.11 (just in case you haven´t already installed :joy:)
+2. Install Python version 3.11 (just in case you haven´t already installed :stuck_out_tongue_winking_eye:)
 
 [Python official download website](https://www.python.org/downloads/)
 
