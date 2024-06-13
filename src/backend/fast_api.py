@@ -15,21 +15,21 @@ from ..model import graph as graph_module
 # Logging configuration
 logger = logging.getLogger(__name__)
 
-
 app = FastAPI()
-
 
 class LanggraphConfig(BaseModel):
     thread_id : str = "4"
     iteraciones : int
     verbose :int
 
-
 @app.get("/analisis/")
 def get_analisis(cv : str, oferta : str):
+    
     candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=oferta)
     graph_config = LanggraphConfig(thread_id="4",iteraciones=10,verbose=0)
     logger.info(f"Graph mode using FAST-API")
+    logger.debug(f"{candidato=}")
+    logger.debug(f"{graph_config=}")
     logger.info("Creating graph and compiling workflow...")
     graph = graph_module.create_graph()
     workflow = graph_module.compile_workflow(graph)
