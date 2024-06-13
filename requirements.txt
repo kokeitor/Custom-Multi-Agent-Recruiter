@@ -5,7 +5,11 @@ annotated-types==0.7.0
 anyio==4.4.0
 asttokens==2.4.1
 attrs==23.2.0
+auto-py-to-exe==2.44.0
+bottle==0.12.25
+bottle-websocket==0.2.9
 certifi==2024.6.2
+cffi==1.16.0
 charset-normalizer==3.3.2
 colorama==0.4.6
 comm==0.2.2
@@ -13,10 +17,14 @@ dataclasses-json==0.6.7
 debugpy==1.8.1
 decorator==5.1.1
 distro==1.9.0
+Eel==0.16.0
 executing==2.0.1
 filelock==3.14.0
 frozenlist==1.4.1
 fsspec==2024.6.0
+future==1.0.0
+gevent==24.2.1
+gevent-websocket==0.10.1
 gpt4all==2.7.0
 greenlet==3.0.3
 h11==0.14.0
@@ -40,6 +48,7 @@ langchain-core==0.2.5
 langchain-huggingface==0.0.3
 langchain-openai==0.1.8
 langchain-text-splitters==0.2.1
+langgraph==0.0.66
 langsmith==0.1.75
 MarkupSafe==2.1.5
 marshmallow==3.21.3
@@ -61,11 +70,13 @@ platformdirs==4.2.2
 prompt_toolkit==3.0.47
 psutil==5.9.8
 pure-eval==0.2.2
+pycparser==2.22
 pydantic==2.7.3
 pydantic_core==2.18.4
 Pygments==2.18.0
 pyinstaller==6.8.0
 pyinstaller-hooks-contrib==2024.7
+pyparsing==3.1.2
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2024.1
@@ -99,4 +110,7 @@ typing-inspect==0.9.0
 typing_extensions==4.12.2
 urllib3==2.2.1
 wcwidth==0.2.13
+whichcraft==0.6.1
 yarl==1.9.4
+zope.event==5.0
+zope.interface==6.4.post2
