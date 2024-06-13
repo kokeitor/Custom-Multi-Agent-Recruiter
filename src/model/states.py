@@ -18,6 +18,6 @@ class Candidato(BaseModel):
 class State(TypedDict):
     candidato : Candidato
     analisis : List[Analisis]
-    alucinacion : Union[int,float] 
+    alucinacion_cv : Union[int,float] 
+    alucinacion_oferta : Union[int,float] 
     analisis_final : Analisis
-    final : bool

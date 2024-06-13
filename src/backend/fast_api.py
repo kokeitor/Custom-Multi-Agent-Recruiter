@@ -8,7 +8,7 @@ import logging
 from typing import Optional
 from uuid import UUID, uuid4
 import uvicorn
-from ..model import states, graph
+from ..model import states, utils
 from ..model import graph as graph_module
 
 
@@ -25,9 +25,10 @@ class LanggraphConfig(BaseModel):
     verbose :int
 
 
-@app.get("/analisis/{candidato}{graph_config}")
-async def get_analisis(candidato: states.Candidato , graph_config : LanggraphConfig):
-    
+@app.get("/analisis/")
+def get_analisis(cv : str, oferta : str):
+    candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=oferta)
+    graph_config = LanggraphConfig(thread_id="4",iteraciones=10,verbose=0)
     logger.info(f"Graph mode using FAST-API")
     logger.info("Creating graph and compiling workflow...")
     graph = graph_module.create_graph()
@@ -35,15 +36,15 @@ async def get_analisis(candidato: states.Candidato , graph_config : LanggraphCon
     logger.info("Graph and workflow created")
     
     thread = {"configurable": {"thread_id": graph_config.thread_id}}
-    iteraciones = {"recursion_limit": graph_config.iteraciones}
+    iteraciones = {"recursion_limit":graph_config.iteraciones }
     
     input_candidato = {"candidato": candidato}
     logger.info(f"Start analisis for {candidato=}")
     logger.debug(f"Cv Candidato -> {candidato.cv}")
     logger.debug(f"Oferta de Empleo para candidato-> {candidato.oferta}")
     
-    events = [event for event in workflow.stream(input_candidato, iteraciones)]
-    return {"analisis" : events}
+    estados = [event for event in workflow.stream(input_candidato, iteraciones)]
+    return {"Final graph state" : estados[-1]}
 
 def run_fast_api() -> None:
     uvicorn.run(app, host = "0.0.0.0", port =8000)

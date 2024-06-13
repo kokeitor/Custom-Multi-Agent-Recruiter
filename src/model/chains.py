@@ -6,16 +6,19 @@ from langchain.chains.llm import LLMChain
 from langchain_core.output_parsers import JsonOutputParser,StrOutputParser
 from .prompts import (
     analyze_cv_prompt,
-    review_prompt,
-    re_analyze_cv_prompt
+    offer_check_prompt,
+    re_analyze_cv_prompt,
+    cv_check_prompt
     )
 from .models import (
     get_open_ai_json,
     get_open_ai
 )
 
+
 # Logging configuration
 logger = logging.getLogger(__name__)
+
 
 def get_analyzer_chain( 
                 get_model: callable = get_open_ai_json, 
@@ -30,9 +33,9 @@ def get_analyzer_chain(
     
     return chain
 
-def get_reviewer_chain( 
+def get_reviewer_offer_chain( 
                 get_model: callable = get_open_ai_json, 
-                prompt_template: str = review_prompt, 
+                prompt_template: str = offer_check_prompt, 
                 parser: JsonOutputParser = JsonOutputParser
               ) -> LLMChain:
     """Retorna la langchain chain para el agente revisor"""
@@ -51,6 +54,19 @@ def get_re_analyzer_chain(
     """Retorna la langchain chain para el agente 're' analista"""
     
     logger.info(f"Initializing re analist chain chain ...")
+    model = get_model()
+    chain = prompt_template | model | parser()
+    
+    return chain
+
+def get_reviewer_cv_chain( 
+                get_model: callable = get_open_ai_json, 
+                prompt_template: str = cv_check_prompt, 
+                parser: JsonOutputParser = JsonOutputParser
+              ) -> LLMChain:
+    """Retorna la langchain chain para el agente revisor de alucionaciones iniciales"""
+    
+    logger.info(f"Initializing Hallucination agent chain ...")
     model = get_model()
     chain = prompt_template | model | parser()
     

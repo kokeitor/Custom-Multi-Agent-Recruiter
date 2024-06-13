@@ -13,9 +13,10 @@ from .states import (
 )
 from .agents import (
     analyzer_agent,
-    reviewer_agent,
+    reviewer_cv_agent,
+    reviewer_offer_agent,
     final_report,
-    end_node
+    end_node,
 )
 
 logger = logging.getLogger(__name__)
@@ -24,13 +25,14 @@ def create_graph():
     
     graph = StateGraph(State)
     graph.add_node("analyzer",lambda state: analyzer_agent(state=state))
-    graph.add_node( "reviewer", lambda state: reviewer_agent(state=state))
+    graph.add_node("reviewer_cv",lambda state: reviewer_cv_agent(state=state))
+    graph.add_node( "reviewer_offer", lambda state: reviewer_offer_agent(state=state))
     graph.add_node( "report", lambda state: final_report(state=state))
-    graph.add_node( "end", lambda state: end_node(state=state))
+    graph.add_node( "end_node", lambda state: end_node(state=state))
 
     # Define the edges in the agent graph
-    def pass_review(state: State):
-        alucinacion = state["alucinacion"]
+    def pass_offer_review(state: State):
+        alucinacion = state["alucinacion_oferta"]
         
         if alucinacion == 1 or alucinacion == 1.0:
             next_agent = "analyzer"
@@ -38,13 +40,25 @@ def create_graph():
             next_agent = "report"
             
         return next_agent
+    
+    # Define the edges in the agent graph
+    def pass_cv_review(state: State):
+        alucinacion_cv = state["alucinacion_cv"]
+        
+        if alucinacion_cv == 1 or alucinacion_cv == 1.0:
+            next_agent = "analyzer"
+        else:
+            next_agent = "reviewer_offer"
+            
+        return next_agent
 
     # Add edges to the graph
     graph.set_entry_point("analyzer")
-    graph.set_finish_point("end")
-    graph.add_edge("analyzer", "reviewer")
-    graph.add_conditional_edges( "reviewer",lambda state: pass_review(state=state),)
-    graph.add_edge("report", "end")
+    graph.set_finish_point("end_node")
+    graph.add_edge("analyzer", "reviewer_cv")
+    graph.add_conditional_edges( "reviewer_cv",lambda state: pass_cv_review(state=state),)
+    graph.add_conditional_edges( "reviewer_offer",lambda state: pass_offer_review(state=state))
+    graph.add_edge("report","end_node")
 
     return graph
 

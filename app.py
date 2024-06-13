@@ -133,7 +133,7 @@ class ConfigGraph:
             self.data = self.get_data()
             logger.info(f"Definidos los datos mediante archivo JSONL en {self.data_path}")
         
-        if len(self.data) > 1:
+        if len(self.data) > 0:
             self.candidatos = [self.get_candidato(cv=candidato.get("cv", None), oferta=candidato.get("oferta", None)) for candidato in self.data]
         else:
             logger.exception("No se han proporcionado candidatos en el archivo jsonl con el correcto fomato [ [cv : '...', oferta : '...'] , [...] ] ")
@@ -220,8 +220,6 @@ def main() -> None:
                 ):
                 if config_graph.verbose == 1:
                     print(colored(f"\nState Dictionary: {event}" ,  'cyan'))
-                else:
-                    print("\n")
                     
     if MODE == 'pipeline':
         logger.info(f"Pipeline mode")
