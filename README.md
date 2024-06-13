@@ -32,7 +32,7 @@
    git clone 
    ```
    
-6.**Virtual enviroment setup**
+6. **Virtual enviroment setup**
   
   - Create your virtual enviroment
     
