@@ -134,7 +134,7 @@ def final_report(state:State):
     candidato = state["candidato"]
     
     logger.info(f"Analisis final : \n {analisis_final}")
-    print(colored(f"\nReporte final 📝\n\nFecha del analisis : {analisis_final.fecha}\nOferta de Empleo : {candidato.oferta}\nPuntuacion del Candidato : {analisis_final.puntuacion}\nExperiencias : {analisis_final.experiencias}\nDesripcion : {analisis_final.descripcion}\nStatus analisis : {analisis_final.status}", 'light_yellow',attrs=["bold"]))
+    print(colored(f"\nReporte final 📝\n\nFecha del analisis : {analisis_final.fecha}\n\n**CANDIDATO**\n{candidato.cv}\n\n**OFERTA**\n{candidato.oferta}\n\n**ANALISIS**\n- Puntuacion : {analisis_final.puntuacion}\n- Experiencias : {analisis_final.experiencias}\n- Descripcion : {analisis_final.descripcion}", 'light_yellow',attrs=["bold"]))
 
     state = {**state, "analisis_final": analisis_final}
 
