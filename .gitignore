@@ -1,5 +1,8 @@
 /cvenv
 /.env
-/logs
+/logs/analyzer.log
+/logs/analyzer.log1
+/logs/analyzer.log2
+/logs/analyzer.log3
 /main
 commands.txt
