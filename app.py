@@ -64,22 +64,6 @@ class Pipeline:
         else:
             logger.exception("No se han proporcionado candidatos en el archivo jsonl con el correcto fomato [ [cv : '...', oferta : '...'] , [...] ] ")
             raise JsonlFormatError()
-        
-
-        if self.cv is not None and self.oferta is not None:
-            self.candidato = self.get_candidato() # Get obj Candidato
-            self.analyzer_chain = self.get_analyzer()  # Get objeto base chain 'customizado' para tarea análisis de CVs [incluye atrb el cv y oferta específico]
-            logger.debug(f"Cv Candidato -> {self.candidato.cv}")
-            logger.debug(f"Oferta de Empleo para candidato-> {self.candidato.oferta}")
-
-        
-    def get_config(self) -> dict:
-        if not os.path.exists(self.data_path):
-            logger.exception(f"Archivo de datos json no encontrado en {self.data_path}")
-            raise FileNotFoundError(f"Archivo de configuración no encontrado en {self.data_path}")
-        with open(self.data_path, encoding='utf-8') as file:
-            data = json.load(file)
-        return data
     
     def get_data(self) -> List[Dict[str,str]]:
         if not os.path.exists(self.data_path):
@@ -99,20 +83,20 @@ class Pipeline:
     def get_candidato(self, cv :str , oferta :str) -> Candidato:
         return Candidato(id=get_id(), cv=cv, oferta=oferta)
 
-    def get_analisis(self) -> Analisis:
+    def get_analisis(self) -> List[Analisis]:
         """Run Pipeline -> Invoca langchain chain -> genera objeto Analisis con respuesta del modelo"""
+        analisis = []
         for candidato in self.candidatos:
             logger.info(f"Análisis del candidato : \n {candidato}")
-            self._raw_response = self.analyzer_chain.invoke(candidato=candidato)  # Invoca a la chain que parsea la respuesta del modelo a python dict
-            logger.info(f"Análisis del modelo : \n {self._raw_response}")
-        
+            raw_response = self.chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})  # Invoca a la chain que parsea la respuesta del modelo a python dict
+            logger.info(f"Análisis del modelo : \n {raw_response}")
             # Manejo de una respuesta del modelo en un formato no correcto [no alineado con pydantic BaseModel]
             try:
-                self.analisis = Analisis(**self._raw_response,id=candidato.id , status="OK")  # Instancia de Pydantic Analisis BaseModel object
-                return self.analisis
+                analisis.append(Analisis(**raw_response,fecha=get_current_spanish_date_iso(),id=candidato.id , status="OK")) # Instancia de Pydantic Analisis BaseModel object
             except ValidationError as e:
                 logger.exception(f'{e} : Formato de respuesta del modelo incorrecta')
-                return Analisis(puntuacion=0, experiencias=list(),id=candidato.id, descripcion="", status="ERROR")
+                analisis.append(Analisis(puntuacion=0, experiencias=[{"error":"error"}],fecha=get_current_spanish_date_iso(),id=candidato.id, descripcion="", status="ERROR"))
+        return analisis
         
 @dataclass()
 class ConfigGraph:
@@ -186,13 +170,14 @@ def main() -> None:
         os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
     if not CONFIG_PATH:
         CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config', 'generation.json') 
-        logger.info(f"{CONFIG_PATH=}")
     if not DATA_PATH:
         DATA_PATH = os.path.join(os.path.dirname(__file__), 'config', 'data.json') 
-        logger.info(f"{DATA_PATH=}")
     if not MODE:
         MODE = 'graph'
-        logger.info(f"{MODE=}")
+        
+    logger.info(f"{DATA_PATH=}")
+    logger.info(f"{CONFIG_PATH=}")
+    logger.info(f"{MODE=}")
     
     # Mode -> Langgraph or One-shot [Pipeline]
     if MODE == 'graph':
@@ -226,8 +211,9 @@ def main() -> None:
         logger.info(f"Getting Data and Graph configuration from {DATA_PATH=} and {CONFIG_PATH=} ")
         pipeline = Pipeline(data_path=DATA_PATH)
         analisis = pipeline.get_analisis()
-        print(colored(f'Candidato analizado : \n {pipeline.candidato}', 'cyan', attrs=["bold"]))
-        print(colored(f'Respuesta del modelo : \n {analisis}', 'yellow', attrs=["bold"]))
+        for i,a in enumerate(analisis):
+            print(colored(f'\n**CANDIDATO **\n- CV : \n{pipeline.candidatos[i].cv}\n- Oferta : {pipeline.candidatos[i].oferta} ', 'cyan', attrs=["bold"]))
+            print(colored(f"\n**ANALISIS** 📝\n\nFecha del analisis : {a.fecha}\n- Puntuacion : {a.puntuacion}\n- Experiencias : {a.experiencias}\n- Descripcion : {a.descripcion}", 'light_yellow',attrs=["bold"]))
 
 if __name__ == '__main__':
     main()
