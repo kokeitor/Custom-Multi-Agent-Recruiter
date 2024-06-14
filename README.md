@@ -58,12 +58,22 @@ Aquí tienes las correcciones de las faltas de ortografía y gramática:
   ```
 *WAIT for the installation to finish! :smiley:*
 
-6. **API token/keys configuration**
+6. **API token/key configuration**
    
    Open the *.env* file and add your OpenAI and LangChain keys
    ```
    OPENAI_API_KEY = "<your_openai_key>"
-   LANGCHAIN_API_KEY = "<your_langchain_key>"
+   LANGCHAIN_API_KEY = "<your_langsmith_key>"
    ```
-   *You should have an account for both*
+    *For both You should check this tutorials*
+   [Fancy OpenAI Key tutorial](https://www.youtube.com/watch?v=aVog4J6nIAU)
+   [Fancy LangChain [LangSmith] tutorial](https://www.youtube.com/watch?v=bE9sf9vGsrM)
 
+## **App modes**
+
+For using the Custom Multi-Agent Recruiter i have design several "several app modes" *some of them still on the develop phase*
+
+1. One-Shot Pipeline Mode
+2. LangGraph Multi-Agent mode
+3. FastApi mode
+4. Web Mode [Development]
