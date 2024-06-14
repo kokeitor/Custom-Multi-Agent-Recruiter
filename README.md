@@ -9,9 +9,8 @@ I have designed a Multi-Agent Recruiter [graph-like] for processing and analyzin
 Now, seriously, this GPT 3.5 turbo model isn't perfect but it's fast. Feel free to add any model that the LangChain API supports. In future versions, I will add and compare different 'transformer-decoder-architecture-like' models. I will also try to use some open-source ones. Stay tuned!
 
 The Recruiter will output a score from 0 to 100, a related job offer list based on the candidate's job experience and linked information [if found], and a description of why did it asiggned that score to the candidate according to the job offer and the CV.
-The Recruiter will output a score from 0 to 100, a related job offer list based on the candidate's job experience and linked information [if found], and a description of why did it asiggned that score to the candidate according to the job offer and the CV.
 
-For more low level technical details of the system's arquitectura, contact me at: jorgeresino143@gmail.com
+For more low level technical details of the system's arquitecture, contact me at: jorgeresino143@gmail.com
 
 ## **Prerequisites**
 
