@@ -2,7 +2,15 @@
 
 ## **Introduction and motivation**
 
-...
+I have designed a Multi-Agent Recruiter [graph-like] for processing and analyzing candidates' CVs for a specific job offer. The architecture is based on the LangGraph framework and currently uses the GPT model from OpenAI, specifically **'3.5 turbo'**. 
+
+(I'm sure with the GPT-4 model, the performance and the cost will increase :joy:)
+
+Now, seriously, this GPT 3.5 turbo model isn't perfect but it's fast. Feel free to add any model that the LangChain API supports. In future versions, I will add and compare different 'transformer-decoder-architecture-like' models. I will also try to use some open-source ones. Stay tuned!
+
+The Recruiter will output a score from 0 to 100, a related job offer list based on the candidate's job experience and linked information [if found], and a description of why the given score was assigned according to the analysis.
+
+For more technical explanations of the system's performance, contact me at: jorgeresino143@gmail.com
 
 ## **Prerequisites**
 
