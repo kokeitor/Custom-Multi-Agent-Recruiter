@@ -1,5 +1,3 @@
-Aquí tienes las correcciones de las faltas ortográficas y gramaticales:
-
 # **Custom Multi-Agent Recruiter with LangGraph**
 
 ## **Introduction and motivation**
