@@ -65,15 +65,17 @@ Aquí tienes las correcciones de las faltas de ortografía y gramática:
    OPENAI_API_KEY = "<your_openai_key>"
    LANGCHAIN_API_KEY = "<your_langsmith_key>"
    ```
-    *For both You should check this tutorials*
+    *For get both you should check this tutorials*
+
    [Fancy OpenAI Key tutorial](https://www.youtube.com/watch?v=aVog4J6nIAU)
+
    [Fancy LangChain [LangSmith] tutorial](https://www.youtube.com/watch?v=bE9sf9vGsrM)
 
 ## **App modes**
 
-For using the Custom Multi-Agent Recruiter i have design several "several app modes" *some of them still on the develop phase*
+For using the Custom Multi-Agent Recruiter i have design several **"app modes"** *some of them still on the develop phase*
 
-1. One-Shot Pipeline Mode
-2. LangGraph Multi-Agent mode
-3. FastApi mode
-4. Web Mode [Development]
+1. **One-Shot Pipeline Mode***
+2. **LangGraph Multi-Agent Mode**
+3. **FastApi Mode**
+4. **Chat-Bot Web Mode** [Development]
