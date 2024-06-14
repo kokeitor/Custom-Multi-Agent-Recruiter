@@ -52,14 +52,14 @@ class Pipeline:
         if self.data is not None and self.data_path is not None:
             logger.warning("Definidas dos configuraciones [archivo json y dict] -> da prioridad a dict config")
         if self.data is None and self.data_path is not None:
-            self.data = self.get_config()
+            self.data = self.get_data()
             logger.info(f"Definida configuracion mediante archivo JSON en {self.data_path}")
         if self.data is None and self.data_path is None:
             logger.exception("No se ha proporcionado ninguna configuración para la generación usando Pipeline")
             raise AttributeError("No se ha proporcionado ninguna configuración para la generación usando Pipeline")
         
         self.chain = get_analyzer_chain()  # Get objeto base chain para la tarea de análisis de CVs
-        if len(self.data) > 1:
+        if len(self.data) > 0:
             self.candidatos = [self.get_candidato(cv=candidato.get("cv", None), oferta=candidato.get("oferta", None)) for candidato in self.data]
         else:
             logger.exception("No se han proporcionado candidatos en el archivo jsonl con el correcto fomato [ [cv : '...', oferta : '...'] , [...] ] ")

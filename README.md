@@ -1,6 +1,4 @@
-Aquí tienes las correcciones de las faltas de ortografía y gramática:
-
-# **Custom Recruiter Agent with LangGraph**
+# **Custom Multi-Agent Recruiter with LangGraph**
 
 ## **Introduction and motivation**
 
@@ -75,7 +73,43 @@ Aquí tienes las correcciones de las faltas de ortografía y gramática:
 
 For using the Custom Multi-Agent Recruiter i have design several **"app modes"** *some of them still on the develop phase*
 
-1. **One-Shot Pipeline Mode***
+1. **One-Shot Pipeline Mode**
+
+    - Set up the configuration JSON file 
+
+        Open *config* folder and inside the *data.json* file add all the candidates CV (Curriculum vitae or resume) you want to analyze and the job offer linked to that analysis
+
+        *I have include in the las JSON object inside this JSON array an example or template you could tune for your specific case*
+
+        *Note that with this template you ensure a good performance of the model and the agents analysis*
+
+        ```json
+                [
+                    {
+                        "oferta": "<job_offer_description_1>", 
+                        "cv": "<candidate_1_CV>"
+                    },
+                    { 
+                        "oferta": "<job_offer_description_2>", 
+                        "cv": "<candidate_2_CV>"
+                    },
+                    {
+                        "oferta": "Analista de Datos en Empresa Tecnológica",
+                        "cv": "Nombre: Carlos Ruiz\nResidencia: Calle del Parque 78, Ciudad Central\nCorreo: carlos.ruiz@ejemplo.com\nTeléfono: 555-456-7891\n\nEXPERIENCIA PROFESIONAL\n- Junio 2021 / Presente: Analista de Datos - TechData Solutions\n  Análisis de grandes conjuntos de datos, creación de dashboards, generación de informes.\n\n- Septiembre 2018 / Mayo 2021: Programador - Software Innovators\n  Desarrollo de software, pruebas de calidad, implementación de mejoras.\n\n- Enero 2016 / Agosto 2018: Soporte Técnico - HelpDesk Corp\n  Resolución de incidencias técnicas, soporte al cliente, mantenimiento de sistemas.\n\nFORMACIÓN ACADÉMICA\n- Finalizada en Mayo 2018: Ingeniería Informática, Universidad de Ciudad Central\n\nIDIOMAS\n- Inglés: Fluido (C2) en lectura, Fluido (C2) en oral, Fluido (C2) en escrita\n- Español: Nativo (C2) en lectura, Nativo (C2) en oral, Nativo (C2) en escrita\n\nHABILIDADES\n- Análisis de datos\n- Programación en Python y Java\n- Creación de dashboards\n\nOtros datos\n- Certificación en Data Science, 2020\n- Participación en proyectos de inteligencia artificial\n"
+                    }
+                ]
+        ```
+
+
+    - Run the pipeline
+
+        To run the pipeline navigate to your local directory proyect where *app.py* is located, open the cmd and type:
+
+        ```sh
+            cd your/dir/path
+            python app.py --mode 'pipeline'
+        ``` 
+
 2. **LangGraph Multi-Agent Mode**
 3. **FastApi Mode**
 4. **Chat-Bot Web Mode** [Development]
