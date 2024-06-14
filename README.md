@@ -113,9 +113,9 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
 
         Then type:
         ```sh
-        python app.py --mode 'pipeline'
+        python app.py --mode pipeline
         ````
-        
+
 
 2. **LangGraph Multi-Agent Mode**
 3. **FastApi Mode**
