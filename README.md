@@ -78,7 +78,7 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
 
 1. **One-Shot Pipeline Mode**
 
-    - Set up the configuration JSON file 
+    - Set up the DATA configuration JSON file 
 
         Open *config* folder and, inside the *data.json* file, add all the candidates CV (Curriculum vitae or resume) you want to analyze with the job offer linked to that analysis
 
@@ -117,6 +117,86 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
         ````
 
 
-2. **LangGraph Multi-Agent Mode**
+2. **LangGraph Multi-Agent Mode [Recommended mode]**
+
+    - Set up the DATA configuration JSON file 
+
+        Open *config* folder and, inside the *data.json* file, add all the candidates CV (Curriculum vitae or resume) you want to analyze with the job offer linked to that analysis
+
+        *I have include, in the last JSON object inside this JSON array, an example or template you could tune for your specific case*
+
+        ***Note that with this template you ensure a good performance of the model and the agents analysis***
+
+        ```json
+        [
+            {
+                "oferta": "<job_offer_description_1>", 
+                "cv": "<candidate_1_CV>"
+            },
+            { 
+                "oferta": "<job_offer_description_2>", 
+                "cv": "<candidate_2_CV>"
+            },
+            {
+                "oferta": "Analista de Datos en Empresa Tecnológica",
+                "cv": "Nombre: Carlos Ruiz\nResidencia: Calle del Parque 78, Ciudad Central\nCorreo: carlos.ruiz@ejemplo.com\nTeléfono: 555-456-7891\n\nEXPERIENCIA PROFESIONAL\n- Junio 2021 / Presente: Analista de Datos - TechData Solutions\n  Análisis de grandes conjuntos de datos, creación de dashboards, generación de informes.\n\n- Septiembre 2018 / Mayo 2021: Programador - Software Innovators\n  Desarrollo de software, pruebas de calidad, implementación de mejoras.\n\n- Enero 2016 / Agosto 2018: Soporte Técnico - HelpDesk Corp\n  Resolución de incidencias técnicas, soporte al cliente, mantenimiento de sistemas.\n\nFORMACIÓN ACADÉMICA\n- Finalizada en Mayo 2018: Ingeniería Informática, Universidad de Ciudad Central\n\nIDIOMAS\n- Inglés: Fluido (C2) en lectura, Fluido (C2) en oral, Fluido (C2) en escrita\n- Español: Nativo (C2) en lectura, Nativo (C2) en oral, Nativo (C2) en escrita\n\nHABILIDADES\n- Análisis de datos\n- Programación en Python y Java\n- Creación de dashboards\n\nOtros datos\n- Certificación en Data Science, 2020\n- Participación en proyectos de inteligencia artificial\n"
+            }
+        ]
+        ```
+    - Set up the Graph configuration JSON file [expert mode]
+
+        Open *config* folder and, inside the *generation.json* file and complete configuration values for each key as you wish.
+        *In future versions there will be more configurations options*
+
+        ```json
+        {
+            "iteraciones": 30,
+            "thread_id": "4",
+            "verbose": 0
+        }
+        ```
+
+    - Run the Multi-Agent Graph
+
+        Navigate to your local directory project where *app.py* is located using cmd on windows:
+
+        ```sh
+        cd your/dir/path
+        ``` 
+
+        Then type:
+        ```sh
+        python app.py --mode graph
+        ````
+        
+    **You will see the results and feedback of the agents analysis on the screen**
+
 3. **FastApi Mode**
+
+    - Run the Api
+
+        Navigate to your local directory project where *app.py* is located using cmd on windows:
+
+        ```sh
+        cd your/dir/path
+        ``` 
+
+        Then type:
+        ```sh
+        python api.py 
+        ````
+
+    - Go to:
+        (http://localhost:8000/docs)
+
+    - Follow the steps:
+    
+        - You will see a pop-up window -> "get/analysis"
+        - Open it, press on -> "Try it out" botton 
+        - Type the CV candidate and the job offer.
+        - Press -> "execute"
+
+        You will find the final Multi-Agent Recruiter graph Analysis in json format scrolling down inside the page.
+
+
 4. **Chat-Bot Web Mode** [Development]
