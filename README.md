@@ -175,7 +175,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
     - Run the API
 
-        Navigate to your local project directory where *app.py* is located using cmd on Windows:
+        Navigate to your local project directory where *api.py* is located using cmd on Windows:
 
         ```sh
         cd your/dir/path
