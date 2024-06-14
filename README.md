@@ -1,3 +1,5 @@
+Aquí tienes las correcciones de las faltas ortográficas y gramaticales:
+
 # **Custom Multi-Agent Recruiter with LangGraph**
 
 ## **Introduction and motivation**
@@ -14,7 +16,7 @@
 
    [Git official download website](https://www.git-scm.com/downloads)
 
-3. **Navigate to your local machine project directory and initialize a new git repository version control**
+3. **Navigate to your local machine project directory and initialize a new Git repository for version control**
 
     On Windows:
     ```sh
@@ -66,7 +68,7 @@
    OPENAI_API_KEY = "<your_openai_key>"
    LANGCHAIN_API_KEY = "<your_langsmith_key>"
    ```
-    *For get both you should check this tutorials*
+    *To get both, you should check these tutorials*
 
    [Fancy OpenAI Key tutorial](https://www.youtube.com/watch?v=aVog4J6nIAU)
 
@@ -74,17 +76,17 @@
 
 ## **App modes**
 
-For using the Custom Multi-Agent Recruiter, i have design several **"app modes"** *some of them still on the develop phase*
+To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"** *some of which are still in the development phase*.
 
 1. **One-Shot Pipeline Mode**
 
     - Set up the DATA configuration JSON file 
 
-        Open *config* folder and, inside the *data.json* file, add all the candidates CV (Curriculum vitae or resume) you want to analyze with the job offer linked to that analysis
+        Open the *config* folder and, inside the *data.json* file, add all the candidates' CVs (Curriculum Vitae or resumes) you want to analyze with the job offer linked to that analysis.
 
-        *I have include, in the last JSON object inside this JSON array, an example or template you could tune for your specific case*
+        *I have included, in the last JSON object inside this JSON array, an example or template you could tune for your specific case.*
 
-        ***Note that with this template you ensure a good performance of the model and the agents analysis***
+        ***Note that with this template you ensure good performance of the model and the agents' analysis***
 
         ```json
         [
@@ -105,7 +107,7 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
 
     - Run the pipeline
 
-        Navigate to your local directory project where *app.py* is located using cmd on windows:
+        Navigate to your local project directory where *app.py* is located using cmd on Windows:
 
         ```sh
         cd your/dir/path
@@ -114,18 +116,17 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
         Then type:
         ```sh
         python app.py --mode pipeline
-        ````
-
+        ```
 
 2. **LangGraph Multi-Agent Mode [Recommended mode]**
 
     - Set up the DATA configuration JSON file 
 
-        Open *config* folder and, inside the *data.json* file, add all the candidates CV (Curriculum vitae or resume) you want to analyze with the job offer linked to that analysis
+        Open the *config* folder and, inside the *data.json* file, add all the candidates' CVs (Curriculum Vitae or resumes) you want to analyze with the job offer linked to that analysis.
 
-        *I have include, in the last JSON object inside this JSON array, an example or template you could tune for your specific case*
+        *I have included, in the last JSON object inside this JSON array, an example or template you could tune for your specific case.*
 
-        ***Note that with this template you ensure a good performance of the model and the agents analysis***
+        ***Note that with this template you ensure good performance of the model and the agents' analysis***
 
         ```json
         [
@@ -145,12 +146,13 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
         ```
     - Set up the Graph configuration JSON file [expert mode]
 
-        Open *config* folder and, inside the *generation.json* file and complete configuration values for each key as you wish.
-        *In future versions there will be more configurations options*
+        Open the *config* folder and, inside the *generation.json* file, complete the configuration values for each key as you wish.
+
+        *In future versions, there will be more configuration options*
 
         ```json
         {
-            "iteraciones": 30,
+            "iterations": 30,
             "thread_id": "4",
             "verbose": 0
         }
@@ -158,7 +160,7 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
 
     - Run the Multi-Agent Graph
 
-        Navigate to your local directory project where *app.py* is located using cmd on windows:
+        Navigate to your local project directory where *app.py* is located using cmd on Windows:
 
         ```sh
         cd your/dir/path
@@ -167,15 +169,15 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
         Then type:
         ```sh
         python app.py --mode graph
-        ````
-        
-    **You will see the results and feedback of the agents analysis on the screen**
+        ```
 
-3. **FastApi Mode**
+    **You will see the results and feedback of the agents' analysis on the screen**
 
-    - Run the Api
+3. **FastAPI Mode**
 
-        Navigate to your local directory project where *app.py* is located using cmd on windows:
+    - Run the API
+
+        Navigate to your local project directory where *app.py* is located using cmd on Windows:
 
         ```sh
         cd your/dir/path
@@ -184,19 +186,19 @@ For using the Custom Multi-Agent Recruiter, i have design several **"app modes"*
         Then type:
         ```sh
         python api.py 
-        ````
+        ```
 
     - Go to:
-        (http://localhost:8000/docs)
+    
+        [http://localhost:8000/docs](http://localhost:8000/docs)
 
     - Follow the steps:
-    
+
         - You will see a pop-up window -> "get/analysis"
-        - Open it, press on -> "Try it out" botton 
-        - Type the CV candidate and the job offer.
+        - Open it, press -> "Try it out" button 
+        - Type the candidate's CV and the job offer.
         - Press -> "execute"
 
-        You will find the final Multi-Agent Recruiter graph Analysis in json format scrolling down inside the page.
+    **You will find the final Multi-Agent Recruiter graph analysis in JSON format by scrolling down the page**
 
-
-4. **Chat-Bot Web Mode** [Development]
+4. **Chat-Bot Web Mode** [Development Phase]
