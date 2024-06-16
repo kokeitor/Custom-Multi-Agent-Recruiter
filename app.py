@@ -5,9 +5,7 @@ from dotenv import load_dotenv
 from src.model.graph import create_graph, compile_workflow
 from src.model.modes import ConfigGraph, Pipeline
 from src.model.utils import (
-                        get_current_spanish_date_iso, 
                         setup_logging,
-                        get_id,
                         get_arg_parser
                         )
 
