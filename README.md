@@ -76,16 +76,19 @@ For more low level technical details of the system's arquitecture, contact me at
 
 6. **API token/key configuration**
    
-   Open the *.env* file and add your OpenAI and LangChain keys
+   Open the *.env* file and add your OpenAI , LangChain and NVDIA keys
    ```
    OPENAI_API_KEY = "<your_openai_key>"
    LANGCHAIN_API_KEY = "<your_langsmith_key>"
+   NVIDIA_API_KEY = "<your_langsmith_key>"
    ```
     *To get both, you should check these tutorials*
 
    [Fancy OpenAI Key tutorial](https://www.youtube.com/watch?v=aVog4J6nIAU)
 
    [Fancy LangChain [LangSmith] tutorial](https://www.youtube.com/watch?v=bE9sf9vGsrM)
+
+   [Create an account and obtain NVDIA API KEY for : llama3-70b](https://build.nvidia.com/explore/discover#llama3-70b)
 
 ## **App modes**
 
@@ -161,11 +164,36 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
         Open the *config* folder and, inside the *generation.json* file, complete the configuration values for each key as you wish.
 
+        In this file you will find the name of the current agents that exists in the graph. You can use two models for each agent : 
+
+        - OpenAI -> 'gpt-3.5-turbo' -> by typing : "name":"OPENAI"
+        - Meta -> 'llama3-70b' -> by typing : "name":"NVIDIA"
+
+        Also you can tune and play with the temperature float parameter for each agent.
+
         *In future versions, there will be more configuration options*
 
         ```json
         {
-            "iterations": 30,
+        "agents":{
+                    "analyzer": {
+                                "name":"NVIDIA",
+                                "temperature":0
+                                },
+                    "re_analyzer": {
+                                "name":"NVIDIA",
+                                "temperature":0
+                                },
+                    "cv_reviewer": {
+                                "name":"NVIDIA",
+                                "temperature":0
+                                },
+                    "offer_reviewer": {
+                                    "name":"NVIDIA",
+                                    "temperature":0
+                                    }
+            },
+            "iteraciones": 30,
             "thread_id": "4",
             "verbose": 0
         }
@@ -187,6 +215,45 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
     **You will see the results and feedback of the agents' analysis on the screen**
 
 3. **FastAPI Mode**
+
+    - Set up the Graph configuration JSON file [expert mode]
+
+        Open the *config* folder and, inside the *generation.json* file, complete the configuration values for each key as you wish.
+
+        In this file you will find the name of the current agents that exists in the graph. You can use two models for each agent : 
+
+        - OpenAI -> 'gpt-3.5-turbo' -> by typing : "name":"OPENAI"
+        - Meta -> 'llama3-70b' -> by typing : "name":"NVIDIA"
+
+        Also you can tune and play with the temperature float parameter for each agent.
+
+        *In future versions, there will be more configuration options*
+
+        ```json
+        {
+        "agents":{
+                    "analyzer": {
+                                "name":"NVIDIA",
+                                "temperature":0
+                                },
+                    "re_analyzer": {
+                                "name":"NVIDIA",
+                                "temperature":0
+                                },
+                    "cv_reviewer": {
+                                "name":"NVIDIA",
+                                "temperature":0
+                                },
+                    "offer_reviewer": {
+                                    "name":"NVIDIA",
+                                    "temperature":0
+                                    }
+            },
+            "iteraciones": 30,
+            "thread_id": "4",
+            "verbose": 0
+        }
+        ```
 
     - Run the API
 
