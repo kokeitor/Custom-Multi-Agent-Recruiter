@@ -29,7 +29,6 @@ For more low level technical details of the system's arquitecture, contact me at
     cd your/dir/path/
     git init
     ```
-    ![carbon](data/images/carbon.png)
 
     *You may have to set your username and email at this point* -> [Git config tutorial](https://www.youtube.com/watch?v=yDntCIs-IJM)
 
