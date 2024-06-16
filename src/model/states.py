@@ -2,7 +2,6 @@ from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar, Typed
 from pydantic import BaseModel
 from langchain.prompts import PromptTemplate
 
-from langgraph.graph.message import add_messages
 
 class Analisis(BaseModel):
     id : str
@@ -26,7 +25,7 @@ class State(TypedDict):
     
 class Agent(BaseModel):
     agent_name : str
-    model_name : str
-    model : Callable
+    model : str
+    get_model : Callable
     temperature : float
     prompt : PromptTemplate

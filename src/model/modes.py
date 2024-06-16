@@ -1,11 +1,8 @@
 import os
 import json
 import logging
-from termcolor import colored
 from dotenv import load_dotenv
-from langchain_community.embeddings import GPT4AllEmbeddings
 from langchain.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
 from dataclasses import dataclass
 from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar
 from langchain.chains.llm import LLMChain
@@ -21,7 +18,6 @@ from .prompts import (
     re_analyze_cv_prompt_nvidia,
     cv_check_prompt_nvidia
     )
-from .graph import create_graph, compile_workflow
 from .states import (
     Analisis,
     Candidato,
@@ -113,13 +109,12 @@ class ConfigGraph:
             "OLLAMA": get_ollama
             }
 
-    AGENTS : ClassVar = {
-            "analyzer": Agent("analyzer","OPENAI",get_open_ai_json,0.0, analyze_cv_prompt),
-            "re_analyzer": Agent("re_analyzer","OPENAI",get_open_ai_json,0.0, re_analyze_cv_prompt),
-            "cv_reviewer": Agent("cv_reviewer","OPENAI",get_open_ai_json,0.0, cv_check_prompt),
-            "offer_reviewer": Agent("offer_reviewer","OPENAI",get_open_ai_json,0.0, offer_check_prompt)
-            }
-    
+    AGENTS: ClassVar = {
+        "analyzer": Agent(agent_name="analyzer", model="OPENAI", get_model=get_open_ai_json, temperature=0.0, prompt=analyze_cv_prompt),
+        "re_analyzer": Agent(agent_name="re_analyzer", model="OPENAI", get_model=get_open_ai_json, temperature=0.0, prompt=re_analyze_cv_prompt),
+        "cv_reviewer": Agent(agent_name="cv_reviewer", model="OPENAI", get_model=get_open_ai_json, temperature=0.0, prompt=cv_check_prompt),
+        "offer_reviewer": Agent(agent_name="offer_reviewer", model="OPENAI", get_model=get_open_ai_json, temperature=0.0, prompt=offer_check_prompt)
+    }
     config_path: Optional[str] = None
     data_path: Optional[str] = None
     
@@ -193,8 +188,8 @@ class ConfigGraph:
 
                     agents[agent] = Agent(
                         agent_name=agent,
-                        model_name=model_name,
-                        model=get_model,
+                        model=model_name,
+                        get_model=get_model,
                         temperature=model_temperature,
                         prompt=prompt
                     )

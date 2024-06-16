@@ -21,7 +21,7 @@ from .agents import (
 
 logger = logging.getLogger(__name__)
 
-def create_graph(config : ConfigGraph):
+def create_graph(config : ConfigGraph) -> StateGraph:
     
     analyzer = config.agents.get("analyzer",None)
     re_analyzer = config.agents.get("re_analyzer",None)
