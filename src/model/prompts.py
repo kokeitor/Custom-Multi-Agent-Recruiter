@@ -122,7 +122,7 @@ cv_check_prompt_nvidia = PromptTemplate(
                 Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experienica : 'no hay información suficiente'\n
                 Debes puntuar con un 0 si las experiencias de trabajo aparecen en el cv del candidato.\n
                 
-                El formato de salida debe ser en formato JSON según el esquema: [ puntuacion : <número entero : 0 o 1> ]\n
+                El formato de salida debe ser en formato JSON según el esquema: puntuacion : <número entero : 0 o 1> \n
                 <|eot_id|><|start_header_id|>user<|end_header_id|>
                 cv del candidato: {cv}
                 Experiencias de trabajo del candidato: {experiencias}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
@@ -146,7 +146,7 @@ offer_check_prompt_nvidia = PromptTemplate(
                 2. En la descripción no se mencionan habilidades del candidato que no tienen relación con la oferta de empleo.\n
                 3. La puntuación es baja y las experiencias del candidato no tienen relación con la oferta de empleo.\n
                 
-                El formato de salida debe ser en formato JSON según el esquema: [ alucionacion: <número entero: 0 o 1> ]\n
+                El formato de salida debe ser en formato JSON según el esquema: alucionacion: <número entero: 0 o 1> \n
 
                 <|eot_id|><|start_header_id|>user<|end_header_id|>
                 Título de la oferta de trabajo: {oferta}

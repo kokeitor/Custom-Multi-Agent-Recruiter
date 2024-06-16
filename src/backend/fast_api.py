@@ -10,6 +10,7 @@ from uuid import UUID, uuid4
 import uvicorn
 from ..model import states, utils
 from ..model import graph as graph_module
+from ..model.modes import ConfigGraphApi
 
 
 # Logging configuration
@@ -17,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
-class LanggraphConfig(BaseModel):
+class LangGraphConfig(BaseModel):
     thread_id : str = "4"
     iteraciones : int
     verbose :int
@@ -26,12 +27,15 @@ class LanggraphConfig(BaseModel):
 def get_analisis(cv : str, oferta : str):
     
     candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=oferta)
-    graph_config = LanggraphConfig(thread_id="4",iteraciones=10,verbose=0)
+    graph_config = LangGraphConfig(thread_id="4",iteraciones=10,verbose=0)
+    CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'config', 'generation.json')
+    logger.info(f"{CONFIG_PATH=}")
+    agent_config = ConfigGraphApi(config_path=CONFIG_PATH)
     logger.info(f"Graph mode using FAST-API")
     logger.debug(f"{candidato=}")
     logger.debug(f"{graph_config=}")
     logger.info("Creating graph and compiling workflow...")
-    graph = graph_module.create_graph()
+    graph = graph_module.create_graph(config=agent_config)
     workflow = graph_module.compile_workflow(graph)
     logger.info("Graph and workflow created")
     

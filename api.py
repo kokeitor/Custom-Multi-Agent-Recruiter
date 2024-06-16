@@ -24,8 +24,10 @@ logger = logging.getLogger(__name__)
 
 def main():
     setup_logging()
+    
     run_fast_api()
     
 if __name__ == '__main__':
     main()
+
 
