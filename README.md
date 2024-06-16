@@ -72,7 +72,7 @@ For more low level technical details of the system's arquitecture, contact me at
         pip install -r requirements.txt
         ```
 
-    *WAIT for the installation to finish! :smiley:*
+    *WAIT for the installation to finish!* :smiley:
 
 6. **API token/key configuration**
    
