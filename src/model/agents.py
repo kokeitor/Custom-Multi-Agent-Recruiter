@@ -1,27 +1,48 @@
 import logging
 from termcolor import colored
 from typing import Dict, List, Tuple, Union, Optional, Callable
+from langchain.prompts import PromptTemplate
 from pydantic import ValidationError
 from .states import (
     State,
     Analisis,
     Candidato
 )
-from .models import get_open_ai_json
+from .prompts import (
+    analyze_cv_prompt,
+    offer_check_prompt,
+    re_analyze_cv_prompt,
+    cv_check_prompt,
+    analyze_cv_prompt_nvidia
+    )
+from .models import (
+    get_open_ai_json,
+    get_nvdia,
+    get_ollama,
+    get_open_ai
+)
 from .chains import (
+    get_chain,
     get_reviewer_cv_chain,
     get_analyzer_chain,
     get_re_analyzer_chain,
     get_reviewer_offer_chain
 )
-
 from .utils import get_current_spanish_date_iso
+
 
 # Logging configuration
 logger = logging.getLogger(__name__)
 
 
-def analyzer_agent(state:State, get_analyzer_chain : Callable = get_analyzer_chain , get_re_analyzer_chain : Callable = get_re_analyzer_chain):
+def analyzer_agent(
+                    state:State,
+                    analyze_model : Callable = get_open_ai_json,
+                    re_analyze_model : Callable = get_open_ai_json,
+                    analyze_prompt : PromptTemplate = analyze_cv_prompt,
+                    re_analyze_prompt : PromptTemplate = re_analyze_cv_prompt,
+                    get_chain : Callable = get_chain
+                    ) -> State:
     
     logger.info(f"Estado previo [Analyzer-Agent] : \n {state}")
     
@@ -30,17 +51,20 @@ def analyzer_agent(state:State, get_analyzer_chain : Callable = get_analyzer_cha
     
     # Comprobamos si es un re-analisis por alucionacion o un analisis inicial
     if state["alucinacion_oferta"] and (state["alucinacion_oferta"] == 1.0 or state["alucinacion_oferta"] == 1):
-        re_analyzer_chain = get_re_analyzer_chain()
+        #re_analyzer_chain = get_re_analyzer_chain()
+        re_analyzer_chain = get_chain(get_model = re_analyze_model,prompt_template = re_analyze_prompt)
         raw_response = re_analyzer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta, "analisis_previo": state["analisis"][-1]})
         logger.warning(f"Re analizando el candidato : \n {candidato=}")
         logger.warning(f"Re analisis : \n {raw_response=}")
     elif  state["alucinacion_cv"] and (state["alucinacion_cv"] == 1.0 or state["alucinacion_cv"] == 1):
-        re_analyzer_chain = get_re_analyzer_chain()
+        #re_analyzer_chain = get_re_analyzer_chain()
+        re_analyzer_chain = get_chain(get_model = re_analyze_model, prompt_template = re_analyze_prompt)
         raw_response = re_analyzer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta, "analisis_previo": state["analisis"][-1]})
         logger.warning(f"Re analizando el candidato por cv hallucination: \n {candidato=}")
         logger.warning(f"Re analisis : \n {raw_response=}")
     else:
-        analyzer_chain = get_analyzer_chain()
+        #analyzer_chain = get_analyzer_chain()
+        analyzer_chain = get_chain(get_model = analyze_model, prompt_template = analyze_prompt)
         raw_response = analyzer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})
         logger.debug(f"Analisis normal: \n {raw_response=}")
 
@@ -65,9 +89,14 @@ def analyzer_agent(state:State, get_analyzer_chain : Callable = get_analyzer_cha
 
     return state
 
-def reviewer_cv_agent(state:State, get_chain : Callable = get_reviewer_cv_chain):
+def reviewer_cv_agent(
+                    state:State,
+                    model : Callable = get_open_ai_json,
+                    prompt : PromptTemplate = cv_check_prompt,
+                    get_chain : Callable = get_chain
+                    ) -> State:
     
-    reviewer_chain = get_chain()
+    reviewer_chain = get_chain(get_model = model,prompt_template = prompt)
 
     candidato = state["candidato"]
     analisis_previo = state["analisis"][-1]
@@ -96,11 +125,16 @@ def reviewer_cv_agent(state:State, get_chain : Callable = get_reviewer_cv_chain)
     return state
 
 
-def reviewer_offer_agent(state:State, get_chain : Callable = get_reviewer_offer_chain):
+def reviewer_offer_agent(
+                        state:State, 
+                        model : Callable = get_open_ai_json,
+                        prompt : PromptTemplate = offer_check_prompt,
+                        get_chain : Callable = get_chain,
+                        ) -> State:
     
     logger.info(f"Estado previo [Reviewer-Agent] : \n {state}")
     
-    reviewer_chain = get_chain()
+    reviewer_chain = get_chain(get_model = model,prompt_template = prompt)
 
     candidato = state["candidato"]
     analisis_previo = state["analisis"][-1]
@@ -128,7 +162,7 @@ def reviewer_offer_agent(state:State, get_chain : Callable = get_reviewer_offer_
     return state
 
 
-def final_report(state:State):
+def final_report(state:State) -> State:
 
     analisis_final = state["analisis"][-1]
     candidato = state["candidato"]
@@ -140,6 +174,6 @@ def final_report(state:State):
 
     return state
 
-def end_node(state:State):
+def end_node(state:State) -> State:
     logger.info(f"Nodo final")
     return state

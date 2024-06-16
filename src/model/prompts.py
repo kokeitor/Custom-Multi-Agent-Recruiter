@@ -1,25 +1,25 @@
 from langchain.prompts import PromptTemplate
 
-# Prompts
+### OPRN AI FORMAT ###
 analyze_cv_prompt = PromptTemplate(
                 template="""Eres un modelo de IA diseñado para evaluar la idoneidad de un candidato para un puesto de trabajo específico asignando una puntuación. Recibirás el título de una oferta de trabajo y un CV completo de un candidato. 
-                Tu tarea es proporcionar una salida en formato JSON que contenga:
-                1. La puntuación.
-                2. Un listado con las experiencias del candidato solo si están relacionadas con la oferta propuesta, junto con la información de esa experiencia si se encuentra en el CV, como son: Puesto, Empresa y Duración.
-                3. Una descripción de por qué el candidato obtuvo la puntuación dada.
+                Tu tarea es proporcionar una salida en formato JSON que contenga:\n
+                1. La puntuación.\n
+                2. Un listado con las experiencias del candidato solo si están relacionadas con la oferta propuesta, junto con la información de esa experiencia si se encuentra en el CV, como son: Puesto, Empresa y Duración.\n
+                3. Una descripción de por qué el candidato obtuvo la puntuación dada.\n
 
-                Como salida, debes proporcionar un JSON con la siguiente estructura: [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]
+                Como salida, debes proporcionar un JSON con la siguiente estructura: [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
 
-                Debes ser preciso con la puntuación dada al candidato en función de su experiencia profesional y la relación real con la oferta de trabajo.
-                No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> experiencia : 'no hay información suficiente'
-                No debes incluir en las experiencias de trabajo experiencias del candidato que no estén relacionadas con la oferta de empleo.
-                Si el CV del candidato no está relacionado con la oferta de empleo y tampoco tiene experiencia previa relacionada con la oferta de trabajo:
-                a) La puntuación debe ser baja.
-                b) La descripción de por qué se le ha dado esa puntuación debe ser desfavorable.
+                Debes ser preciso con la puntuación dada al candidato en función de su experiencia profesional y la relación real con la oferta de trabajo.\n
+                No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> experiencia : 'no hay información suficiente'\n
+                No debes incluir en las experiencias de trabajo experiencias del candidato que no estén relacionadas con la oferta de empleo.\n
+                Si el CV del candidato no está relacionado con la oferta de empleo y tampoco tiene experiencia previa relacionada con la oferta de trabajo:\n
+                a. La puntuación debe ser baja.\n
+                b. La descripción de por qué se le ha dado esa puntuación debe ser desfavorable.\n
                 
-                Este es el CV del candidato a analizar y la oferta de trabajo:
-                Título de la oferta de trabajo: {oferta}
-                CV del candidato: {cv}
+                Este es el CV del candidato a analizar y la oferta de trabajo:\n
+                Título de la oferta de trabajo: \n\n{oferta}\n\n
+                CV del candidato: \n\n{cv}\n\n
                 """,
                 input_variables=["cv", "oferta"]
                 )
@@ -27,15 +27,15 @@ analyze_cv_prompt = PromptTemplate(
 cv_check_prompt = PromptTemplate(
                 template="""
                 Eres un modelo de IA diseñado para analizar y detectar que la información contenida en las experiencias de trabajo de un candidato se aparecen tambien en su cv.
-                Debes puntuar con un 1 si las experiencias de trabajo no aparecen en el cv del candidato.
-                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experienica : 'no hay información suficiente'
-                Debes puntuar con un 0 si las experiencias de trabajo aparecen en el cv del candidato.
+                Debes puntuar con un 1 si las experiencias de trabajo no aparecen en el cv del candidato.\n
+                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experienica : 'no hay información suficiente'\n
+                Debes puntuar con un 0 si las experiencias de trabajo aparecen en el cv del candidato.\n
                 
-                El formato de salida debe ser en formato JSON según el esquema: [ puntuacion : <número entero : 0 o 1> ]
+                El formato de salida debe ser en formato JSON según el esquema: [ puntuacion : <número entero : 0 o 1> ]\n
                 
-                Basate en la siguiente información proporcionada para dar esta puntuación de alucinación: 
-                cv del candidato: {cv}
-                Experiencias de trabajo del candidato: {experiencias}
+                Basate en la siguiente información proporcionada para dar esta puntuación de alucinación: \n
+                cv del candidato: \n\n{cv}\n\n
+                Experiencias de trabajo del candidato: \n\n{experiencias}\n\n
                 """,
                 input_variables=["cv","experiencias"]
                 )
@@ -44,24 +44,25 @@ cv_check_prompt = PromptTemplate(
 offer_check_prompt = PromptTemplate(
                 template="""
                 Eres un modelo de IA diseñado para analizar las posibles alucinaciones de otro modelo al realizar un análisis sobre un CV de un candidato para una oferta de trabajo.
-                Puntúa con un 1 si no es correcto, no tiene sentido o no es preciso el análisis realizado [hay alucinación por parte del modelo] y con un 0 si es correcto el análisis, es preciso y se ajusta a la oferta [no hay alucinación por parte del modelo].
+                Puntúa con un 1 si no es correcto, no tiene sentido o no es preciso el análisis realizado [hay alucinación por parte del modelo]
+                y con un 0 si es correcto el análisis, es preciso y se ajusta a la oferta [no hay alucinación por parte del modelo].\n
 
-                El modelo SÍ ha sufrido una alucinación si:
-                1. Las experiencias incluidas en el análisis no tienen relación con la oferta de empleo.
-                2. En la descripción se mencionan habilidades del candidato que no tienen relación con la oferta de empleo.
-                3. La puntuación es elevada y las experiencias del candidato no tienen relación con la oferta de empleo.
+                El modelo SÍ ha sufrido una alucinación si:\n
+                1. Las experiencias incluidas en el análisis no tienen relación con la oferta de empleo.\n
+                2. En la descripción se mencionan habilidades del candidato que no tienen relación con la oferta de empleo.\n
+                3. La puntuación es elevada y las experiencias del candidato no tienen relación con la oferta de empleo.\n
 
-                El modelo NO ha sufrido una alucinación si:
-                1. No hay experiencias incluidas en el análisis y en su CV las experiencias del candidato no tienen relación con la oferta de empleo.
-                2. En la descripción no se mencionan habilidades del candidato que no tienen relación con la oferta de empleo.
-                3. La puntuación es baja y las experiencias del candidato no tienen relación con la oferta de empleo.
+                El modelo NO ha sufrido una alucinación si:\n
+                1. No hay experiencias incluidas en el análisis y en su CV las experiencias del candidato no tienen relación con la oferta de empleo.\n
+                2. En la descripción no se mencionan habilidades del candidato que no tienen relación con la oferta de empleo.\n
+                3. La puntuación es baja y las experiencias del candidato no tienen relación con la oferta de empleo.\n
 
-                Basate en la siguiente información proporcionada para dar esta puntuación de alucinación: 
-                Título de la oferta de trabajo: {oferta}
-                CV del candidato: {cv}
-                Análisis del candidato: {analisis}
+                Basate en la siguiente información proporcionada para dar esta puntuación de alucinación: \n
+                Título de la oferta de trabajo: \n\n{oferta}\n\n
+                CV del candidato: \n\n{cv}\n\n
+                Análisis del candidato: \n\n{analisis}\n\n
 
-                El formato de salida debe ser en formato JSON según el esquema: [ alucionacion: <número entero: 0 o 1> ]
+                El formato de salida debe ser en formato JSON según el esquema: [ alucionacion: <número entero: 0 o 1> ]\n
                 """,
                 input_variables=["cv", "oferta","analisis"]
                 )
@@ -69,33 +70,114 @@ offer_check_prompt = PromptTemplate(
 re_analyze_cv_prompt = PromptTemplate(
                 template="""
             Eres un modelo de IA diseñado para corregir un análisis erróneo de un candidato para un puesto de trabajo específico. Tu función es volver a analizar el CV del candidato y corregir el análisis erróneo previo.
-            Debes proporcionar una salida en formato JSON que contenga:
+            Debes proporcionar una salida en formato JSON que contenga:\n
             1. La nueva puntuación corregida.
             2. Un listado corregido con las experiencias del candidato solo si están realmente relacionadas con la oferta propuesta, junto con la información de esa experiencia si se encuentra en el CV, como son: Puesto, Empresa y Duración.
-            3. Una nueva descripción corregida de por qué el candidato obtuvo la puntuación dada.
+            3. Una nueva descripción corregida de por qué el candidato obtuvo la puntuación dada.\n
+            Las instrucciones que debes seguir para la corrección del análisis previo son:\n
+            1. Debes ser exigente con la nueva puntuación corregida del candidato en función de su experiencia y la relación real con la oferta de trabajo.\n
+            2. Debes mejorar y corregir los errores del anterior análisis.\n
+            3. Si el CV del candidato no está relacionado con la oferta de empleo y no tiene experiencia previa relacionada con la oferta de trabajo:\n
+                a. La puntuación debe ser baja.\n
+                b. La descripción debe ser desfavorable.\n
+            4. En la lista de experiencias no puede aparecer una experiencia que no esté relacionada con la oferta de empleo.\n
 
-            Las instrucciones que debes seguir para la corrección del análisis previo son:
-            1. Debes ser exigente con la nueva puntuación corregida del candidato en función de su experiencia y la relación real con la oferta de trabajo.
-            2. Debes mejorar y corregir los errores del anterior análisis.
-            3. Si el CV del candidato no está relacionado con la oferta de empleo y no tiene experiencia previa relacionada con la oferta de trabajo:
-                a) La puntuación debe ser baja.
-                b) La descripción debe ser desfavorable.
-            4. En la lista de experiencias no puede aparecer una experiencia que no esté relacionada con la oferta de empleo.
-
-            Como salida, debes proporcionar un JSON con la siguiente estructura:
-            [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]
+            Como salida, debes proporcionar un JSON con la siguiente estructura:\n
+            [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
             
-            Este es el CV del candidato a analizar y la oferta de trabajo:
-            Título de la oferta de trabajo: {oferta}
-            CV del candidato: {cv}
+            Este es el CV del candidato a analizar y la oferta de trabajo:\n
+            Título de la oferta de trabajo: \n\n{oferta}\n\n
+            CV del candidato: \n\n{cv}\n\n
 
             Este es el análisis erróneo previo:
-            Análisis erróneo del candidato: {analisis_previo}
+            Análisis erróneo del candidato: \n\n{analisis_previo}\n\n
                 """,
                 input_variables=["cv", "oferta","analisis_previo"]
                 )
 
-get_experience_prompt = PromptTemplate(
+
+
+### NVIDIA FORMAT ###
+analyze_cv_prompt_nvidia = PromptTemplate(
+                template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>Eres un modelo de IA diseñado para evaluar la idoneidad de un candidato para un puesto de trabajo específico asignando una puntuación. Recibirás el título de una oferta de trabajo y un CV completo de un candidato. 
+                Tus tareas son:\n
+                1. Asignar una puntuación al candidato.\n
+                2. Localizar en el CV todas las experiencias laborales, junto con el puesto, la empresa y la duracion.\n
+                3. Crear una descripción de por qué el candidato obtuvo la puntuación dada.\n
+                
+                Como salida, debes proporcionar un JSON con la siguiente estructura: [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
+                No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> experiencia : 'no hay información suficiente'\n
+                No debes incluir en las experiencias de trabajo experiencias del candidato que no estén relacionadas con la oferta de empleo.\n
+                
+                <|eot_id|><|start_header_id|>user<|end_header_id|>
+                Título de la oferta de trabajo: {oferta}
+                CV del candidato: {cv}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+                """,
+                input_variables=["cv", "oferta"]
+                )
+
+cv_check_prompt_nvidia = PromptTemplate(
+                template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>Eres un modelo de IA diseñado para analizar y detectar que la información contenida en las experiencias de trabajo de un candidato aparecen tambien en su cv.\n
+                Debes puntuar con un 1 si las experiencias de trabajo no aparecen en el cv del candidato.\n
+                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experienica : 'no hay información suficiente'\n
+                Debes puntuar con un 0 si las experiencias de trabajo aparecen en el cv del candidato.\n
+                
+                El formato de salida debe ser en formato JSON según el esquema: [ puntuacion : <número entero : 0 o 1> ]\n
+                <|eot_id|><|start_header_id|>user<|end_header_id|>
+                cv del candidato: {cv}
+                Experiencias de trabajo del candidato: {experiencias}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+                """,
+                input_variables=["cv","experiencias"]
+                )
+
+
+offer_check_prompt_nvidia = PromptTemplate(
+                template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>Eres un modelo de IA diseñado para analizar las posibles alucinaciones de otro modelo al realizar un análisis sobre un CV de un candidato para una oferta de trabajo.
+                Puntúa con un 1 si no es correcto, no tiene sentido o no es preciso el análisis realizado [hay alucinación por parte del modelo]
+                y con un 0 si es correcto el análisis, es preciso y se ajusta a la oferta [no hay alucinación por parte del modelo].\n
+
+                El modelo SÍ ha sufrido una alucinación si:\n
+                1. Las experiencias incluidas en el análisis no tienen relación con la oferta de empleo.\n
+                2. En la descripción se mencionan habilidades del candidato que no tienen relación con la oferta de empleo.\n
+                3. La puntuación es elevada y las experiencias del candidato no tienen relación con la oferta de empleo.\n
+
+                El modelo NO ha sufrido una alucinación si:\n
+                1. No hay experiencias incluidas en el análisis y en su CV las experiencias del candidato no tienen relación con la oferta de empleo.\n
+                2. En la descripción no se mencionan habilidades del candidato que no tienen relación con la oferta de empleo.\n
+                3. La puntuación es baja y las experiencias del candidato no tienen relación con la oferta de empleo.\n
+                
+                El formato de salida debe ser en formato JSON según el esquema: [ alucionacion: <número entero: 0 o 1> ]\n
+
+                <|eot_id|><|start_header_id|>user<|end_header_id|>
+                Título de la oferta de trabajo: {oferta}
+                CV del candidato: {cv}
+                Análisis del candidato: {analisis}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+                """,
+                input_variables=["cv", "oferta","analisis"]
+                )
+
+re_analyze_cv_prompt_nvidia = PromptTemplate(
+                template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>Eres un modelo de IA diseñado para corregir un análisis erróneo de un candidato para un puesto de trabajo específico. 
+            Tu función es volver a analizar el CV del candidato y corregir el análisis erróneo previo.\n
+            Debes proporcionar una salida en formato JSON que contenga:\n
+            1. La nueva puntuación corregida.
+            2. Un listado corregido con las experiencias del candidato solo si están realmente relacionadas con la oferta propuesta, junto con la información de esa experiencia si se encuentra en el CV, como son: Puesto, Empresa y Duración.
+            3. Una nueva descripción corregida de por qué el candidato obtuvo la puntuación dada.\n
+            
+            Como salida, debes proporcionar un JSON con la siguiente estructura:\n
+            [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
+            
+            <|eot_id|><|start_header_id|>user<|end_header_id|>
+            Título de la oferta de trabajo: {oferta}
+            CV del candidato: {cv}
+            Análisis erróneo del candidato: {analisis_previo}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+                """,
+                input_variables=["cv", "oferta","analisis_previo"]
+                )
+
+
+### Development ###
+_get_experience_prompt = PromptTemplate(
                 template="""Eres un modelo de IA diseñado para analizar un CV de un candidato y localizar sus experiencias laborales relacionadas con una oferta de trabajo. Recibirás el título de una oferta de trabajo y un CV completo de un candidato. 
                 Tu tarea es proporcionar una salida en formato JSON que contenga un listado de:
                 - experiencia: la experiencias laboral del candidato relacionadas con la oferta de trabajo.

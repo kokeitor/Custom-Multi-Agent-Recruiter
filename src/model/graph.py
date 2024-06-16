@@ -5,6 +5,7 @@ from langchain_core.runnables import RunnableLambda
 from langgraph.graph import StateGraph, END
 from typing import TypedDict, Annotated
 from langchain_core.messages import HumanMessage
+from .modes import ConfigGraph
 from .models import get_open_ai_json
 from .states import (
     State,
@@ -21,7 +22,7 @@ from .agents import (
 
 logger = logging.getLogger(__name__)
 
-def create_graph():
+def create_graph(config : ConfigGraph):
     
     graph = StateGraph(State)
     graph.add_node("analyzer",lambda state: analyzer_agent(state=state))

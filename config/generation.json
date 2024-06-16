@@ -1,4 +1,22 @@
 {
+  "agents":{
+            "analyzer": {
+                        "name":"OPENAI",
+                        "temperature":0
+                        },
+            "re_analyzer": {
+                          "name":"OPENAI",
+                          "temperature":0
+                          },
+            "cv_reviewer": {
+                          "name":"OPENAI",
+                          "temperature":0
+                          },
+            "offer_reviewer": {
+                            "name":"OPENAI",
+                            "temperature":0
+                            }
+      },
     "iteraciones": 30,
     "thread_id": "4",
     "verbose": 0

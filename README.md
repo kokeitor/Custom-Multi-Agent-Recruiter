@@ -1,7 +1,7 @@
 # **Custom Multi-Agent Recruiter with LangGraph**
 
 <p align="center">
-    <img src="data/images/langgraph.png" width="350" height="100" alt="Graph Image"/>
+    <img src="data/images/langgraph.png" width="350" alt="Graph Image"/>
 </p>
 <p align="center">
     <img src="data/images/openai.png" width="350"  height="85" alt="open ai Image"/>
@@ -72,7 +72,7 @@ For more low level technical details of the system's arquitecture, contact me at
         pip install -r requirements.txt
         ```
 
-    *WAIT for the installation to finish! :smiley:*
+    *WAIT for the installation to finish!* :smiley:
 
 6. **API token/key configuration**
    
