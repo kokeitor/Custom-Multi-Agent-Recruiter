@@ -1,6 +1,21 @@
 # **Custom Multi-Agent Recruiter with LangGraph**
 
-<img src="data/images/langgraph.png" width="350"/>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centered Image</title>
+</head>
+<body>
+    <table width="100%" height="100%">
+        <tr>
+            <td align="center" valign="middle">
+                <img src="data/images/langgraph.png" width="350" alt="Graph Image"/>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
 
 ## **Introduction and motivation**
 
