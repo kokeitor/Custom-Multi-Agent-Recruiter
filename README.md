@@ -4,7 +4,7 @@
     <img src="data/images/langgraph.png" width="350" alt="Graph Image"/>
 </p>
 <p align="center">
-    <img src="data/images/openai.png" width="350" alt="open ai Image"/>
+    <img src="data/images/openai.png" width="350"  height="100" alt="open ai Image"/>
 </p>
 
 ## **Introduction and motivation**
