@@ -6,7 +6,8 @@ from pydantic import ValidationError
 from .states import (
     State,
     Analisis,
-    Candidato
+    Candidato,
+    Agent
 )
 from .prompts import (
     analyze_cv_prompt,
@@ -21,13 +22,7 @@ from .models import (
     get_ollama,
     get_open_ai
 )
-from .chains import (
-    get_chain,
-    get_reviewer_cv_chain,
-    get_analyzer_chain,
-    get_re_analyzer_chain,
-    get_reviewer_offer_chain
-)
+from .chains import get_chain
 from .utils import get_current_spanish_date_iso
 
 
@@ -37,6 +32,8 @@ logger = logging.getLogger(__name__)
 
 def analyzer_agent(
                     state:State,
+                    analyzer : Agent,
+                    re_analyzer : Agent,
                     analyze_model : Callable = get_open_ai_json,
                     re_analyze_model : Callable = get_open_ai_json,
                     analyze_prompt : PromptTemplate = analyze_cv_prompt,
@@ -52,19 +49,19 @@ def analyzer_agent(
     # Comprobamos si es un re-analisis por alucionacion o un analisis inicial
     if state["alucinacion_oferta"] and (state["alucinacion_oferta"] == 1.0 or state["alucinacion_oferta"] == 1):
         #re_analyzer_chain = get_re_analyzer_chain()
-        re_analyzer_chain = get_chain(get_model = re_analyze_model,prompt_template = re_analyze_prompt)
+        re_analyzer_chain = get_chain(get_model = re_analyzer.model,prompt_template = re_analyzer.prompt, temperature = re_analyzer.temperature)
         raw_response = re_analyzer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta, "analisis_previo": state["analisis"][-1]})
         logger.warning(f"Re analizando el candidato : \n {candidato=}")
         logger.warning(f"Re analisis : \n {raw_response=}")
     elif  state["alucinacion_cv"] and (state["alucinacion_cv"] == 1.0 or state["alucinacion_cv"] == 1):
         #re_analyzer_chain = get_re_analyzer_chain()
-        re_analyzer_chain = get_chain(get_model = re_analyze_model, prompt_template = re_analyze_prompt)
+        re_analyzer_chain = get_chain(get_model = re_analyzer.model,prompt_template = re_analyzer.prompt, temperature = re_analyzer.temperature)
         raw_response = re_analyzer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta, "analisis_previo": state["analisis"][-1]})
         logger.warning(f"Re analizando el candidato por cv hallucination: \n {candidato=}")
         logger.warning(f"Re analisis : \n {raw_response=}")
     else:
         #analyzer_chain = get_analyzer_chain()
-        analyzer_chain = get_chain(get_model = analyze_model, prompt_template = analyze_prompt)
+        analyzer_chain = get_chain(get_model = analyzer.model, prompt_template = analyzer.prompt, temperature = analyzer.temperature)
         raw_response = analyzer_chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})
         logger.debug(f"Analisis normal: \n {raw_response=}")
 
@@ -91,12 +88,13 @@ def analyzer_agent(
 
 def reviewer_cv_agent(
                     state:State,
+                    agent : Agent,
                     model : Callable = get_open_ai_json,
                     prompt : PromptTemplate = cv_check_prompt,
                     get_chain : Callable = get_chain
                     ) -> State:
     
-    reviewer_chain = get_chain(get_model = model,prompt_template = prompt)
+    reviewer_chain = get_chain(get_model = agent.model,prompt_template = agent.prompt, temperature = agent.temperature)
 
     candidato = state["candidato"]
     analisis_previo = state["analisis"][-1]
@@ -127,6 +125,7 @@ def reviewer_cv_agent(
 
 def reviewer_offer_agent(
                         state:State, 
+                        agent : Agent,
                         model : Callable = get_open_ai_json,
                         prompt : PromptTemplate = offer_check_prompt,
                         get_chain : Callable = get_chain,
@@ -134,7 +133,7 @@ def reviewer_offer_agent(
     
     logger.info(f"Estado previo [Reviewer-Agent] : \n {state}")
     
-    reviewer_chain = get_chain(get_model = model,prompt_template = prompt)
+    reviewer_chain = get_chain(get_model = agent.model,prompt_template = agent.prompt, temperature = agent.temperature)
 
     candidato = state["candidato"]
     analisis_previo = state["analisis"][-1]

@@ -1,29 +1,16 @@
 import os
-import json
 import logging
 from termcolor import colored
 from dotenv import load_dotenv
-from langchain_community.embeddings import GPT4AllEmbeddings
-from langchain.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
-from dataclasses import dataclass
-from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar
-from langchain.chains.llm import LLMChain
-from pydantic import BaseModel, ValidationError
-from src.model.chains import get_analyzer_chain
 from src.model.graph import create_graph, compile_workflow
-from src.model.states import (
-    Analisis,
-    Candidato,
-    State
-)
+from src.model.modes import ConfigGraph, Pipeline
 from src.model.utils import (
                         get_current_spanish_date_iso, 
                         setup_logging,
                         get_id,
                         get_arg_parser
                         )
-from src.model.exceptions import NoOpenAIToken, JsonlFormatError
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -37,119 +24,6 @@ os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
 # Logging configuration
 logger = logging.getLogger(__name__)
 
-@dataclass()
-class CvAnalyzer:
-    chain: LLMChain
-    def invoke(self, candidato: Candidato) -> dict:
-        return self.chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})
-    
-@dataclass()
-class Pipeline:
-    data_path: Optional[str] = None
-    data: Optional[dict] = None
-    
-    def __post_init__(self):
-        if self.data is not None and self.data_path is not None:
-            logger.warning("Definidas dos configuraciones [archivo json y dict] -> da prioridad a dict config")
-        if self.data is None and self.data_path is not None:
-            self.data = self.get_data()
-            logger.info(f"Definida configuracion mediante archivo JSON en {self.data_path}")
-        if self.data is None and self.data_path is None:
-            logger.exception("No se ha proporcionado ninguna configuración para la generación usando Pipeline")
-            raise AttributeError("No se ha proporcionado ninguna configuración para la generación usando Pipeline")
-        
-        self.chain = get_analyzer_chain()  # Get objeto base chain para la tarea de análisis de CVs
-        if len(self.data) > 0:
-            self.candidatos = [self.get_candidato(cv=candidato.get("cv", None), oferta=candidato.get("oferta", None)) for candidato in self.data]
-        else:
-            logger.exception("No se han proporcionado candidatos en el archivo jsonl con el correcto fomato [ [cv : '...', oferta : '...'] , [...] ] ")
-            raise JsonlFormatError()
-    
-    def get_data(self) -> List[Dict[str,str]]:
-        if not os.path.exists(self.data_path):
-            logger.exception(f"Archivo de configuración no encontrado en {self.data_path}")
-            raise FileNotFoundError(f"Archivo de configuración no encontrado en {self.data_path}")
-        with open(file=self.data_path, mode='r', encoding='utf-8') as file:
-            logger.info(f"Leyendo candidatos en archivo : {self.data_path} : ")
-            try:
-                data = json.load(file)
-            except Exception as e:
-                logger.exception(f"Error decoding JSON : {e}")
-        return data
-            
-    def get_analyzer(self) -> CvAnalyzer:
-        return CvAnalyzer(chain=self.chain)
-    
-    def get_candidato(self, cv :str , oferta :str) -> Candidato:
-        return Candidato(id=get_id(), cv=cv, oferta=oferta)
-
-    def get_analisis(self) -> List[Analisis]:
-        """Run Pipeline -> Invoca langchain chain -> genera objeto Analisis con respuesta del modelo"""
-        analisis = []
-        for candidato in self.candidatos:
-            logger.info(f"Análisis del candidato : \n {candidato}")
-            raw_response = self.chain.invoke(input={"cv": candidato.cv, "oferta": candidato.oferta})  # Invoca a la chain que parsea la respuesta del modelo a python dict
-            logger.info(f"Análisis del modelo : \n {raw_response}")
-            # Manejo de una respuesta del modelo en un formato no correcto [no alineado con pydantic BaseModel]
-            try:
-                analisis.append(Analisis(**raw_response,fecha=get_current_spanish_date_iso(),id=candidato.id , status="OK")) # Instancia de Pydantic Analisis BaseModel object
-            except ValidationError as e:
-                logger.exception(f'{e} : Formato de respuesta del modelo incorrecta')
-                analisis.append(Analisis(puntuacion=0, experiencias=[{"error":"error"}],fecha=get_current_spanish_date_iso(),id=candidato.id, descripcion="", status="ERROR"))
-        return analisis
-        
-@dataclass()
-class ConfigGraph:
-    config_path: Optional[str] = None
-    data_path: Optional[str] = None
-    
-    def __post_init__(self):
-        if self.config_path is None:
-            logger.exception("No se ha proporcionado ninguna configuración para la generación usando Agents")
-            raise AttributeError("No se ha proporcionado ninguna configuración para la generación usando Agents")
-        if self.data_path is None:
-            logger.exception("No se han proporcionado datos para analizar para la generación usando Agents")
-            raise AttributeError("No se han proporcionado datos para analizar para la generación usando Agents")
-        if self.config_path is not None:
-            self.config = self.get_config()
-            logger.info(f"Definida configuracion mediante archivo JSONL en {self.config_path}")
-        if self.config_path is not None:
-            self.data = self.get_data()
-            logger.info(f"Definidos los datos mediante archivo JSONL en {self.data_path}")
-        
-        if len(self.data) > 0:
-            self.candidatos = [self.get_candidato(cv=candidato.get("cv", None), oferta=candidato.get("oferta", None)) for candidato in self.data]
-        else:
-            logger.exception("No se han proporcionado candidatos en el archivo jsonl con el correcto fomato [ [cv : '...', oferta : '...'] , [...] ] ")
-            raise JsonlFormatError()
-        self.iteraciones = self.config.get("iteraciones", len(self.candidatos))
-        self.thread_id = self.config.get("thread_id", "4")
-        self.verbose = self.config.get("verbose", 0)
-        
-    def get_config(self) -> dict:
-        if not os.path.exists(self.config_path):
-            logger.exception(f"Archivo de configuración no encontrado en {self.config_path}")
-            raise FileNotFoundError(f"Archivo de configuración no encontrado en {self.config_path}")
-        with open(self.config_path, encoding='utf-8') as file:
-            config = json.load(file)
-        return config
-    
-    def get_data(self) -> List[Dict[str,str]]:
-        if not os.path.exists(self.data_path):
-            logger.exception(f"Archivo de configuración no encontrado en {self.data_path}")
-            raise FileNotFoundError(f"Archivo de configuración no encontrado en {self.data_path}")
-        with open(file=self.data_path, mode='r', encoding='utf-8') as file:
-            logger.info(f"Leyendo candidatos en archivo : {self.data_path} : ")
-            try:
-                data = json.load(file)
-            except Exception as e:
-                logger.exception(f"Error decoding JSON : {e}")
-        return data
-    
-    def get_candidato(self, cv :str , oferta :str) -> Candidato:
-        return Candidato(id=get_id(), cv=cv, oferta=oferta)
-        
-        
 
 def main() -> None:
     # Logger set up
@@ -187,7 +61,7 @@ def main() -> None:
         config_graph = ConfigGraph(config_path=CONFIG_PATH, data_path=DATA_PATH)
         
         logger.info("Creating graph and compiling workflow...")
-        graph = create_graph()
+        graph = create_graph(config=config_graph)
         workflow = compile_workflow(graph)
         logger.info("Graph and workflow created")
         

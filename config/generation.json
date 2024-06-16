@@ -1,19 +1,19 @@
 {
   "agents":{
             "analyzer": {
-                        "name":"OPENAI",
+                        "name":"NVIDIA",
                         "temperature":0
                         },
             "re_analyzer": {
-                          "name":"OPENAI",
+                          "name":"NVIDIA",
                           "temperature":0
                           },
             "cv_reviewer": {
-                          "name":"OPENAI",
+                          "name":"NVIDIA",
                           "temperature":0
                           },
             "offer_reviewer": {
-                            "name":"OPENAI",
+                            "name":"NVIDIA",
                             "temperature":0
                             }
       },

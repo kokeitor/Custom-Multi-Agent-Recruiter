@@ -27,7 +27,8 @@ logger = logging.getLogger(__name__)
 
 def get_chain( 
                 prompt_template: str, 
-                get_model: callable = get_nvdia, 
+                get_model: callable = get_nvdia,
+                temperature : float = 0.0,
                 parser: JsonOutputParser = JsonOutputParser
               ) -> LLMChain:
     """Retorna la langchain chain"""
@@ -35,7 +36,7 @@ def get_chain(
       raise LangChainError()
     
     logger.info(f"Initializing LangChain using : {get_model.__name__}")
-    model = get_model()
+    model = get_model(temperature=temperature)
     chain = prompt_template | model | parser()
     
     return chain
