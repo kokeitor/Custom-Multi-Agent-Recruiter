@@ -82,7 +82,6 @@ For more low level technical details of the system's arquitecture, contact me at
    LANGCHAIN_API_KEY = "<your_langsmith_key>"
    NVIDIA_API_KEY = "<your_langsmith_key>"
    ```
-    *To get both, you should check these tutorials*
 
    [Fancy OpenAI Key tutorial](https://www.youtube.com/watch?v=aVog4J6nIAU)
 
