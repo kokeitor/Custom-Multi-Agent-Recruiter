@@ -1,5 +1,7 @@
 # **Custom Multi-Agent Recruiter with LangGraph**
 
+!(data/images/langgraph)
+
 ## **Introduction and motivation**
 
 I have designed a Multi-Agent Recruiter [graph-like] for processing and analyzing candidates' CVs for a specific job offer. The architecture is based on the LangGraph framework and currently uses the GPT model from OpenAI, specifically **'3.5 turbo'**. 
