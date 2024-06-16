@@ -1,6 +1,6 @@
 # **Custom Multi-Agent Recruiter with LangGraph**
 
-![langgraph](data/images/langgraph.png)
+<img src="data/images/langgraph.png" alt="drawing" width="200"/>
 
 ## **Introduction and motivation**
 
