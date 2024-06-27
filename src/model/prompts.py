@@ -1,6 +1,6 @@
 from langchain.prompts import PromptTemplate
 
-### OPRN AI FORMAT ###
+### OPEN AI FORMAT ###
 analyze_cv_prompt = PromptTemplate(
                 template="""Eres un modelo de IA diseñado para evaluar la idoneidad de un candidato para un puesto de trabajo específico asignando una puntuación. Recibirás el título de una oferta de trabajo y un CV completo de un candidato. 
                 Tu tarea es proporcionar una salida en formato JSON que contenga:\n
