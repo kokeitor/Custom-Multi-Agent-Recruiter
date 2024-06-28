@@ -41,9 +41,9 @@ def main() -> None:
     else:
         os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
     if not CONFIG_PATH:
-        CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config', 'generation.json') 
+        CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..','config', 'generation.json') 
     if not DATA_PATH:
-        DATA_PATH = os.path.join(os.path.dirname(__file__), 'config', 'data.json') 
+        DATA_PATH = os.path.join(os.path.dirname(__file__),  '..','config', 'data.json') 
     if not MODE:
         MODE = 'graph'
         

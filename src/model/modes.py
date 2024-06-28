@@ -5,6 +5,7 @@ from langchain.prompts import PromptTemplate
 from dataclasses import dataclass
 from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar
 from langchain.chains.llm import LLMChain
+from langchain_core.runnables.config import RunnableConfig
 from pydantic import BaseModel, ValidationError
 from .chains import get_chain
 from .prompts import (
@@ -236,6 +237,14 @@ class ConfigGraphApi:
         self.iteraciones = self.config.get("iteraciones", 10)
         self.thread_id = self.config.get("thread_id", "4")
         self.verbose = self.config.get("verbose", 0)
+        self.config_graph = RunnableConfig(
+            recursion_limit=self.iteraciones,
+            configurable={
+                "thread_id" : self.thread_id,
+                "verbose" : self.verbose,
+                
+            }
+        )
         
     def get_config(self) -> dict:
         if not os.path.exists(self.config_path):

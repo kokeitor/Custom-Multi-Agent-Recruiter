@@ -1,88 +1,112 @@
 import streamlit as st 
 import logging
 import time
-import os 
+from dotenv import load_dotenv
+import os
+from ..model import states
+from ..model import utils
+from ..model import modes
 
-IMGAGES_PATH = os.path.join('data','images')
+IMAGES_PATH = os.path.join('data','images')
 
-# Logging configuration
+# Logger initializer
 logger = logging.getLogger(__name__)
 
-# Streamlit app setup
-st.set_page_config(
-                      page_title="Reclutador personal Multi-Agente", 
-                      page_icon=":alien:", 
-                      layout="centered", 
-                      initial_sidebar_state="auto", 
-                      menu_items=None
-                      )
-st.title("Reclutador personal Multi-Agente")
-st.write("#")
-st.write("Bienvenido! Introduce una descripción de la oferta de trabajo y, a continuación, el CV del candidato a analizar")
-st.write("#")
 
-def get_response():
-    # Replace the below example code with your model's response generation logic
-    # Example: response = chatbot(user_input)
-    response = f"Pesimo candidatoo jajajajaa!"  # Placeholder example
-    return response
+def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None: 
 
-c1,c2= st.columns(2)
+    def get_response():
+        response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  
+        for word in response.split(" "):
+            yield word + " "
+            time.sleep(0.07)
+            
+    
+    def get_graph_response(
+            cv : str, 
+            offer :str,
+            chat_history : str, 
+            compiled_graph = compiled_graph,
+            config : modes.ConfigGraphApi = config
+                ):
+        
+        logger.info(f"Candidato a analizar [Recibido del front end]:  {cv} - {offer}")
 
-with c1:
-    st.image(os.path.join(IMGAGES_PATH,'logoapp.jpg'))
-             
-with c2:
-    st.header("Oferta y Candidato")
-    offer = st.text_input("Descripción de la oferta de trabajo : ")
-    cv = st.text_input("CV del candidato : ")
-    politica = st.checkbox("Acepto las condiciones de privacidad de la empresa y el manejo de los datos introducidos")
+        # Instancia clase Candidato
+        candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=offer)
+        
+        # Añade objeto candidato como valor de la clave "candidato" del state graph (dict) [input del grafo] 
+        graph_state_input = {"candidato": candidato}
+        logger.info(f"Candidato a analizar :  {candidato}")
+        
+        response = compiled_graph.invoke(
+                                            input=graph_state_input, 
+                                            config=config.config_graph,
+                                            stream_mode='values'
+                                            )
+        
+        """
+        for word in response.split(" "):
+            yield word + " "
+            time.sleep(0.07)
+        
+        
+        stream_iterator = config_graph.compile_graph.stream(inputs) # final_report -> report
+        for event in stream_iterator:
+            logger.info(f"event : {event}")
+
+        return stream_iterator
+        """
+        return response
     
-    enviar = st.button("Inicio del analisis")
-    st.write("##")
-    st.caption("©️ 2024 Multi-Agent Recruiter. Todos los derechos reservados")
     
-if enviar:
-    if not offer or not cv:
-        st.error("Oferta y/o CV no introducidos")
-    else:
-        if politica:
-            response = get_response()
-            st.success("Campos introducidos correctos")
-            with st.spinner("Analizando candidato ... "):
-                time.sleep(3)
-                st.text_area("Reclutador Multi-Agente :", value=response, height=200, max_chars=None)
-                #st.write(f"Reclutador Multi-Agente :{response}")
+    # Front-End 
+    # Streamlit app setup
+    st.set_page_config(
+                        page_title="Reclutador personal Multi-Agente", 
+                        page_icon=":alien:", 
+                        layout="centered",
+                        initial_sidebar_state="auto",
+                        menu_items={
+                                        'Get Help':  'https://www.linkedin.com/in/jorgeresinomartin/',
+                                        'Report a bug': "https://github.com/kokeitor",
+                                        'About':  "Reach me at : jresino143@gmail.com"
+                                    }         
+                            )
+
+
+    st.title("Reclutador personal Multi-Agente")
+    st.write("#")
+    st.write("Introduce una descripción de la oferta de trabajo y, a continuación, el CV del candidato a analizar")
+    st.write("#")
     
+    c1,c2 = st.columns(2)
+
+    with c1:
+        st.image(os.path.join(IMAGES_PATH,'logoapp.jpg'))
+                
+    with c2:
+        st.header("Oferta y Candidato")
+        offer = st.text_input("Descripción de la oferta de trabajo : ")
+        cv = st.text_input("CV del candidato : ")
+        politica = st.checkbox("Acepto las condiciones de privacidad de la empresa y el manejo de los datos introducidos")
+        
+        inicio_analisis = st.button("Inicio del analisis")
+        st.write("##")
+        st.caption("©️ 2024 Multi-Agent Recruiter. Todos los derechos reservados")
+        
+
+    if inicio_analisis:
+        if not offer or not cv:
+            st.error("Oferta y/o CV no introducidos")
         else:
-            st.error("Debes aceptar la politica de la empresa para continuar con el análisis")
+            if politica:
+                st.success("Campos introducidos correctos")
+                with st.spinner("Analizando candidato ... "):
+                    time.sleep(2)
+                    st.write(f"**¡Análisis completado!**")
+                    st.write("##")
+                st.write_stream(get_graph_response)
+            else:
+                st.error("Debes aceptar la politica de la empresa para continuar con el análisis")
     
-
-    
-
-""" 
-
-# Text input box for user to type their message
-user_input = st.text_input("You:", "")
-
-# If the user has typed a message
-if user_input:
-    # Get the chatbot's response
-    response = get_response(user_input)
-    
-    # Display the chatbot's response
-    st.text_area("Chatbot:", value=response, height=200, max_chars=None)
-
-# Optionally, you can keep a chat history
-if 'chat_history' not in st.session_state:
-    st.session_state['chat_history'] = []
-
-if user_input:
-    st.session_state['chat_history'].append({'You': user_input, 'Chatbot': response})
-
-if st.session_state['chat_history']:
-    for chat in st.session_state['chat_history']:
-        st.write(f"You: {chat['You']}")
-        st.write(f"Chatbot: {chat['Chatbot']}")
-
-"""
