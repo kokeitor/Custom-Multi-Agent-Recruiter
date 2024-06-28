@@ -6,7 +6,7 @@ from model.utils import (
                         )
 from app.chatbot import run_app
 from model.modes import ConfigGraphApi
-from model import graph as graph_module
+from model.graph import create_graph, compile_workflow
 
 # Logging configuration
 logger = logging.getLogger(__name__)
@@ -35,8 +35,8 @@ def main() -> None:
     agent_config = ConfigGraphApi(config_path=CONFIG_PATH)
 
     logger.info("Creating graph and compiling workflow...")
-    graph = graph_module.create_graph(config=agent_config)
-    compiled_graph = graph_module.compile_workflow(graph)
+    graph = create_graph(config=agent_config)
+    compiled_graph = compile_workflow(graph)
     logger.info("Graph and workflow created")
 
     # Run streamlit app

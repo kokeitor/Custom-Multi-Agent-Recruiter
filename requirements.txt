@@ -106,12 +106,13 @@ kiwisolver==1.4.5
 kubernetes==29.0.0
 langchain==0.1.16
 langchain-community==0.0.34
-langchain-core==0.1.45
+langchain-core==0.2.10
 langchain-nomic==0.0.2
+langchain-openai==0.1.11
 langchain-text-splitters==0.0.1
 langchainhub==0.1.15
 langgraph==0.0.38
-langsmith==0.1.49
+langsmith==0.1.82
 lazy_loader==0.3
 linkify-it-py==2.0.3
 loguru==0.7.2
@@ -141,7 +142,7 @@ notebook_shim==0.2.3
 numpy==1.26.4
 oauthlib==3.2.2
 onnxruntime==1.17.3
-openai==1.23.3
+openai==1.35.7
 opencv-python==4.9.0.80
 opentelemetry-api==1.24.0
 opentelemetry-exporter-otlp-proto-common==1.24.0
@@ -237,7 +238,7 @@ terminado==0.18.0
 textblob==0.17.1
 threadpoolctl==3.3.0
 tifffile==2024.2.12
-tiktoken==0.6.0
+tiktoken==0.7.0
 tinycss2==1.2.1
 tokenizers==0.19.1
 toml==0.10.2
