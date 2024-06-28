@@ -8,6 +8,7 @@ from app.chatbot import run_app
 from model.modes import ConfigGraphApi
 from model.graph import create_graph, compile_workflow
 
+
 # Logging configuration
 logger = logging.getLogger(__name__)
 

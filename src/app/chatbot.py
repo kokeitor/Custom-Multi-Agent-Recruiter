@@ -9,13 +9,14 @@ from model import utils
 from model import modes
 import pandas as pd
 
-IMAGES_PATH = os.path.join('..','data','images')
-
 # Logger initializer
 logger = logging.getLogger(__name__)
 
 
 def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None: 
+    
+    IMAGES_PATH = os.path.join('data','images')
+    logger.info(f"Image path : {IMAGES_PATH=}")
 
     def get_response():
         response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  
@@ -62,7 +63,7 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                         "Empresa" : empresas_experiencias,
                                         "Duración" : duraciones_experiencias,
                                         }
-                                ).reset_index(drop=True)
+                                )
         """
         for word in response.split(" "):
             yield word + " "
@@ -92,16 +93,15 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                     }         
                             )
 
-
+    st.logo(image=os.path.join(IMAGES_PATH,'logo.jpg'), link="https://github.com/kokeitor")
     st.title("Reclutador personal Multi-Agente")
-    st.write("#")
-    st.write("Introduce una descripción de la oferta de trabajo y, a continuación, el CV del candidato a analizar")
+    st.write("### Introduce una descripción de la oferta de trabajo y, a continuación, el CV del candidato a analizar")
     st.write("#")
     
     c1,c2 = st.columns(2)
 
     with c1:
-        st.image(os.path.join(IMAGES_PATH,'logoapp.jpg'))
+        st.image(image=os.path.join(IMAGES_PATH,'logo.jpg'))
                 
     with c2:
         st.header("Oferta y Candidato")
@@ -130,12 +130,33 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                 st.write("##")
                 st.write(experiencias)
                 """
-                
-                st.write(f"### Puntuación del candidato: **{puntuacion}**") 
-                st.write(f"### Descripción del análisis:")
-                st.write(f"{descripcion}")
-                st.write("### Detalles de las experiencias:")
-                st.write(experiencias)
+                with st.container():
+                    st.write(f"### Puntuación del candidato: **{puntuacion}**") 
+                    st.write(f"### Descripción del análisis:")
+                    st.write(f"{descripcion}")
+                    st.write("### Detalles de las experiencias:")
+                    st.dataframe(
+                                    experiencias,
+                                    column_config={
+                                        "Experiencia": st.column_config.TextColumn(
+                                            "Experiencia",
+                                            help="Experiencias detectadas en el CV del candidato"
+                                        ),
+                                        "Puesto": st.column_config.TextColumn(
+                                            "Puesto",
+                                            help="Puesto asociado a la experiencia detectada"
+                                        ),
+                                        "Empresa": st.column_config.TextColumn(
+                                            "Empresa",
+                                            help="Empresa asociada a la experiencia detectada"
+                                        ),
+                                        "Duración": st.column_config.TextColumn(
+                                            "Duración",
+                                            help="Duracion asociada a la experiencia detectada"
+                                        ),
+                                    },
+                                    hide_index=True,
+                                )
             else:
                 st.error("Debes aceptar la politica de la empresa para continuar con el análisis")
     
