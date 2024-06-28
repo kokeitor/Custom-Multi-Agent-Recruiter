@@ -20,7 +20,7 @@
                 "class": "logging.handlers.RotatingFileHandler",
                 "level": "INFO",
                 "formatter": "detailed",
-                "filename": ".\\logs\\analyzer.log",
+                "filename": "..\\logs\\analyzer.log",
                 "maxBytes": 100000,
                 "backupCount": 3,
                 "encoding": "utf-8"

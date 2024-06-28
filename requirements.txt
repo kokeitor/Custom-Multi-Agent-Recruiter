@@ -108,6 +108,7 @@ langchain==0.1.16
 langchain-community==0.0.34
 langchain-core==0.2.10
 langchain-nomic==0.0.2
+langchain-nvidia-ai-endpoints==0.1.2
 langchain-openai==0.1.11
 langchain-text-splitters==0.0.1
 langchainhub==0.1.15
@@ -234,6 +235,7 @@ streamlit==1.36.0
 sympy==1.12
 tavily-python==0.3.3
 tenacity==8.2.3
+termcolor==2.4.0
 terminado==0.18.0
 textblob==0.17.1
 threadpoolctl==3.3.0

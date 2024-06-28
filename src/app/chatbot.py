@@ -1,13 +1,15 @@
 import streamlit as st 
 import logging
 import time
+from typing import Union
 from dotenv import load_dotenv
 import os
 from model import states
 from model import utils
 from model import modes
+import pandas as pd
 
-IMAGES_PATH = os.path.join('data','images')
+IMAGES_PATH = os.path.join('..','data','images')
 
 # Logger initializer
 logger = logging.getLogger(__name__)
@@ -25,7 +27,7 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
     def get_graph_response(
             cv : str, 
             offer :str,
-            chat_history : str, 
+            chat_history : Union[str,None] = None, 
             compiled_graph = compiled_graph,
             config : modes.ConfigGraphApi = config
                 ):
@@ -45,6 +47,22 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                             stream_mode='values'
                                             )
         
+        puntuacion = str(response["analisis_final"].puntuacion)
+        nombres_experiencias = [exp["experiencia"] for exp in response["analisis_final"].experiencias]
+        puestos_experiencias = [exp["puesto"] for exp in response["analisis_final"].experiencias]
+        empresas_experiencias = [exp["empresa"] for exp in response["analisis_final"].experiencias]
+        duraciones_experiencias = [exp["duracion"] for exp in response["analisis_final"].experiencias]
+        descripcion = response["analisis_final"].descripcion
+        
+        # Pydabtic BaseModel 'Analisis' -> Dataframe to present results of the job experience
+        experiencias = pd.DataFrame(
+                                data = {
+                                        "Experiencia" : nombres_experiencias,
+                                        "Puesto" : puestos_experiencias,
+                                        "Empresa" : empresas_experiencias,
+                                        "Duración" : duraciones_experiencias,
+                                        }
+                                ).reset_index(drop=True)
         """
         for word in response.split(" "):
             yield word + " "
@@ -57,7 +75,7 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
 
         return stream_iterator
         """
-        return response
+        return puntuacion,descripcion,experiencias
     
     
     # Front-End 
@@ -103,10 +121,21 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
             if politica:
                 st.success("Campos introducidos correctos")
                 with st.spinner("Analizando candidato ... "):
-                    time.sleep(2)
-                    st.write(f"**¡Análisis completado!**")
-                    st.write("##")
-                st.write_stream(get_graph_response)
+                    # st.write_stream(get_graph_response)
+                    puntuacion,descripcion,experiencias = get_graph_response(cv=cv, offer=offer)
+                """ 
+                st.write(f"**¡Análisis completado!**")
+                st.write(f"**Puntuación del candidato** : {puntuacion}") 
+                st.write(f"**Descripción del análisis** : {descripcion}")
+                st.write("##")
+                st.write(experiencias)
+                """
+                
+                st.write(f"### Puntuación del candidato: **{puntuacion}**") 
+                st.write(f"### Descripción del análisis:")
+                st.write(f"{descripcion}")
+                st.write("### Detalles de las experiencias:")
+                st.write(experiencias)
             else:
                 st.error("Debes aceptar la politica de la empresa para continuar con el análisis")
     
