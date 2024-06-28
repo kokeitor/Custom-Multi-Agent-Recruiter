@@ -2,13 +2,13 @@ import os
 import logging
 from dotenv import load_dotenv
 
-from src.model.utils import (
+from model.utils import (
                         get_current_spanish_date_iso, 
                         setup_logging,
                         get_id,
                         get_arg_parser
                         )
-from src.backend.fast_api import run_fast_api
+from backend.fast_api import run_fast_api
 
 # Load environment variables from .env file
 load_dotenv()

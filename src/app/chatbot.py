@@ -3,9 +3,9 @@ import logging
 import time
 from dotenv import load_dotenv
 import os
-from ..model import states
-from ..model import utils
-from ..model import modes
+from model import states
+from model import utils
+from model import modes
 
 IMAGES_PATH = os.path.join('data','images')
 
