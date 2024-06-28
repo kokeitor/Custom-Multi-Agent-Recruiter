@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from model.utils import (
                         setup_logging,
                         )
-from streamlit.chatbot import run_app
+from app.chatbot import run_app
 from model.modes import ConfigGraphApi
 from model import graph as graph_module
 
