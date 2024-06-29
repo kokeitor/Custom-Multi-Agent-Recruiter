@@ -1,5 +1,5 @@
 # Usa la imagen oficial de Python 3.11.6 como base
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # Establece el directorio de trabajo en /app
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Instala las dependencias especificadas en requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Expone el puerto 8052 para Streamlit
 EXPOSE 8000

@@ -80,7 +80,7 @@ re_analyze_cv_prompt = PromptTemplate(
                 a. La puntuación debe ser baja.\n
                 b. La descripción debe ser desfavorable.\n
             4. En la lista de experiencias no puede aparecer una experiencia que no esté relacionada con la oferta de empleo.\n
-
+            No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> "experiencias" : [ ["experiencia": "no tiene","puesto": "", "empresa": "","duracion": ""] ]
             Como salida, debes proporcionar un JSON con la siguiente estructura:\n
             [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
             
@@ -161,10 +161,9 @@ re_analyze_cv_prompt_nvidia = PromptTemplate(
             1. La nueva puntuación corregida.
             2. Un listado corregido con las experiencias del candidato solo si están realmente relacionadas con la oferta propuesta, junto con la información de esa experiencia si se encuentra en el CV, como son: Puesto, Empresa y Duración.
             3. Una nueva descripción corregida de por qué el candidato obtuvo la puntuación dada.\n
-            
+            No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> "experiencias" : [ ["experiencia": "no tiene","puesto": "", "empresa": "","duracion": ""] ]\n
             Como salida, debes proporcionar un JSON con la siguiente estructura:\n
             [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
-            
             <|eot_id|><|start_header_id|>user<|end_header_id|>
             Título de la oferta de trabajo: {oferta}
             CV del candidato: {cv}
