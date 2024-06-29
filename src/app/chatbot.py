@@ -72,9 +72,10 @@ def run_app(config_graph_path : str) -> None:
             cv : str, 
             offer :str,
             chat_history : Union[str,None] = None, 
-            compiled_graph = compiled_graph,
-            config : modes.ConfigGraphApi = config
-                ):
+            compiled_graph : CompiledGraph = compiled_graph,
+            config : modes.ConfigGraphApi = agent_config
+                ) -> tuple[str,str,pd.DataFrame]:
+        """Get the response of the LangChain Runnable Compile Graph"""
         
         logger.info(f"Candidato a analizar [Recibido del front end]:  {cv} - {offer}")
 
@@ -102,7 +103,7 @@ def run_app(config_graph_path : str) -> None:
             puestos_experiencias = [exp["puesto"] for exp in response["analisis_final"].experiencias]
             empresas_experiencias = [exp["empresa"] for exp in response["analisis_final"].experiencias]
             duraciones_experiencias = [exp["duracion"] for exp in response["analisis_final"].experiencias]
-            descripcion = response["analisis_final"].descripcion
+            descripcion = str(response["analisis_final"].descripcion)
             
             # Pydantic BaseModel 'Analisis' -> Dataframe to present results of the job experience
             experiencias = pd.DataFrame(
