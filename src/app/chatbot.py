@@ -11,6 +11,7 @@ from model.exceptions import GraphResponseError
 from langgraph.graph.graph import CompiledGraph
 from databases.google_sheets import GoogleSheet
 import pandas as pd
+import json
 
 # Logger initializer
 logger = logging.getLogger(__name__)
@@ -35,7 +36,8 @@ def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph
             )
     
     # Google Sheet database object
-    BBDD = GoogleSheet(file_name=FILE_NAME, document=DOCUMENT_NAME, sheet_name=SHEET_NAME)
+    bbdd_credentials = st.secrets["google"]["google_secrets"]
+    BBDD = GoogleSheet(credentials=bbdd_credentials, document=DOCUMENT_NAME, sheet_name=SHEET_NAME)
 
     def get_response():
         response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  

@@ -18,8 +18,9 @@ class GoogleSheet:
     """
     COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     
-    def __init__(self, file_name : str , document : str , sheet_name :str):
-        self.gc = gspread.service_account(filename=file_name)
+    def __init__(self, credentials , document : str , sheet_name :str):
+        #self.gc = gspread.service_account(credentials) # from a json file 
+        self.gc = gspread.service_account_from_dict(credentials) # from a python dict
         self.sh = self.gc.open(document)
         self.sheet = self.sh.worksheet(sheet_name)
         
