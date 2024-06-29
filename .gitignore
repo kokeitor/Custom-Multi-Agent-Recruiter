@@ -1,6 +1,7 @@
 /cvenv
 /logs
 /main
+/src/__pychache__
 .secrets
 commands.txt
 notebook.ipynb
