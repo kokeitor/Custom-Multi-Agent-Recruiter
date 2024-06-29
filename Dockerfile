@@ -1,13 +1,6 @@
 # Usa la imagen oficial de Python 3.11.6 como base
 FROM python:3.11-slim
 
-# Instala Rust y Cargo
-RUN apt-get update && apt-get install -y \
-    curl \
-    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
-    && . ~/.cargo/env \
-    && rustup default stable
-
 # Establece el directorio de trabajo en /app
 WORKDIR /app
 
