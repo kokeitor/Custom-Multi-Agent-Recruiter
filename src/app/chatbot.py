@@ -9,13 +9,7 @@ from model import utils
 from model import modes
 from model.prompts import (
     analyze_cv_prompt,
-    offer_check_prompt,
-    re_analyze_cv_prompt,
-    cv_check_prompt,
     analyze_cv_prompt_nvidia,
-    offer_check_prompt_nvidia,
-    re_analyze_cv_prompt_nvidia,
-    cv_check_prompt_nvidia
     )
 from model.modes import ConfigGraphApi
 from model.graph import create_graph, compile_graph, get_png_graph
@@ -25,7 +19,6 @@ from model.models import (
     get_open_ai_json,
     get_open_ai
 )
-
 from model.exceptions import GraphResponseError
 from langgraph.graph.graph import CompiledGraph
 from databases.google_sheets import GoogleSheet
@@ -181,10 +174,9 @@ def run_app(config_graph_path : str) -> None:
             st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
-            graph_config.agents["analyzer"].model="OPENAI"
-            graph_config.agents["analyzer"].get_model=get_open_ai_json
-            graph_config.agents["analyzer"].temperature=0.0
-            graph_config.agents["analyzer"].prompt=analyze_cv_prompt
+            logger.warning(f"Previous Analyzer {graph_config.agents['analyzer']}")
+            graph_config.agents["analyzer"] = states.Agent(agent_name="analyzer", model="OPENAI", get_model=get_open_ai_json, temperature=0.0, prompt=analyze_cv_prompt)
+            logger.warning(f"After change Analyzer {graph_config.agents['analyzer']}")
             
             # Create StateGraph and Compile it
             logger.info("Creating graph and compiling workflow...")
@@ -198,11 +190,10 @@ def run_app(config_graph_path : str) -> None:
             st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
-            graph_config.agents["analyzer"].model="NVIDIA"
-            graph_config.agents["analyzer"].get_model=get_nvdia
-            graph_config.agents["analyzer"].temperature=0.0
-            graph_config.agents["analyzer"].prompt=analyze_cv_prompt_nvidia
-            
+            logger.warning(f"Previous Analyzer {graph_config.agents['analyzer']}")
+            graph_config.agents["analyzer"] = states.Agent(agent_name="analyzer", model="NVIDIA", get_model=get_nvdia, temperature=0.0, prompt=analyze_cv_prompt_nvidia)
+            logger.warning(f"After change Analyzer {graph_config.agents['analyzer']}")
+
             # Create StateGraph and Compile it
             logger.info("Creating graph and compiling workflow...")
             graph = create_graph(config=graph_config)

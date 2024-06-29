@@ -33,7 +33,8 @@ from model.models import (
     get_nvdia,
     get_ollama,
     get_open_ai_json,
-    get_open_ai
+    get_open_ai,
+    get_gemini_pro
 )
 
 
@@ -98,7 +99,8 @@ class ConfigGraph:
     MODEL : ClassVar = {
             "OPENAI": get_open_ai_json,
             "NVIDIA": get_nvdia,
-            "OLLAMA": get_ollama
+            "OLLAMA": get_ollama,
+            "GEMINI":get_gemini_pro
             }
 
     AGENTS: ClassVar = {
@@ -237,7 +239,7 @@ class ConfigGraphApi:
         self.iteraciones = self.config.get("iteraciones", 10)
         self.thread_id = self.config.get("thread_id", "4")
         self.verbose = self.config.get("verbose", 0)
-        self.config_graph = RunnableConfig(
+        self.runnable_config = RunnableConfig(
             recursion_limit=self.iteraciones,
             configurable={
                 "thread_id" : self.thread_id,
