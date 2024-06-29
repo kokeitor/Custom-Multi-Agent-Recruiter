@@ -28,8 +28,9 @@ cv_check_prompt = PromptTemplate(
                 template="""
                 Eres un modelo de IA diseñado para analizar y detectar que la información contenida en las experiencias de trabajo de un candidato se aparecen tambien en su cv.
                 Debes puntuar con un 1 si las experiencias de trabajo no aparecen en el cv del candidato.\n
-                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experiencia : 'no hay información suficiente'\n
+                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experiencia : 'no tiene'\n
                 Debes puntuar con un 0 si las experiencias de trabajo aparecen en el cv del candidato.\n
+                Debes puntuar con un 0 si no hay experiencias de trabajo.\n
                 El formato de salida debe ser en formato JSON con una unica clave "puntuacion"\n
                 Basate en la siguiente información proporcionada para dar esta puntuación de alucinación: \n
                 cv del candidato: \n\n{cv}\n\n
@@ -104,7 +105,7 @@ analyze_cv_prompt_nvidia = PromptTemplate(
                 3. Crear una descripción de por qué el candidato obtuvo la puntuación dada.\n
                 
                 Como salida, debes proporcionar un JSON con la siguiente estructura: [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
-                No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> experiencia : 'no hay información suficiente'\n
+                No debes inventarte nada, si no encuentras experiencias de trabajo asociadas a la oferta en el CV del candidato indica -> experiencia : 'no tiene'\n
                 No debes incluir en las experiencias de trabajo experiencias del candidato que no estén relacionadas con la oferta de empleo.\n
                 
                 <|eot_id|><|start_header_id|>user<|end_header_id|>
@@ -117,7 +118,7 @@ analyze_cv_prompt_nvidia = PromptTemplate(
 cv_check_prompt_nvidia = PromptTemplate(
                 template="""<|begin_of_text|><|start_header_id|>system<|end_header_id|>Eres un modelo de IA diseñado para analizar y detectar que la información contenida en las experiencias de trabajo de un candidato aparecen tambien en su cv.\n
                 Debes puntuar con un 1 si las experiencias de trabajo no aparecen en el cv del candidato.\n
-                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experienica : 'no hay información suficiente'\n
+                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experienica : 'no tiene'\n
                 Debes puntuar con un 0 si las experiencias de trabajo aparecen en el cv del candidato.\n
                 El formato de salida debe ser en formato JSON con una unica clave "puntuacion" \n
                 <|eot_id|><|start_header_id|>user<|end_header_id|>

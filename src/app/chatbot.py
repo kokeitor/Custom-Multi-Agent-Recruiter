@@ -218,10 +218,9 @@ def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph
                                     hide_index=True,
                                 )
                 if graph_image:
-                    st.write("##")
-                    display_graph = st.button("**Grafo Multi-Agente utilizado para el análisis:**")
-                    if display_graph:
-                        st.image(image=graph_image, use_column_width=True)
+                    with st.container():
+                        st.markdown("**Grafo Multi-Agente utilizado para el análisis:**")
+                        st.image(image=graph_image)
                         
             else:
                 st.error("Debes aceptar la politica de la empresa para continuar con el análisis")
