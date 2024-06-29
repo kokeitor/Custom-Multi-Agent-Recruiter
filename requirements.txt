@@ -61,10 +61,12 @@ fsspec==2024.2.0
 gitdb==4.0.11
 GitPython==3.1.43
 google-auth==2.29.0
+google-auth-oauthlib==1.2.0
 googleapis-common-protos==1.63.0
 graphviz==0.20.1
 greenlet==3.0.3
 grpcio==1.62.2
+gspread==6.1.2
 h11==0.14.0
 holoviews==1.18.2
 httpcore==1.0.5
@@ -112,7 +114,7 @@ langchain-nvidia-ai-endpoints==0.1.2
 langchain-openai==0.1.11
 langchain-text-splitters==0.0.1
 langchainhub==0.1.15
-langgraph==0.0.38
+langgraph==0.1.4
 langsmith==0.1.82
 lazy_loader==0.3
 linkify-it-py==2.0.3

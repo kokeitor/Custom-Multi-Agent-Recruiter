@@ -100,7 +100,7 @@ def reviewer_cv_agent(
     state: State,
     agent: Agent,
     get_chain: Callable = get_chain
-) -> State:
+) -> dict:
     reviewer_chain = get_chain(
         get_model=agent.get_model,
         prompt_template=agent.prompt,
@@ -139,7 +139,7 @@ def reviewer_offer_agent(
     state: State,
     agent: Agent,
     get_chain: Callable = get_chain
-) -> State:
+) -> dict:
     logger.info(f"Estado previo [Reviewer-Agent] : \n {state}")
     
     reviewer_chain = get_chain(
@@ -177,7 +177,7 @@ def reviewer_offer_agent(
     return {"alucinacion_oferta": alucinacion["alucinacion"]}
 
 
-def final_report(state: State) -> State:
+def final_report(state: State) -> dict:
     analisis_final = state["analisis"][-1]
     candidato = state["candidato"]
     

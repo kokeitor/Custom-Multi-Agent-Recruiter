@@ -57,7 +57,7 @@ def create_graph(config : ConfigGraph) -> StateGraph:
 
     # Add edges to the graph
     graph.set_entry_point("analyzer")
-    graph.set_finish_point("end_node")
+    graph.set_finish_point("report")
     graph.add_edge("analyzer", "reviewer_cv")
     graph.add_conditional_edges(
                                 source="reviewer_cv",
