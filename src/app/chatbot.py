@@ -65,6 +65,7 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                             stream_mode='values'
                                             )
         if response["analisis_final"]:
+            
             # Manejo de respuesta del langcahin graph para almacenar en BBDD ..
             
             # Manejo de los modelos, agentes, usados en graph para almacenar en BBDD ..
