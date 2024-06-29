@@ -45,3 +45,9 @@ def get_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument('--config_path', type=str, required=False, help='Ruta del archivo de configuracion [json format]')
     
     return parser
+
+
+def get_current_spanish_date_iso_file_name_format():
+    """Get the current date and time in the Europe/Madrid time zone"""
+    spanish_tz = pytz.timezone('Europe/Madrid')
+    return str(datetime.now(spanish_tz).strftime("%Y%m%d%H%M%S"))

@@ -5,15 +5,15 @@ from typing import List, Dict
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser,StrOutputParser
-from .exceptions import LangChainError
-from .prompts import (
+from model.exceptions import LangChainError
+from model.prompts import (
     analyze_cv_prompt,
     offer_check_prompt,
     re_analyze_cv_prompt,
     cv_check_prompt,
     analyze_cv_prompt_nvidia
     )
-from .models import (
+from model.models import (
     get_open_ai_json,
     get_nvdia,
     get_ollama,

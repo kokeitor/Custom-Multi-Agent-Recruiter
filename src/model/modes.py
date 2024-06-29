@@ -7,8 +7,8 @@ from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar
 from langchain.chains.llm import LLMChain
 from langchain_core.runnables.config import RunnableConfig
 from pydantic import BaseModel, ValidationError
-from .chains import get_chain
-from .prompts import (
+from model.chains import get_chain
+from model.prompts import (
     analyze_cv_prompt,
     offer_check_prompt,
     re_analyze_cv_prompt,
@@ -18,18 +18,18 @@ from .prompts import (
     re_analyze_cv_prompt_nvidia,
     cv_check_prompt_nvidia
     )
-from .states import (
+from model.states import (
     Analisis,
     Candidato,
     State,
     Agent
 )
-from .utils import (
+from model.utils import (
                         get_current_spanish_date_iso, 
                         get_id
                         )
-from .exceptions import NoOpenAIToken, JsonlFormatError
-from .models import (
+from model.exceptions import NoOpenAIToken, JsonlFormatError
+from model.models import (
     get_nvdia,
     get_ollama,
     get_open_ai_json,

@@ -2,9 +2,9 @@ import logging
 from termcolor import colored
 from typing import Callable
 from pydantic import ValidationError
-from states import State, Analisis, Agent
-from chains import get_chain
-from utils import get_current_spanish_date_iso, get_id
+from model.states import State, Analisis, Agent
+from model.chains import get_chain
+from model.utils import get_current_spanish_date_iso, get_id
 
 # Logging configuration
 logger = logging.getLogger(__name__)

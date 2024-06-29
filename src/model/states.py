@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 class Analisis(BaseModel):
     id : str
-    candidate_id : str
+    candidato_id : str
     fecha : str
     puntuacion: int
     experiencias: List[Dict[str,str]]

@@ -6,15 +6,15 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint import MemorySaver
 from langgraph.graph.graph import CompiledGraph
 from langchain_core.runnables.graph import MermaidDrawMethod
-from modes import ConfigGraph
-from states import State
-from agents import (
+from model.modes import ConfigGraph
+from model.states import State
+from model.agents import (
     analyzer_agent,
     reviewer_cv_agent,
     reviewer_offer_agent,
     final_report
     )
-from utils import get_current_spanish_date_iso_file_name_format
+from model.utils import get_current_spanish_date_iso_file_name_format
 
 
 logger = logging.getLogger(__name__)
