@@ -5,9 +5,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import logging
 import uvicorn
-from ..model import states, utils
-from ..model import graph as graph_module
-from ..model.modes import ConfigGraphApi
+from model import states, utils
+from model import graph as graph_module
+from model.modes import ConfigGraphApi
 
 
 # Logging configuration

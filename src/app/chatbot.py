@@ -1,6 +1,7 @@
 import streamlit as st 
 import logging
 import time
+from dotenv import load_dotenv
 from typing import Union
 import os
 from model import states
@@ -16,10 +17,15 @@ logger = logging.getLogger(__name__)
 
 def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None: 
     
+    load_dotenv()
+    
     # Locals paths
     IMAGES_PATH = os.path.join('data','images')
     FILE_NAME = os.path.join(".secrets","recruiter-427908-67769637005a.json")
+    DOCUMENT_NAME = "bbdd_recruiter"
+    SHEET_NAME = "analisis"
     logger.info(f"Image path : {IMAGES_PATH=}")
+    logger.info(f"Secrets BBDD path : {FILE_NAME=}")
     
     # Available models 
     MODELS = (
@@ -28,7 +34,7 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
             )
     
     # Google Sheet database object
-    BBDD = GoogleSheet(file_name=FILE_NAME, document=os.getenv("DOCUMENT_NAME"), sheet_name=os.getenv("SHEET_NAME"))
+    BBDD = GoogleSheet(file_name=FILE_NAME, document=DOCUMENT_NAME, sheet_name=SHEET_NAME)
 
     def get_response():
         response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  
@@ -78,7 +84,7 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
             
             # Insert into Google sheet BBDD
             BBDD.write_data(range=BBDD.get_last_row_range(), values=[GoogleSheet.get_analisis_record(analisis=response["analisis_final"])])
-            logger.info(f"Insertimg into BBDD -> {response["analisis_final"]}")
+            logger.info(f"Insertimg into BBDD -> {response['analisis_final']}")
         
             """
             for word in response.split(" "):
