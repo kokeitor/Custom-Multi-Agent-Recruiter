@@ -83,9 +83,11 @@ def analyzer_agent(
         )
         
     if state["alucinacion_oferta"] and (state["alucinacion_oferta"] == 1.0 or state["alucinacion_oferta"] == 1):
-        print(colored(f"\nRe Análisis del Agente-Analista 👩🏿‍💻\n\nOferta de Empleo : {candidato.oferta}\nNueva Puntuación del Candidato : {analisis.puntuacion}\nNuevas Experiencias extraídas : {analisis.experiencias}\nNueva Descripción : {analisis.descripcion}\nStatus análisis : {analisis.status}", 'light_blue'))
+        print(colored(f"\n{re_analyzer.agent_name=} 👩🏿‍💻 -> {re_analyzer.model=}",'light_blue'))
+        print(colored(f"Re Análisis del Agente-Analista 👩🏿‍💻\n\nOferta de Empleo : {candidato.oferta}\nNueva Puntuación del Candidato : {analisis.puntuacion}\nNuevas Experiencias extraídas : {analisis.experiencias}\nNueva Descripción : {analisis.descripcion}\nStatus análisis : {analisis.status}", 'light_blue'))
     else:
-        print(colored(f"\nAgente-Analista 👩🏿‍💻\n\nOferta de Empleo : {candidato.oferta}\nPuntuación del Candidato : {analisis.puntuacion}\nExperiencias : {analisis.experiencias}\nDescripción : {analisis.descripcion}\nStatus análisis : {analisis.status}", 'light_blue', attrs=["bold"]))
+        print(colored(f"\n{analyzer.agent_name=} 👩🏿‍💻 -> {analyzer.model=}",'light_blue',attrs=["bold"]))
+        print(colored(f"Agente-Analista 👩🏿‍💻\n\nOferta de Empleo : {candidato.oferta}\nPuntuación del Candidato : {analisis.puntuacion}\nExperiencias : {analisis.experiencias}\nDescripción : {analisis.descripcion}\nStatus análisis : {analisis.status}", 'light_blue', attrs=["bold"]))
     
     # Comprueba si es el primer análisis
     if state["analisis"]:
@@ -131,11 +133,14 @@ def reviewer_cv_agent(
     
     logger.info(f"Hallucination-CV-Agent response : \n {puntuacion}")
     if puntuacion == 1 or puntuacion == 1.0:
-        print(colored(f"\nAgente-Revisor-Cv 👩🏽\nAlucinación -> Si", 'light_red', attrs=["bold"]))
+        print(colored(f"\n{agent.agent_name=} 👩🏿 -> {agent.model=}",'light_red',attrs=["bold"]))
+        print(colored(f"Agente-Revisor-Cv 👩🏽\nAlucinación -> {puntuacion}", 'light_red', attrs=["bold"]))
     elif puntuacion == 0 or puntuacion == 0.0:
-        print(colored(f"\nAgente-Revisor-Cv 👩🏽\nAlucinación -> No", 'light_green', attrs=["bold"]))
+        print(colored(f"\n{agent.agent_name=} 👩🏿 -> {agent.model=}",'light_green',attrs=["bold"]))
+        print(colored(f"Agente-Revisor-Cv 👩🏽\nAlucinación -> {puntuacion}", 'light_green', attrs=["bold"]))
     else:
-        print(colored(f"\nAgente-Revisor-Cv 👩🏽\nAlucinación del Cv -> N/A", 'dark_grey', attrs=["bold"]))
+        print(colored(f"\n{agent.agent_name=} 👩🏿 -> {agent.model=}",'dark_grey',attrs=["bold"]))
+        print(colored(f"Agente-Revisor-Cv 👩🏽\nAlucinación del Cv -> {puntuacion}", 'dark_grey', attrs=["bold"]))
     
     logger.info(f"Estado tras Reviewer-Cv-Agent : \n {puntuacion}")
     
@@ -161,6 +166,7 @@ def reviewer_offer_agent(
     logger.debug(f"Revisión del candidato : \n {candidato}")
     logger.debug(f"Análisis previo : \n {analisis_previo}")
     
+    
     # Manejo de errores del parser del JSON output
     try:
         alucinacion = reviewer_chain.invoke(input={
@@ -179,11 +185,14 @@ def reviewer_offer_agent(
     
     logger.info(f"Hallucination-Offer-Agent response  : \n {puntuacion}")
     if puntuacion == 1 or puntuacion == 1.0:
-        print(colored(f"\nAgente-Revisor-Oferta 👩🏽‍⚖️\nAnálisis del Cv -> Incorrecto", 'light_red'))
+        print(colored(f"\n{agent.agent_name=} 👩🏽‍⚖️ -> {agent.model=}",'light_red'))
+        print(colored(f"Agente-Revisor-Oferta 👩🏽‍⚖️\nAnálisis del Cv -> Incorrecto -> {puntuacion}", 'light_red'))
     elif puntuacion == 0 or puntuacion == 0.0:
-        print(colored(f"\nAgente-Revisor-Oferta 👩🏽‍⚖️\nAnálisis del Cv -> Correcto", 'light_green'))
+        print(colored(f"\n{agent.agent_name=} 👩🏽‍⚖️ -> {agent.model=}",'light_green'))
+        print(colored(f"Agente-Revisor-Oferta 👩🏽‍⚖️\nAnálisis del Cv -> Correcto -> {puntuacion}", 'light_green'))
     else:
-        print(colored(f"\nAgente-Revisor-Oferta 👩🏽‍⚖️: \nAnálisis del Cv -> N/A", 'dark_grey'))
+        print(colored(f"\n{agent.agent_name=} 👩🏽‍⚖️ -> {agent.model=}",'dark_grey'))
+        print(colored(f"Agente-Revisor-Oferta 👩🏽‍⚖️: \nAnálisis del Cv -> N/A -> {puntuacion}", 'dark_grey'))
     
     logger.info(f"Estado tras Reviewer-Agent : \n {puntuacion}")
 

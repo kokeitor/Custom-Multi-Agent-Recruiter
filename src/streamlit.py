@@ -42,7 +42,7 @@ def main() -> None:
     logger.info("Graph and workflow created")
 
     # Run streamlit app
-    run_app(compiled_graph=compiled_graph, config=agent_config)
+    run_app(compiled_graph=compiled_graph, config=agent_config, graph_image=graph_png)
     
 if __name__ == '__main__':
     main()
