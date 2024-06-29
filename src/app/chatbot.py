@@ -16,7 +16,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, app_image : Union[bytes,None] = None) -> None: 
+def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph_image : Union[bytes,None] = None) -> None: 
     
     load_dotenv()
     
