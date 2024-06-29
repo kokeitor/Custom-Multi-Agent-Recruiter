@@ -1,5 +1,8 @@
 /cvenv
-/logs
+/logs/analyzer.log
+/logs/analyzer.log.1
+/logs/analyzer.log.2
+/logs/analyzer.log.3
 /main
 /src/__pychache__
 .secrets
