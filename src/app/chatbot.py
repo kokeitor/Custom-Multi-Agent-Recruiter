@@ -90,7 +90,11 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
             # Insert into Google sheet BBDD -> Analisis y Candidato
             BBDD.write_data(
                             range=BBDD.get_last_row_range(), 
-                            values=[GoogleSheet.get_record(analisis=response["analisis_final"], candidato=response["candidato"])]
+                            values=[GoogleSheet.get_record(
+                                                            analisis=response["analisis_final"], 
+                                                            candidato=response["candidato"]
+                                                            )
+                                    ]
                             )
             logger.info(f"Insertimg into BBDD -> {response['analisis_final']}")
         
