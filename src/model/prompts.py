@@ -11,7 +11,7 @@ analyze_cv_prompt = PromptTemplate(
                 Como salida, debes proporcionar un JSON con la siguiente estructura: [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
 
                 Debes ser preciso con la puntuación dada al candidato en función de su experiencia profesional y la relación real con la oferta de trabajo.\n
-                No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> experiencia : 'no tiene'\n
+                No debes inventarte nada, si no encuentras información suficiente en el CV del candidato indica -> "experiencias" : [ ["experiencia": "no tiene","puesto": "", "empresa": "","duracion": ""] ] \n
                 No debes incluir en las experiencias de trabajo experiencias del candidato que no estén relacionadas con la oferta de empleo.\n
                 Si el CV del candidato no está relacionado con la oferta de empleo y tampoco tiene experiencia previa relacionada con la oferta de trabajo:\n
                 a. La puntuación debe ser baja.\n
@@ -105,7 +105,7 @@ analyze_cv_prompt_nvidia = PromptTemplate(
                 3. Crear una descripción de por qué el candidato obtuvo la puntuación dada.\n
                 
                 Como salida, debes proporcionar un JSON con la siguiente estructura: [ "puntuacion": 0-100 , "experiencias" : [ ["experiencia": "","puesto": "", "empresa": "","duracion": ""] ], "descripcion": "" ]\n
-                No debes inventarte nada, si no encuentras experiencias de trabajo asociadas a la oferta en el CV del candidato indica -> experiencia : 'no tiene'\n
+                No debes inventarte nada, si no encuentras experiencias de trabajo asociadas a la oferta en el CV del candidato indica -> "experiencias" : [ ["experiencia": "no tiene","puesto": "", "empresa": "","duracion": ""] ]\n
                 No debes incluir en las experiencias de trabajo experiencias del candidato que no estén relacionadas con la oferta de empleo.\n
                 
                 <|eot_id|><|start_header_id|>user<|end_header_id|>
