@@ -7,6 +7,23 @@ import os
 from model import states
 from model import utils
 from model import modes
+from model.prompts import (
+    analyze_cv_prompt,
+    offer_check_prompt,
+    re_analyze_cv_prompt,
+    cv_check_prompt,
+    analyze_cv_prompt_nvidia,
+    offer_check_prompt_nvidia,
+    re_analyze_cv_prompt_nvidia,
+    cv_check_prompt_nvidia
+    )
+from model.models import (
+    get_nvdia,
+    get_ollama,
+    get_open_ai_json,
+    get_open_ai
+)
+
 from model.exceptions import GraphResponseError
 from langgraph.graph.graph import CompiledGraph
 from databases.google_sheets import GoogleSheet
@@ -32,7 +49,8 @@ def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph
     # Available models 
     MODELS = (
             "OpenAI-gpt-3.5-turbo", 
-            "Meta-llama3-70b-instruct"
+            "Meta-llama3-70b-instruct",
+            "Google-Gemini-Pro"
             )
     
     # Google Sheet database object
@@ -143,19 +161,31 @@ def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph
     sidebar = st.sidebar
     
     with sidebar:
-        # Sidebar for selecting LLM model -> future implementation
+        
+        # Sidebar for selecting LLM model -> in continuos updatings!
         option = st.selectbox(
             label=":green[**Modelo**]",
-            options =MODELS,
+            options=MODELS,
             help ="Modelo LLM para el análisis de arquitectura : Transformer-Decoder"
             )
         
         model_available = True
         if option is not None and str(option).startswith(MODELS[1].split("-")[0]):
             st.success(f"Modelo : {option} disponible")
+            # Change analyzer atributes (model, prompt, temperature)
+            compiled_graph.agents["analyzer"].model="OPENAI"
+            compiled_graph.agents["analyzer"].get_model=get_open_ai_json
+            compiled_graph.agents["analyzer"].temperature=0.0
+            compiled_graph.agents["analyzer"].prompt=analyze_cv_prompt
             model_available = True
         elif option is not None and str(option).startswith(MODELS[0].split("-")[0]):
-            model_available = False
+            model_available = True
+            st.success(f"Modelo : {option} disponible")
+            compiled_graph.agents["analyzer"].model="NVIDIA"
+            compiled_graph.agents["analyzer"].get_model=get_nvdia
+            compiled_graph.agents["analyzer"].temperature=0.0
+            compiled_graph.agents["analyzer"].prompt=analyze_cv_prompt_nvidia
+        elif option is not None and str(option).startswith(MODELS[2].split("-")[0]):
             st.error(f"Modelo : {option} no disponible ¡Comming soon!")
 
     with c1:

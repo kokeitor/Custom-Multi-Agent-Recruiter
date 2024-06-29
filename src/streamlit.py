@@ -24,7 +24,8 @@ def main() -> None:
     os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
     os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
     os.environ['NVIDIA_API_KEY'] = os.getenv('NVIDIA_API_KEY')
- 
+    os.environ['GOOGLE_API_KEY'] = os.getenv('GOOGLE_API_KEY')
+
     # Logger set up
     setup_logging()
     

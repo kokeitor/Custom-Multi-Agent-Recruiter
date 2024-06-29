@@ -1,6 +1,7 @@
 import gspread
 import pandas as pd
 import logging
+from typing import Union
 from model.states import Analisis, Candidato, State
 from model.utils import get_current_spanish_date_iso
 
@@ -18,7 +19,7 @@ class GoogleSheet:
     """
     COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     
-    def __init__(self, credentials , document : str , sheet_name :str):
+    def __init__(self, credentials : Union[str,dict] , document : str , sheet_name :str):
         #self.gc = gspread.service_account(credentials) # from a json file 
         self.gc = gspread.service_account_from_dict(credentials) # from a python dict
         self.sh = self.gc.open(document)

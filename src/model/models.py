@@ -2,6 +2,7 @@ import logging
 from langchain_openai import ChatOpenAI
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain_community.chat_models import ChatOllama
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 
 # Logging configuration
@@ -22,6 +23,7 @@ def get_open_ai(temperature=0, model='gpt-3.5-turbo'):
                     )
     return llm
 
+
 def get_open_ai_json(temperature=0, model='gpt-3.5-turbo'):
     """
     _summary_
@@ -37,6 +39,7 @@ def get_open_ai_json(temperature=0, model='gpt-3.5-turbo'):
                     )
     return llm
 
+
 def get_nvdia(temperature=0, model='meta/llama3-70b-instruct'):
     """
     Nvidia llama 3 model
@@ -51,6 +54,7 @@ def get_nvdia(temperature=0, model='meta/llama3-70b-instruct'):
                     )
     return llm
 
+
 def get_ollama(temperature=0, model='llama3'):
     """
     Ollama local model
@@ -64,4 +68,20 @@ def get_ollama(temperature=0, model='llama3'):
                     temperature = temperature,
                     format="json"
                     )
+    return llm
+
+
+def get_gemini_pro(model="gemini-pro"):
+    """google gemini pro model
+
+    Args:
+        temperature (int, optional): _description_. Defaults to 0.
+        model (str, optional): _description_. Defaults to "gemini-pro".
+
+    Returns:
+        _type_: _description_
+    """
+    llm = ChatGoogleGenerativeAI(
+                model=model
+                )
     return llm
