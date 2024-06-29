@@ -88,7 +88,7 @@ def run_app(config_graph_path : str) -> None:
         
         response = compiled_graph.invoke(
                                             input=graph_state_input, 
-                                            config=config.config_graph,
+                                            config=graph_config.runnable_config,
                                             stream_mode='values'
                                             )
         if response["analisis_final"]:
