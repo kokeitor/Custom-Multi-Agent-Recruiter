@@ -2,7 +2,7 @@ import os
 import logging
 from termcolor import colored
 from dotenv import load_dotenv
-from model.graph import create_graph, compile_workflow
+from model.graph import create_graph, compile_graph
 from model.modes import ConfigGraph, Pipeline
 from model.utils import (
                         setup_logging,
