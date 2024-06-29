@@ -17,6 +17,11 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
     
     IMAGES_PATH = os.path.join('data','images')
     logger.info(f"Image path : {IMAGES_PATH=}")
+    
+    MODELS = (
+            "OpenAI-gpt-3.5-turbo", 
+            "Meta-llama3-70b-instruct"
+            )
 
     def get_response():
         response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  
@@ -95,16 +100,29 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
 
     st.logo(image=os.path.join(IMAGES_PATH,'logo.jpg'), link="https://github.com/kokeitor")
     st.title("Reclutador personal Multi-Agente")
-    st.write("### Introduce una descripción de la oferta de trabajo y, a continuación, el CV del candidato a analizar")
+    st.write("### Introduce la oferta de trabajo y el CV del candidato a analizar")
     st.write("#")
     
     c1,c2 = st.columns(2)
+    sidebar = st.sidebar
+    
+    with sidebar:
+        # Sidebar for selecting LLM model -> future implementation
+        option = st.selectbox(
+            label=":green[**Model**]",
+            options =MODELS,
+            help ="LLM Transformer-Decoder Model to perform your candidate analysis"
+            )
+        
+        if option is not None and str(option).startswith(MODELS[1].split("-")[0]):
+            st.success(f"Model : {option} available")
+        elif option is not None and str(option).startswith(MODELS[0].split("-")[0]):
+            st.error(f"Model : {option} not available yet ¡Comming soon!")
 
     with c1:
         st.image(image=os.path.join(IMAGES_PATH,'logo.jpg'))
                 
     with c2:
-        st.header("Oferta y Candidato")
         offer = st.text_input("Descripción de la oferta de trabajo : ")
         cv = st.text_input("CV del candidato : ")
         politica = st.checkbox("Acepto las condiciones de privacidad de la empresa y el manejo de los datos introducidos")
@@ -119,7 +137,7 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
             st.error("Oferta y/o CV no introducidos")
         else:
             if politica:
-                st.success("Campos introducidos correctos")
+                st.success("Campos correctamente introducidos")
                 with st.spinner("Analizando candidato ... "):
                     # st.write_stream(get_graph_response)
                     puntuacion,descripcion,experiencias = get_graph_response(cv=cv, offer=offer)

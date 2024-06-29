@@ -1,9 +1,7 @@
 /cvenv
-/logs/analyzer.log
-/logs/analyzer.log1
-/logs/analyzer.log2
-/logs/analyzer.log3
+/logs
 /main
+.secrets
 commands.txt
 notebook.ipynb
 
