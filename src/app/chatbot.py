@@ -17,6 +17,8 @@ from model.prompts import (
     re_analyze_cv_prompt_nvidia,
     cv_check_prompt_nvidia
     )
+from model.modes import ConfigGraphApi
+from model.graph import create_graph, compile_graph, get_png_graph
 from model.models import (
     get_nvdia,
     get_ollama,
@@ -34,15 +36,15 @@ import json
 logger = logging.getLogger(__name__)
 
 
-def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph_image : Union[bytes,None] = None) -> None: 
+def run_app(config_graph_path : str) -> None: 
     
     load_dotenv()
     
     # Locals paths
     IMAGES_PATH = os.path.join('data','images')
-    FILE_NAME = os.path.join(".secrets","recruiter-427908-67769637005a.json")
-    DOCUMENT_NAME = "bbdd_recruiter"
-    SHEET_NAME = "analisis"
+    FILE_NAME = os.path.join(".secrets","recruiter-427908-67769637005a.json") # only for local performance
+    DOCUMENT_NAME = "bbdd_recruiter" # google sheet document name
+    SHEET_NAME = "analisis" # google sheet name
     logger.info(f"Image path : {IMAGES_PATH=}")
     logger.info(f"Secrets BBDD path : {FILE_NAME=}")
     
@@ -54,8 +56,11 @@ def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph
             )
     
     # Google Sheet database object
-    bbdd_credentials = st.secrets["google"]["google_secrets"]
+    bbdd_credentials = st.secrets["google"]["google_secrets"] # Google api credentials [drive and google sheets as bddd]
     BBDD = GoogleSheet(credentials=bbdd_credentials, document=DOCUMENT_NAME, sheet_name=SHEET_NAME)
+    
+    # Graph configuration
+    agent_config = ConfigGraphApi(config_path=config_graph_path)
 
     def get_response():
         response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  
@@ -170,21 +175,43 @@ def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph
             )
         
         model_available = True
+        graph_png = False
         if option is not None and str(option).startswith(MODELS[1].split("-")[0]):
             st.success(f"Modelo : {option} disponible")
-            # Change analyzer atributes (model, prompt, temperature)
-            compiled_graph.agents["analyzer"].model="OPENAI"
-            compiled_graph.agents["analyzer"].get_model=get_open_ai_json
-            compiled_graph.agents["analyzer"].temperature=0.0
-            compiled_graph.agents["analyzer"].prompt=analyze_cv_prompt
+            
+            # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
+            agent_config.agents["analyzer"].model="OPENAI"
+            agent_config.agents["analyzer"].get_model=get_open_ai_json
+            agent_config.agents["analyzer"].temperature=0.0
+            agent_config.agents["analyzer"].prompt=analyze_cv_prompt
+            
+            # Create StateGraph and Compile it
+            logger.info("Creating graph and compiling workflow...")
+            graph = create_graph(config=agent_config)
+            compiled_graph = compile_graph(graph)
+            graph_png = get_png_graph(compiled_graph)
+            logger.info("Graph and workflow created")
             model_available = True
+            
         elif option is not None and str(option).startswith(MODELS[0].split("-")[0]):
-            model_available = True
             st.success(f"Modelo : {option} disponible")
-            compiled_graph.agents["analyzer"].model="NVIDIA"
-            compiled_graph.agents["analyzer"].get_model=get_nvdia
-            compiled_graph.agents["analyzer"].temperature=0.0
-            compiled_graph.agents["analyzer"].prompt=analyze_cv_prompt_nvidia
+            
+            # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
+            agent_config.agents["analyzer"].model="NVIDIA"
+            agent_config.agents["analyzer"].get_model=get_nvdia
+            agent_config.agents["analyzer"].temperature=0.0
+            agent_config.agents["analyzer"].prompt=analyze_cv_prompt_nvidia
+            
+            # Create StateGraph and Compile it
+            logger.info("Creating graph and compiling workflow...")
+            graph = create_graph(config=agent_config)
+            compiled_graph = compile_graph(graph)
+            graph_png = get_png_graph(compiled_graph)
+            logger.info("Graph and workflow created")
+            model_available = True
+            
+            
+            
         elif option is not None and str(option).startswith(MODELS[2].split("-")[0]):
             st.error(f"Modelo : {option} no disponible ¡Comming soon!")
 
@@ -249,10 +276,10 @@ def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, graph
                                     },
                                     hide_index=True,
                                 )
-                if graph_image:
+                if graph_png:
                     with st.container():
                         st.markdown("**Grafo Multi-Agente utilizado para el análisis:**")
-                        st.image(image=graph_image)
+                        st.image(image=graph_png)
                         
             else:
                 st.error("Debes aceptar la politica de la empresa para continuar con el análisis")

@@ -34,16 +34,8 @@ def main() -> None:
     CONFIG_PATH = os.path.join(os.path.dirname(__file__),'..', 'config', 'generation.json')
     logger.info(f"{CONFIG_PATH=}")
     
-    agent_config = ConfigGraphApi(config_path=CONFIG_PATH)
-
-    logger.info("Creating graph and compiling workflow...")
-    graph = create_graph(config=agent_config)
-    compiled_graph = compile_workflow(graph)
-    graph_png = get_png_graph(compiled_graph)
-    logger.info("Graph and workflow created")
-
     # Run streamlit app
-    run_app(compiled_graph=compiled_graph, config=agent_config, graph_image=graph_png)
+    run_app(config_graph_path=CONFIG_PATH)
     
 if __name__ == '__main__':
     main()
