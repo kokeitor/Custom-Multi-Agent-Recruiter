@@ -1,7 +1,7 @@
 import gspread
 import pandas as pd
 import logging
-from model.states import Analisis
+from model.states import Analisis, Candidato, State
 from model.utils import get_current_spanish_date_iso
 
 
@@ -24,10 +24,13 @@ class GoogleSheet:
         self.sheet = self.sh.worksheet(sheet_name)
         
     @staticmethod
-    def get_analisis_record(analisis : Analisis) -> list:
+    def get_record(analisis : Analisis, candidato : Candidato) -> list:
         return [
                 analisis.id, 
+                candidato.id, 
                 analisis.fecha, 
+                candidato.oferta,
+                candidato.cv,
                 analisis.puntuacion,
                 analisis.descripcion,
                 ' # '.join([exp["experiencia"] for exp in analisis.experiencias]),

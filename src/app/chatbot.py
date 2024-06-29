@@ -65,6 +65,11 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                             stream_mode='values'
                                             )
         if response["analisis_final"]:
+            # Manejo de respuesta del langcahin graph para almacenar en BBDD ..
+            
+            # Manejo de los modelos, agentes, usados en graph para almacenar en BBDD ..
+            
+            # Manejo del analisis final del modelo -> presentacion en front end y guardar en BBDD analisis
             puntuacion = str(response["analisis_final"].puntuacion)
             nombres_experiencias = [exp["experiencia"] for exp in response["analisis_final"].experiencias]
             puestos_experiencias = [exp["puesto"] for exp in response["analisis_final"].experiencias]
@@ -82,8 +87,11 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                             }
                                     )
             
-            # Insert into Google sheet BBDD
-            BBDD.write_data(range=BBDD.get_last_row_range(), values=[GoogleSheet.get_analisis_record(analisis=response["analisis_final"])])
+            # Insert into Google sheet BBDD -> Analisis y Candidato
+            BBDD.write_data(
+                            range=BBDD.get_last_row_range(), 
+                            values=[GoogleSheet.get_record(analisis=response["analisis_final"], candidato=response["candidato"])]
+                            )
             logger.info(f"Insertimg into BBDD -> {response['analisis_final']}")
         
             """
@@ -129,28 +137,36 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
     with sidebar:
         # Sidebar for selecting LLM model -> future implementation
         option = st.selectbox(
-            label=":green[**Model**]",
+            label=":green[**Modelo**]",
             options =MODELS,
-            help ="LLM Transformer-Decoder Model to perform your candidate analysis"
+            help ="Modelo LLM para el análisis de arquitectura : Transformer-Decoder"
             )
         
+        model_available = True
         if option is not None and str(option).startswith(MODELS[1].split("-")[0]):
-            st.success(f"Model : {option} available")
+            st.success(f"Modelo : {option} disponible")
+            model_available = True
         elif option is not None and str(option).startswith(MODELS[0].split("-")[0]):
-            st.error(f"Model : {option} not available yet ¡Comming soon!")
+            model_available = False
+            st.error(f"Modelo : {option} no disponible ¡Comming soon!")
 
     with c1:
         st.image(image=os.path.join(IMAGES_PATH,'logo.jpg'))
                 
     with c2:
+
         offer = st.text_input("Descripción de la oferta de trabajo : ")
         cv = st.text_input("CV del candidato : ")
         politica = st.checkbox("Acepto las condiciones de privacidad de la empresa y el manejo de los datos introducidos")
         
-        inicio_analisis = st.button("Inicio del analisis")
+        if model_available:
+            inicio_analisis = st.button("Inicio del análisis")
+        else:
+            st.error("Elige un modelo LLM disponible")
+            inicio_analisis = False
         st.write("##")
         st.caption("©️ 2024 Multi-Agent Recruiter. Todos los derechos reservados")
-        
+            
 
     if inicio_analisis:
         if not offer or not cv:
