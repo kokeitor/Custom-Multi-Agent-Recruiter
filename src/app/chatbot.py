@@ -2,7 +2,6 @@ import streamlit as st
 import logging
 import time
 from typing import Union
-from dotenv import load_dotenv
 import os
 from model import states
 from model import utils
