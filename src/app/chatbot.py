@@ -6,6 +6,8 @@ import os
 from model import states
 from model import utils
 from model import modes
+from model.exceptions import GraphResponseError
+from databases.google_sheets import GoogleSheet
 import pandas as pd
 
 # Logger initializer
@@ -14,20 +16,25 @@ logger = logging.getLogger(__name__)
 
 def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None: 
     
+    # Locals paths
     IMAGES_PATH = os.path.join('data','images')
+    FILE_NAME = os.path.join(".secrets","recruiter-427908-67769637005a.json")
     logger.info(f"Image path : {IMAGES_PATH=}")
     
+    # Available models 
     MODELS = (
             "OpenAI-gpt-3.5-turbo", 
             "Meta-llama3-70b-instruct"
             )
+    
+    # Google Sheet database object
+    BBDD = GoogleSheet(file_name=FILE_NAME, document=os.getenv("DOCUMENT_NAME"), sheet_name=os.getenv("SHEET_NAME"))
 
     def get_response():
         response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  
         for word in response.split(" "):
             yield word + " "
             time.sleep(0.07)
-            
     
     def get_graph_response(
             cv : str, 
@@ -51,36 +58,44 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                             config=config.config_graph,
                                             stream_mode='values'
                                             )
+        if response["analisis_final"]:
+            puntuacion = str(response["analisis_final"].puntuacion)
+            nombres_experiencias = [exp["experiencia"] for exp in response["analisis_final"].experiencias]
+            puestos_experiencias = [exp["puesto"] for exp in response["analisis_final"].experiencias]
+            empresas_experiencias = [exp["empresa"] for exp in response["analisis_final"].experiencias]
+            duraciones_experiencias = [exp["duracion"] for exp in response["analisis_final"].experiencias]
+            descripcion = response["analisis_final"].descripcion
+            
+            # Pydantic BaseModel 'Analisis' -> Dataframe to present results of the job experience
+            experiencias = pd.DataFrame(
+                                    data = {
+                                            "Experiencia" : nombres_experiencias,
+                                            "Puesto" : puestos_experiencias,
+                                            "Empresa" : empresas_experiencias,
+                                            "Duración" : duraciones_experiencias,
+                                            }
+                                    )
+            
+            # Insert into Google sheet BBDD
+            BBDD.write_data(range=BBDD.get_last_row_range(), values=[GoogleSheet.get_analisis_record(analisis=response["analisis_final"])])
+            logger.info(f"Insertimg into BBDD -> {response["analisis_final"]}")
         
-        puntuacion = str(response["analisis_final"].puntuacion)
-        nombres_experiencias = [exp["experiencia"] for exp in response["analisis_final"].experiencias]
-        puestos_experiencias = [exp["puesto"] for exp in response["analisis_final"].experiencias]
-        empresas_experiencias = [exp["empresa"] for exp in response["analisis_final"].experiencias]
-        duraciones_experiencias = [exp["duracion"] for exp in response["analisis_final"].experiencias]
-        descripcion = response["analisis_final"].descripcion
-        
-        # Pydabtic BaseModel 'Analisis' -> Dataframe to present results of the job experience
-        experiencias = pd.DataFrame(
-                                data = {
-                                        "Experiencia" : nombres_experiencias,
-                                        "Puesto" : puestos_experiencias,
-                                        "Empresa" : empresas_experiencias,
-                                        "Duración" : duraciones_experiencias,
-                                        }
-                                )
-        """
-        for word in response.split(" "):
-            yield word + " "
-            time.sleep(0.07)
-        
-        
-        stream_iterator = config_graph.compile_graph.stream(inputs) # final_report -> report
-        for event in stream_iterator:
-            logger.info(f"event : {event}")
+            """
+            for word in response.split(" "):
+                yield word + " "
+                time.sleep(0.07)
+            
+            
+            stream_iterator = config_graph.compile_graph.stream(inputs) # final_report -> report
+            for event in stream_iterator:
+                logger.info(f"event : {event}")
 
-        return stream_iterator
-        """
-        return puntuacion,descripcion,experiencias
+            return stream_iterator
+            """
+            return puntuacion,descripcion,experiencias
+        
+        else:
+            raise GraphResponseError()
     
     
     # Front-End 

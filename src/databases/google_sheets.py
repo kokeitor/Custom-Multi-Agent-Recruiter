@@ -1,6 +1,7 @@
 import gspread
 import pandas as pd
 import logging
+from model.states import Analisis
 from model.utils import get_current_spanish_date_iso
 
 
@@ -9,11 +10,32 @@ logger = logging.getLogger(__name__)
 
 
 class GoogleSheet:
+    """
+    Google sheet used as a BBDD schema:
+    - BBDD fields or columns must start at A1 cell
+    - Always include a last field 'tst_insertion' inside the sheet, that is automatically fill inside this class at
+        the time of insert a record
+    """
     COLUMNS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    
     def __init__(self, file_name : str , document : str , sheet_name :str):
         self.gc = gspread.service_account(filename=file_name)
         self.sh = self.gc.open(document)
         self.sheet = self.sh.worksheet(sheet_name)
+        
+    @staticmethod
+    def get_analisis_record(analisis : Analisis) -> list:
+        return [
+                analisis.id, 
+                analisis.fecha, 
+                analisis.puntuacion,
+                analisis.descripcion,
+                ' # '.join([exp["experiencia"] for exp in analisis.experiencias]),
+                ' # '.join([exp["puesto"] for exp in analisis.experiencias]),
+                ' # '.join([exp["empresa"] for exp in analisis.experiencias]),
+                ' # '.join([exp["duracion"] for exp in analisis.experiencias]),
+                analisis.status
+                ]
 
     def read_data(self, range): #range = "A1:E1". Data devolvera un array de la fila 1 desde la columna A hasta la E
         data = self.sheet.get(range)
@@ -30,19 +52,29 @@ class GoogleSheet:
         tst_insertion = get_current_spanish_date_iso()
         total_fields = self.get_total_fields()
         validated_values = self.validate_records(values=values)
+        inserted_values = []
         for record in validated_values:
             for field_index , _ in enumerate(record):
-                if field_index + 1 == total_fields:
+                if field_index + 1 == total_fields - 1:
                         record.append(tst_insertion)
-        print(validated_values)
-        self.sheet.update(range, validated_values)
+            inserted_values.append(record)
+        self.sheet.update(range, inserted_values)
+        
 
     def write_data_by_uid(self, uid, values): 
         # Find the row index based on the UID
         cell = self.sheet.find(uid)
         row_index = cell.row
+        logger.info(f"write_data_by_uid row to update : {row_index}")
+        logger.info(f"write_data_by_uid cell to update : {cell}")
+        
         # Update the row with the specified values
-        self.sheet.update(f"A{row_index}:E{row_index}", values)
+        first_column = GoogleSheet.COLUMNS[0]
+        last_column = GoogleSheet.COLUMNS[self.get_total_fields()-1]
+        range_2_update = f"{first_column}{row_index}:{last_column}{row_index}"
+        logger.info(f"write_data_by_uid -> range_2_update : {range_2_update}")
+        
+        self.sheet.update(range_2_update, values)
 
     def get_last_row_range(self):   
         last_row = len(self.sheet.get_all_values()) + 1
@@ -65,12 +97,13 @@ class GoogleSheet:
         return len(self.sheet.get_all_values())
     
     def validate_records(self,  values: list[list]) -> list[list]:
+        """Add "" as field values to complete the number of total BBDD fields"""
         total_fields = self.get_total_fields()
         if isinstance(values,list):
             for record in values:
                 if isinstance(record,list):
                     if len(record) < total_fields:
-                        extension_length = total_fields - len(record)
+                        extension_length = total_fields - len(record) - 1 # deja hueco para el tsts_insertion
                         record.extend([""] * extension_length)
                     elif len(record) < total_fields:
                         logger.warning("Warning: The current record fields are greater than the actual BBDD fields.")
