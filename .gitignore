@@ -5,6 +5,7 @@
 /logs/analyzer.log.3
 /main
 /src/__pychache__
+_pychache__
 .secrets
 .streamlit
 commands.txt
