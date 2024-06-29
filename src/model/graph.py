@@ -37,9 +37,11 @@ def create_graph(config : ConfigGraph) -> StateGraph:
     def route_offer_review(state: State):
         alucinacion = state["alucinacion_oferta"]
         
-        if alucinacion == 1 or alucinacion == 1.0:
+        if alucinacion == 1 or alucinacion == 1.0 or str(alucinacion) == '1':
             next_agent = "analyzer"
-        else:
+        elif alucinacion == 'output_error_reviewer_offer_agent':
+            next_agent = "analyzer"
+        else: # Supone respuesta correcta de 0 -> mejorar esto
             next_agent = "report"
             
         return next_agent
@@ -48,9 +50,11 @@ def create_graph(config : ConfigGraph) -> StateGraph:
     def route_cv_review(state: State):
         alucinacion_cv = state["alucinacion_cv"]
         
-        if alucinacion_cv == 1 or alucinacion_cv == 1.0:
+        if alucinacion_cv == 1 or alucinacion_cv == 1.0 or str(alucinacion_cv) == '1':
             next_agent = "analyzer"
-        else:
+        elif alucinacion_cv == 'output_error_reviewer_cv_agent':
+            next_agent = "analyzer"
+        else: # Supone respuesta correcta de 0 -> mejorar esto
             next_agent = "reviewer_offer"
             
         return next_agent
@@ -75,7 +79,6 @@ def create_graph(config : ConfigGraph) -> StateGraph:
                                     "report":"report",
                                 }
                                 )
-    graph.add_edge("report",END)
 
     return graph
 

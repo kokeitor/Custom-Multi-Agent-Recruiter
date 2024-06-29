@@ -2,6 +2,7 @@ import logging
 from termcolor import colored
 from typing import Callable
 from pydantic import ValidationError
+from langchain_core.exceptions import OutputParserException
 from model.states import State, Analisis, Agent
 from model.chains import get_chain
 from model.utils import get_current_spanish_date_iso, get_id
@@ -113,26 +114,32 @@ def reviewer_cv_agent(
     logger.debug(f"Revisión del candidato : \n {candidato}")
     logger.debug(f"Análisis previo : \n {analisis_previo}")
     
-    alucinacion_cv = reviewer_chain.invoke(input={
-        "cv": candidato.cv,
-        "experiencias": analisis_previo.experiencias
-    })
+    # Manejo de errores del parser del JSON output
+    try:
+        alucinacion_cv = reviewer_chain.invoke(input={
+            "cv": candidato.cv,
+            "experiencias": analisis_previo.experiencias
+        })
+        puntuacion = alucinacion_cv["puntuacion"]
+    except OutputParserException as e:
+        logger.exception(f"OutputParserException in reviewer_cv_agent -> {e}")
+        puntuacion = "output_error_reviewer_cv_agent"
     
     # Manejo de una respuesta del modelo en un formato no correcto [no alineado con tipo Union[int,float] de clave "alucinacion"]
-    if not isinstance(alucinacion_cv["puntuacion"], (int, float)):
-        raise ValueError(f"El Hallucination-Agent está devolviendo una alucinación : {alucinacion_cv} no alineada con tipo de dato Union[int,float]")
+    if not isinstance(puntuacion, (int, float,str)):
+        raise ValueError(f"El Hallucination-Agent está devolviendo una alucinación : {puntuacion} no alineada con tipo de dato Union[int,float]")
     
-    logger.info(f"Hallucination-CV-Agent response : \n {alucinacion_cv}")
-    if alucinacion_cv["puntuacion"] == 1 or alucinacion_cv["puntuacion"] == 1.0:
+    logger.info(f"Hallucination-CV-Agent response : \n {puntuacion}")
+    if puntuacion == 1 or puntuacion == 1.0:
         print(colored(f"\nAgente-Revisor-Cv 👩🏽\nAlucinación -> Si", 'light_red', attrs=["bold"]))
-    elif alucinacion_cv["puntuacion"] == 0 or alucinacion_cv["puntuacion"] == 0.0:
+    elif puntuacion == 0 or puntuacion == 0.0:
         print(colored(f"\nAgente-Revisor-Cv 👩🏽\nAlucinación -> No", 'light_green', attrs=["bold"]))
     else:
         print(colored(f"\nAgente-Revisor-Cv 👩🏽\nAlucinación del Cv -> N/A", 'dark_grey', attrs=["bold"]))
     
-    logger.info(f"Estado tras Reviewer-Cv-Agent : \n {alucinacion_cv['puntuacion']}")
+    logger.info(f"Estado tras Reviewer-Cv-Agent : \n {puntuacion}")
     
-    return {"alucinacion_cv": alucinacion_cv["puntuacion"]}
+    return {"alucinacion_cv": puntuacion}
 
 
 def reviewer_offer_agent(
@@ -154,27 +161,33 @@ def reviewer_offer_agent(
     logger.debug(f"Revisión del candidato : \n {candidato}")
     logger.debug(f"Análisis previo : \n {analisis_previo}")
     
-    alucinacion = reviewer_chain.invoke(input={
+    # Manejo de errores del parser del JSON output
+    try:
+        alucinacion = reviewer_chain.invoke(input={
         "cv": candidato.cv,
         "oferta": candidato.oferta,
         "analisis": analisis_previo
-    })
+        })
+        puntuacion = alucinacion["alucinacion"]
+    except OutputParserException as e:
+        logger.exception(f"OutputParserException in reviewer_offer_agent -> {e}")
+        puntuacion = "output_error_reviewer_offer_agent"
     
     # Manejo de una respuesta del modelo en un formato no correcto [no alineado con tipo Union[int,float] de clave "alucinacion"]
-    if not isinstance(alucinacion["alucinacion"], (int, float)):
-        raise ValueError(f"El Reviewer-Agent está devolviendo una alucinación : {alucinacion} no alineada con tipo de dato Union[int,float]")
+    if not isinstance(puntuacion, (int, float,str)):
+        raise ValueError(f"El Reviewer-Agent está devolviendo una alucinación : {puntuacion} no alineada con tipo de dato Union[int,float]")
     
-    logger.info(f"Hallucination-Offer-Agent response  : \n {alucinacion}")
-    if alucinacion["alucinacion"] == 1 or alucinacion["alucinacion"] == 1.0:
+    logger.info(f"Hallucination-Offer-Agent response  : \n {puntuacion}")
+    if puntuacion == 1 or puntuacion == 1.0:
         print(colored(f"\nAgente-Revisor-Oferta 👩🏽‍⚖️\nAnálisis del Cv -> Incorrecto", 'light_red'))
-    elif alucinacion["alucinacion"] == 0 or alucinacion["alucinacion"] == 0.0:
+    elif puntuacion == 0 or puntuacion == 0.0:
         print(colored(f"\nAgente-Revisor-Oferta 👩🏽‍⚖️\nAnálisis del Cv -> Correcto", 'light_green'))
     else:
         print(colored(f"\nAgente-Revisor-Oferta 👩🏽‍⚖️: \nAnálisis del Cv -> N/A", 'dark_grey'))
     
-    logger.info(f"Estado tras Reviewer-Agent : \n {alucinacion['alucinacion']}")
+    logger.info(f"Estado tras Reviewer-Agent : \n {puntuacion}")
 
-    return {"alucinacion_oferta": alucinacion["alucinacion"]}
+    return {"alucinacion_oferta": puntuacion}
 
 
 def final_report(state: State) -> dict:

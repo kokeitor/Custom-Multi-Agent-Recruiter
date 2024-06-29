@@ -28,11 +28,9 @@ cv_check_prompt = PromptTemplate(
                 template="""
                 Eres un modelo de IA diseñado para analizar y detectar que la información contenida en las experiencias de trabajo de un candidato se aparecen tambien en su cv.
                 Debes puntuar con un 1 si las experiencias de trabajo no aparecen en el cv del candidato.\n
-                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experienica : 'no hay información suficiente'\n
+                Debes puntuar con un 0 si en las las experiencias de trabajo aparece -> experiencia : 'no hay información suficiente'\n
                 Debes puntuar con un 0 si las experiencias de trabajo aparecen en el cv del candidato.\n
-                
                 El formato de salida debe ser en formato JSON según el esquema: [ puntuacion : <número entero : 0 o 1> ]\n
-                
                 Basate en la siguiente información proporcionada para dar esta puntuación de alucinación: \n
                 cv del candidato: \n\n{cv}\n\n
                 Experiencias de trabajo del candidato: \n\n{experiencias}\n\n
