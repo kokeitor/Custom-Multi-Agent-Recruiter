@@ -43,8 +43,8 @@ def run_app(config_graph_path : str) -> None:
     
     # Available models 
     MODELS = (
-            "OpenAI-gpt-3.5-turbo", 
             "Meta-llama3-70b-instruct",
+            "OpenAI-gpt-3.5-turbo", 
             "Google-Gemini-Pro"
             )
     
@@ -201,8 +201,6 @@ def run_app(config_graph_path : str) -> None:
             graph_png = get_png_graph(compiled_graph)
             logger.info("Graph and workflow created")
             model_available = True
-            
-            
             
         elif option is not None and str(option).startswith(MODELS[2].split("-")[0]):
             st.error(f"{option} no disponible ¡Comming soon!")
