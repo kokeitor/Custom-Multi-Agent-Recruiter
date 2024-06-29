@@ -6,6 +6,7 @@
 /main
 /src/__pychache__
 .secrets
+.streamlit
 commands.txt
 notebook.ipynb
 

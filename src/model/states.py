@@ -21,8 +21,8 @@ class Candidato(BaseModel):
 class State(TypedDict):
     candidato : Candidato
     analisis : List[Analisis]
-    alucinacion_cv : Union[int,float] 
-    alucinacion_oferta : Union[int,float] 
+    alucinacion_cv : Union[int,float,str] 
+    alucinacion_oferta : Union[int,float,str] 
     analisis_final : Analisis
     
 @dataclass()  
