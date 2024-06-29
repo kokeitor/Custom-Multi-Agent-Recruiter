@@ -60,7 +60,7 @@ def run_app(config_graph_path : str) -> None:
     BBDD = GoogleSheet(credentials=bbdd_credentials, document=DOCUMENT_NAME, sheet_name=SHEET_NAME)
     
     # Graph configuration
-    agent_config = ConfigGraphApi(config_path=config_graph_path)
+    graph_config = ConfigGraphApi(config_path=config_graph_path)
 
     def get_response():
         response = f"Pesimo candidatoo texto random jdije ieji2e2 hola analisis que tal estas ho jorge jajajaja ajjajaaj"  
@@ -71,9 +71,9 @@ def run_app(config_graph_path : str) -> None:
     def get_graph_response(
             cv : str, 
             offer :str,
+            compiled_graph : CompiledGraph,
+            graph_config : modes.ConfigGraphApi,
             chat_history : Union[str,None] = None, 
-            compiled_graph : CompiledGraph = compiled_graph,
-            config : modes.ConfigGraphApi = agent_config
                 ) -> tuple[str,str,pd.DataFrame]:
         """Get the response of the LangChain Runnable Compile Graph"""
         
@@ -178,34 +178,34 @@ def run_app(config_graph_path : str) -> None:
         model_available = True
         graph_png = False
         if option is not None and str(option).startswith(MODELS[1].split("-")[0]):
-            st.success(f"Modelo : {option} disponible")
+            st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
-            agent_config.agents["analyzer"].model="OPENAI"
-            agent_config.agents["analyzer"].get_model=get_open_ai_json
-            agent_config.agents["analyzer"].temperature=0.0
-            agent_config.agents["analyzer"].prompt=analyze_cv_prompt
+            graph_config.agents["analyzer"].model="OPENAI"
+            graph_config.agents["analyzer"].get_model=get_open_ai_json
+            graph_config.agents["analyzer"].temperature=0.0
+            graph_config.agents["analyzer"].prompt=analyze_cv_prompt
             
             # Create StateGraph and Compile it
             logger.info("Creating graph and compiling workflow...")
-            graph = create_graph(config=agent_config)
+            graph = create_graph(config=graph_config)
             compiled_graph = compile_graph(graph)
             graph_png = get_png_graph(compiled_graph)
             logger.info("Graph and workflow created")
             model_available = True
             
         elif option is not None and str(option).startswith(MODELS[0].split("-")[0]):
-            st.success(f"Modelo : {option} disponible")
+            st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
-            agent_config.agents["analyzer"].model="NVIDIA"
-            agent_config.agents["analyzer"].get_model=get_nvdia
-            agent_config.agents["analyzer"].temperature=0.0
-            agent_config.agents["analyzer"].prompt=analyze_cv_prompt_nvidia
+            graph_config.agents["analyzer"].model="NVIDIA"
+            graph_config.agents["analyzer"].get_model=get_nvdia
+            graph_config.agents["analyzer"].temperature=0.0
+            graph_config.agents["analyzer"].prompt=analyze_cv_prompt_nvidia
             
             # Create StateGraph and Compile it
             logger.info("Creating graph and compiling workflow...")
-            graph = create_graph(config=agent_config)
+            graph = create_graph(config=graph_config)
             compiled_graph = compile_graph(graph)
             graph_png = get_png_graph(compiled_graph)
             logger.info("Graph and workflow created")
@@ -214,7 +214,7 @@ def run_app(config_graph_path : str) -> None:
             
             
         elif option is not None and str(option).startswith(MODELS[2].split("-")[0]):
-            st.error(f"Modelo : {option} no disponible ¡Comming soon!")
+            st.error(f"{option} no disponible ¡Comming soon!")
 
     with c1:
         st.image(image=os.path.join(IMAGES_PATH,'logo.jpg'))
@@ -242,7 +242,12 @@ def run_app(config_graph_path : str) -> None:
                 st.success("Campos correctamente introducidos")
                 with st.spinner("Analizando candidato ... "):
                     # st.write_stream(get_graph_response)
-                    puntuacion,descripcion,experiencias = get_graph_response(cv=cv, offer=offer)
+                    puntuacion,descripcion,experiencias = get_graph_response(
+                                                                            cv=cv, 
+                                                                            offer=offer,
+                                                                            compiled_graph=compiled_graph,
+                                                                            graph_config=graph_config
+                                                                            )
                 """ 
                 st.write(f"**¡Análisis completado!**")
                 st.write(f"**Puntuación del candidato** : {puntuacion}") 
