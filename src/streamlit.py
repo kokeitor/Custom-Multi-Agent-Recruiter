@@ -6,7 +6,7 @@ from model.utils import (
                         )
 from app.chatbot import run_app
 from model.modes import ConfigGraphApi
-from model.graph import create_graph, compile_workflow
+from model.graph import create_graph, compile_workflow,get_png_graph
 
 
 # Logging configuration
@@ -38,11 +38,11 @@ def main() -> None:
     logger.info("Creating graph and compiling workflow...")
     graph = create_graph(config=agent_config)
     compiled_graph = compile_workflow(graph)
+    graph_png = get_png_graph(compiled_graph)
     logger.info("Graph and workflow created")
 
     # Run streamlit app
-    run_app(compiled_graph=compiled_graph, config=agent_config)
+    run_app(compiled_graph=compiled_graph, config=agent_config, graph_image=graph_png)
     
 if __name__ == '__main__':
-    
     main()

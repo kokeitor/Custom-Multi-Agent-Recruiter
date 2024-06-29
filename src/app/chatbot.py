@@ -8,6 +8,7 @@ from model import states
 from model import utils
 from model import modes
 from model.exceptions import GraphResponseError
+from langgraph.graph.graph import CompiledGraph
 from databases.google_sheets import GoogleSheet
 import pandas as pd
 
@@ -15,7 +16,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None: 
+def run_app(compiled_graph : CompiledGraph, config : modes.ConfigGraphApi, app_image : Union[bytes,None] = None) -> None: 
     
     load_dotenv()
     
@@ -216,6 +217,11 @@ def run_app(compiled_graph, config : modes.ConfigGraphApi ) -> None:
                                     },
                                     hide_index=True,
                                 )
+                    if graph_image:
+                        with st.container():
+                            st.markdown("**Grafo Multi-Agente utilizado para el análisis:**")
+                            st.image(image=graph_image)
+                            
             else:
                 st.error("Debes aceptar la politica de la empresa para continuar con el análisis")
     
