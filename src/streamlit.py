@@ -25,6 +25,7 @@ def main() -> None:
     os.environ['GOOGLE_PROJECT_ID'] = os.getenv('GOOGLE_PROJECT_ID')
     os.environ['GOOGLE_DOCUMENT_NAME'] = os.getenv('GOOGLE_DOCUMENT_NAME')
     os.environ['GOOGLE_SHEET_NAME'] = os.getenv('GOOGLE_SHEET_NAME')
+    os.environ['GOOGLE_BBDD_FILE_CREDENTIALS'] = os.getenv('GOOGLE_BBDD_FILE_CREDENTIALS')
 
 
     # Logger set up
