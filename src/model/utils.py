@@ -9,6 +9,8 @@ import logging.handlers
 from datetime import datetime
 from typing import Dict, List, Tuple, Union, Optional, Callable, ClassVar
 
+# Logging configuration
+logger = logging.getLogger(__name__)
 
 # UTIL FUNCTIONS MODULE
 def setup_logging() -> None:
@@ -16,7 +18,8 @@ def setup_logging() -> None:
     Function to get root parent configuration logger.
     Child logger will pass info, debugs... log objects to parent's root logger handlers
     """
-    CONFIG_LOGGER_FILE = os.path.join(os.path.dirname(__file__), '..\\..\\', 'config', 'logger.json') 
+    CONFIG_LOGGER_FILE = os.path.join(os.path.dirname(__file__), '..','..', 'config', 'logger.json') 
+    logger.info(f"CONFIG_LOGGER_FILE -> {CONFIG_LOGGER_FILE}")
 
     with open(CONFIG_LOGGER_FILE, encoding='utf-8') as f:
         content = json.load(f)
