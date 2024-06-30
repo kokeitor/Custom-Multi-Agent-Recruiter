@@ -37,7 +37,7 @@ def run_app(config_graph_path : str) -> None:
     
     # Locals paths
     IMAGES_PATH = os.path.join('data','images')
-    GOOGLE_SECRETS_FILE_NAME = os.path.join("etc","secrets",os.getenv('GOOGLE_BBDD_FILE_CREDENTIALS')) # only for local performance
+    GOOGLE_SECRETS_FILE_NAME = os.path.join("etc","secrets",os.getenv('GOOGLE_BBDD_FILE_NAME_CREDENTIALS'),'.json') # only for local performance
     GOOGLE_DOCUMENT_NAME = os.getenv('GOOGLE_DOCUMENT_NAME') # google sheet document name
     GOOGLE_SHEET_NAME = os.getenv('GOOGLE_SHEET_NAME') # google sheet name
     logger.info(f"Image path : {IMAGES_PATH=}")
