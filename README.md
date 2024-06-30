@@ -11,9 +11,47 @@
     <img src="data/images/llama3.jpg" width="320" alt="Llama Image"/>
 </p>
 
+<p align="center">
+    <img src="data/images/graph.jpg" width="320" alt="Multi Agent Graph"/>
+</p>
+
+
+🚀 I have been working on what I believe to be an interesting and useful tool for #HumanResources departments. I have developed an app that automates the tedious and repetitive process for recruiters: analyzing candidates' CVs for specific job offers. 📄🤖
+
+The #AI Recruiter evaluates candidates by scoring their aptitude for a job from 0 to 100, based on the job description and their CV. It is also able to extract relevant job titles, companies, and durations associated with related job experiences, and provide detailed feedback on the score. 🏢📊
+
+Under the hood, the application is based on a Multi-Agent Graph design and is built with the Python frameworks #LangGraph and #LangChain. To obtain an accurate analysis of the candidate and avoid hallucinations from these types of models, the graph applies several corrections and interactions between agents. Each agent is associated with a Transformer-Decoder type LLM model and a specific prompt that defines its behavior and objective. The models currently available in the web application and that the user can select for the analysis are #OpenAI GPT-3.5-turbo, #Meta LLaMA3-70b-instruct, and #Google Gemini Pro. 🧠💡
+
+The most interesting point is the scalability and improvement potential of the app due to the flexibility of Multi-Agent LangChain Graphs. 📈🔧
+
+In future updates, I also plan to compare different transformer-decoder models and potentially fine-tune an open-source one for a specific use case. 🔄🛠️
+
+Recruiter AI App: https://recruiterai.onrender.com
+
+For more low-level technical details of the system's architecture, the multi-agent graph logic, prompt engineering, the front-end framework used, app deployment, and more development queries, feel free to reach me. 📬
+
+--
+
+He estado trabajando en lo que creo que es una herramienta interesante y útil para los departamentos de recursos humanos. 
+He desarrollado una aplicación que automatiza el tedioso y repetitivo proceso para los reclutadores: analizar los CV de los candidatos para ofertas de trabajo específicas.
+
+El Reclutador evalúa a los candidatos puntuando su aptitud para una oferta de trabajo de 0 a 100, basándose en la descripción de la oferta y su CV. 
+También es capaz de extraer puestos de trabajo relevantes, empresas y duraciones asociadas con experiencias laborales relacionadas, y proporcionar retroalimentación detallada sobre la puntuación.
+
+A bajo nivel, la aplicación se basa en un diseño de Grafo Multi-Agente y está construida con los frameworks de Python LangGraph y LangChain. 
+Para obtener un análisis preciso del candidato y evitar alucinaciones de este tipo de modelos, el grafo aplica varias correcciones e interacciones entre agentes.
+Cada agente tiene asociado un modelo LLM tipo Transformer-Decoder y un prompt específico que define su comportamiento y objetivo. 
+Los modelos que actualmente están disponibles en la aplicación web y que el usuario puede seleccionar para el análisis son OpenAI GPT-3.5-turbo, Meta LLaMA3-70b-instruct y Google Gemini Pro.
+
+El punto más interesante es la escalabilidad y el potencial de mejora de la aplicación debido a la flexibilidad de los Grafos Multi-Agente de LangChain.
+
+En futuras actualizaciones, también planeo comparar diferentes modelos y potencialmente "fine-tunear" uno de código abierto para un caso de uso específico.
+
+La URL del sitio web es: https://recruiterai.onrender.com.
+
+Para más detalles técnicos de bajo nivel sobre la arquitectura del sistema, la lógica del grafo multi-agente, la ingeniería de prompts, el framework del front-end utilizado, el despliegue de la aplicación y más consultas de desarrollo, no dudes en contactarme en: jorgeresino143@gmail.com.
 
 ## **Introduction and motivation**
-
 
 I have designed a Multi-Agent Recruiter [graph like] for processing and analyzing candidates' CVs for specific job offers. The architecture is based on the LangGraph framework and currently uses the following GPT LLM Transformer-Decoder models:
 
