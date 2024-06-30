@@ -11,10 +11,6 @@
     <img src="data/images/llama3.jpg" width="320" alt="Llama Image"/>
 </p>
 
-<p align="center">
-    <img src="data/images/graph.jpg" width="320" alt="Multi Agent Graph"/>
-</p>
-
 
 🚀 I have been working on what I believe to be an interesting and useful tool for #HumanResources departments. I have developed an app that automates the tedious and repetitive process for recruiters: analyzing candidates' CVs for specific job offers. 📄🤖
 
@@ -65,7 +61,6 @@ Now, seriously, feel free to add any model to the code and to the architecture g
 
 The Recruiter, using the provided job offer description, will output a score from 0 to 100 for the candidate's aptitude for the job. Under the hood, the Multi-Agent Recruiter will analyze the candidate's CV, extract relevant job experience and linked information (if found), and provide a description of why it assigned that score to the candidate according to the job offer and the CV.
 
-For more low-level technical details of the system's architecture, the multi-agent graph, prompt engineering, or development queries, contact me at: jorgeresino143@gmail.com
 
 ## **Prerequisites**
 
