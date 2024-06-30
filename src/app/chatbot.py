@@ -37,11 +37,11 @@ def run_app(config_graph_path : str) -> None:
     
     # Locals paths
     IMAGES_PATH = os.path.join('data','images')
-    FILE_NAME = os.path.join(".secrets","recruiter-427908-67769637005a.json") # only for local performance
-    DOCUMENT_NAME = "bbdd_recruiter" # google sheet document name
-    SHEET_NAME = "analisis" # google sheet name
+    GOOGLE_SECRETS_FILE_NAME = os.path.join("etc","secrets","recruiter-427908-67769637005a.json") # only for local performance
+    GOOGLE_DOCUMENT_NAME = os.getenv('GOOGLE_DOCUMENT_NAME') # google sheet document name
+    GOOGLE_SHEET_NAME = os.getenv('GOOGLE_SHEET_NAME') # google sheet name
     logger.info(f"Image path : {IMAGES_PATH=}")
-    logger.info(f"Secrets BBDD path : {FILE_NAME=}")
+    logger.info(f"Secrets BBDD path : {GOOGLE_SECRETS_FILE_NAME=}")
     
     # Available models 
     MODELS = (
@@ -52,8 +52,8 @@ def run_app(config_graph_path : str) -> None:
             )
     
     # Google Sheet database object
-    bbdd_credentials = st.secrets["google"]["google_secrets"] # Google api credentials [drive and google sheets as bddd]
-    BBDD = GoogleSheet(credentials=bbdd_credentials, document=DOCUMENT_NAME, sheet_name=SHEET_NAME)
+    # bbdd_credentials = st.secrets["google"]["google_secrets"] # Google api credentials [drive and google sheets as bddd]
+    BBDD = GoogleSheet(credentials=GOOGLE_SECRETS_FILE_NAME, document=GOOGLE_DOCUMENT_NAME, sheet_name=GOOGLE_SHEET_NAME)
     
     # Graph configuration
     graph_config = ConfigGraphApi(config_path=config_graph_path)

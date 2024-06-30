@@ -4,6 +4,8 @@ from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain_community.chat_models import ChatOllama
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_vertexai.chat_models import ChatVertexAI
+from google.cloud import aiplatform
+import os
 
 
 # Logging configuration
@@ -88,6 +90,7 @@ def get_gemini_pro(temperature=0, model="gemini-pro"):
                 model=model
                 )
     """
+    aiplatform.init(project=os.getenv('GOOGLE_PROJECT_ID'))
     llm = ChatVertexAI(
                 temperature=temperature,
                 model=model
