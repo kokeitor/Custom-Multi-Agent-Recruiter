@@ -3,18 +3,11 @@
 <p align="center">
     <img src="data/images/langgraph.png" width="350" alt="Graph Image"/>
 </p>
-<p align="center">
-    <img src="data/images/openai.png" width="350"  height="85" alt="open ai Image"/>
-</p>
-
-<p align="center">
-    <img src="data/images/llama3.jpg" width="350"  height="85" alt="open ai Image"/>
-</p>
-
-<p align="center">
-    <img src="data/images/gemini.jpg" width="350"  height="85" alt="open ai Image"/>
-</p>
-
+<div style="text-align: center;">
+    <img src="data/images/openai.png" width="350" height="85" alt="OpenAI Image" style="display: inline-block;"/>
+    <img src="data/images/llama3.jpg" width="350" height="85" alt="Llama Image" style="display: inline-block;"/>
+    <img src="data/images/gemini.jpg" width="350" height="85" alt="Gemini Image" style="display: inline-block;"/>
+</div>
 
 ## **Introduction and motivation**
 
