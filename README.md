@@ -14,15 +14,20 @@
 
 ## **Introduction and motivation**
 
-I have designed a Multi-Agent Recruiter [graph-like] for processing and analyzing candidates' CVs for a specific job offer. The architecture is based on the LangGraph framework and currently uses the GPT model from OpenAI, specifically **'3.5 turbo'**. 
 
-(I'm sure with the GPT-4 model, the performance and the cost will increase :joy:)
+I have designed a Multi-Agent Recruiter [graph like] for processing and analyzing candidates' CVs for specific job offers. The architecture is based on the LangGraph framework and currently uses the following GPT LLM Transformer-Decoder models:
 
-Now, seriously, this GPT 3.5 turbo model isn't perfect but it's fast. Feel free to add any model that the LangChain API supports. In future versions, I will add and compare different 'transformer-decoder-architecture-like' models. I will also try to use some open-source ones. Stay tuned!
+- **OpenAI-gpt-3.5-turbo**
+- **Meta-llama3-70b-instruct**
+- **Google-Gemini-Pro** (Coming soon!)
 
-The Recruiter will output a score from 0 to 100, a related job offer list based on the candidate's job experience and linked information [if found], and a description of why did it asiggned that score to the candidate according to the job offer and the CV.
+(I'm sure with the GPT-4.0 or GPT-4 model, the performance and the cost will increase :joy:)
 
-For more low level technical details of the system's arquitecture, contact me at: jorgeresino143@gmail.com
+Now, seriously, feel free to add any model to the code and to the architecture graph that the LangChain API supports. In future versions, I will add and compare different transformer-decoder architecture models. I might also fine-tune an open-source one for this specific use case. Stay tuned!
+
+The Recruiter, using the provided job offer description, will output a score from 0 to 100 for the candidate's aptitude for the job. Under the hood, the Multi-Agent Recruiter will analyze the candidate's CV, extract relevant job experience and linked information (if found), and provide a description of why it assigned that score to the candidate according to the job offer and the CV.
+
+For more low-level technical details of the system's architecture, the multi-agent graph, prompt engineering, or development queries, contact me at: jorgeresino143@gmail.com
 
 ## **Prerequisites**
 
@@ -50,7 +55,7 @@ For more low level technical details of the system's arquitecture, contact me at
 
     On Windows:
     ```sh
-    git clone https://github.com/kokeitor/Cv-Analyzer.git
+    git clone https://github.com/kokeitor/Custom-Multi-Agent-Recruiter.git
     ```
    
 5. **Virtual environment setup**
@@ -81,11 +86,13 @@ For more low level technical details of the system's arquitecture, contact me at
 
 6. **API token/key configuration**
    
-   Open the *.env* file and add your OpenAI , LangChain and NVDIA keys
+   Rename the *.env.example* file as *.env* and add your OpenAI , LangChain , NVDIA and Google keys
+
    ```
    OPENAI_API_KEY = "<your_openai_key>"
    LANGCHAIN_API_KEY = "<your_langsmith_key>"
-   NVIDIA_API_KEY = "<your_langsmith_key>"
+   NVIDIA_API_KEY = "<your_nvidia_key>"
+   GOOGLE_API_KEY = "<your_google_ai_studio_key>"
    ```
 
    [Fancy OpenAI Key tutorial](https://www.youtube.com/watch?v=aVog4J6nIAU)
@@ -93,6 +100,9 @@ For more low level technical details of the system's arquitecture, contact me at
    [Fancy LangChain [LangSmith] tutorial](https://www.youtube.com/watch?v=bE9sf9vGsrM)
 
    [Create an account and obtain NVDIA API KEY for : llama3-70b](https://build.nvidia.com/explore/discover#llama3-70b)
+
+   [Google AI Studio Api key](https://ai.google.dev/aistudio?hl=es-419)
+
 
 ## **App modes**
 
@@ -127,7 +137,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
     - Run the pipeline
 
-        Navigate to your local project directory where *app.py* is located using cmd on Windows:
+        Navigate to the root of your local project where this *README.md* file is located using cmd on Windows:
 
         ```sh
         cd your/dir/path
@@ -135,10 +145,10 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
         Then type:
         ```sh
-        python app.py --mode pipeline
+        python src/app.py --mode pipeline
         ```
 
-2. **LangGraph Multi-Agent Mode [Recommended mode]**
+2. **LangGraph Multi-Agent CMD mode**
 
     - Set up the DATA configuration JSON file 
 
@@ -197,7 +207,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
                                     "temperature":0
                                     }
             },
-            "iteraciones": 30,
+            "iteraciones": 10,
             "thread_id": "4",
             "verbose": 0
         }
@@ -213,7 +223,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
         Then type:
         ```sh
-        python app.py --mode graph
+        python src/app.py --mode graph
         ```
 
     **You will see the results and feedback of the agents' analysis on the screen**
@@ -269,7 +279,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
         Then type:
         ```sh
-        python api.py 
+        python src/api.py 
         ```
 
     - Go to:
