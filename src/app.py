@@ -80,6 +80,7 @@ def main() -> None:
                     print(colored(f"\nState Dictionary: {event}" ,  'cyan'))
                     
     if MODE == 'pipeline':
+        
         logger.info(f"Pipeline mode")
         logger.info(f"Getting Data and Graph configuration from {DATA_PATH=} and {CONFIG_PATH=} ")
         pipeline = Pipeline(data_path=DATA_PATH)

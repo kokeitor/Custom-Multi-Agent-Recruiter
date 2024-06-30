@@ -20,26 +20,42 @@ app = FastAPI()
 def get_analisis(cv : str, oferta : str):
     
     candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=oferta)
+    
     CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'config', 'generation.json')
     logger.info(f"{CONFIG_PATH=}")
-    agent_config = ConfigGraphApi(config_path=CONFIG_PATH)
+    graph_config = ConfigGraphApi(config_path=CONFIG_PATH)
+    
     logger.info(f"Graph mode using FAST-API")
     logger.debug(f"{candidato=}")
-    logger.info("Creating graph and compiling workflow...")
-    graph = graph_module.create_graph(config=agent_config)
-    workflow = graph_module.compile_workflow(graph)
-    logger.info("Graph and workflow created")
     
-    thread = {"configurable": {"thread_id": agent_config.thread_id}}
-    iteraciones = {"recursion_limit":agent_config.iteraciones }
+    logger.info("Creating graph and compiling workflow...")
+    graph = graph_module.create_graph(config=graph_config)
+    workflow = graph_module.compile_graph(graph)
+    logger.info("Graph and workflow created")
     
     input_candidato = {"candidato": candidato}
     logger.info(f"Start analisis for {candidato=}")
     logger.debug(f"Cv Candidato -> {candidato.cv}")
     logger.debug(f"Oferta de Empleo para candidato-> {candidato.oferta}")
     
-    estados = [event for event in workflow.stream(input_candidato, iteraciones)]
-    return {"Final graph state" : estados[-1]}
+    try:
+        response = workflow.invoke(  
+                                    input=input_candidato, 
+                                    config=graph_config.runnable_config,
+                                    stream_mode='values'
+                                )
+    except Exception as e:
+        response = False
+        
+    if response:
+        if response["analisis_final"]:
+            analisis =  response["analisis_final"]
+        else:
+            analisis = "ERROR RESPONSE"
+    else:
+        analisis = "ERROR GRAPH"
+        
+    return {"Analysis" : analisis}
 
 def run_fast_api() -> None:
     uvicorn.run(app, host = "0.0.0.0", port =8000)

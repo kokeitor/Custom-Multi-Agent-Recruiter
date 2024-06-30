@@ -88,11 +88,29 @@ class Pipeline:
             logger.info(f"Análisis del modelo : \n {raw_response}")
             # Manejo de una respuesta del modelo en un formato no correcto [no alineado con pydantic BaseModel]
             try:
-                analisis.append(Analisis(**raw_response,fecha=get_current_spanish_date_iso(),id=candidato.id , status="OK")) # Instancia de Pydantic Analisis BaseModel object
+                analisis.append(Analisis(
+                                        **raw_response,
+                                        fecha=get_current_spanish_date_iso(),
+                                        candidato_id=candidato.id , 
+                                        id=get_id() , 
+                                        status="OK"
+                                        )
+                                ) # Instancia de Pydantic Analisis BaseModel object
             except ValidationError as e:
                 logger.exception(f'{e} : Formato de respuesta del modelo incorrecta')
-                analisis.append(Analisis(puntuacion=0, experiencias=[{"error":"error"}],fecha=get_current_spanish_date_iso(),id=candidato.id, descripcion="", status="ERROR"))
+                analisis.append(
+                                Analisis(
+                                    puntuacion=0, 
+                                    experiencias=[{"error":"error"}],
+                                    fecha=get_current_spanish_date_iso(),
+                                    candidato_id=candidato.id, 
+                                    id=get_id(), 
+                                    descripcion="", 
+                                    status="ERROR"
+                                    )
+                                )
         return analisis
+        
         
 @dataclass()
 class ConfigGraph:

@@ -183,7 +183,7 @@ def run_app(config_graph_path : str) -> None:
         if option is not None and str(option).startswith(MODELS[1].split("-")[0]):
             st.success(f"{option} disponible")
             
-            # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
+            # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
             logger.warning(f"Previous Analyzer {graph_config.agents['analyzer']}")
             graph_config.agents["analyzer"] = states.Agent(agent_name="analyzer", model="OPENAI", get_model=get_open_ai_json, temperature=0.0, prompt=analyze_cv_prompt)
             logger.warning(f"After change Analyzer {graph_config.agents['analyzer']}")
@@ -199,7 +199,7 @@ def run_app(config_graph_path : str) -> None:
         elif option is not None and str(option).startswith(MODELS[0].split("-")[0]):
             st.success(f"{option} disponible")
             
-            # Modify AgentConfigApi object atributes : Change analyzer atributes (model, prompt, temperature)
+            # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
             logger.warning(f"Previous Analyzer {graph_config.agents['analyzer']}")
             graph_config.agents["analyzer"] = states.Agent(agent_name="analyzer", model="NVIDIA", get_model=get_nvdia, temperature=0.0, prompt=analyze_cv_prompt_nvidia)
             logger.warning(f"After change Analyzer {graph_config.agents['analyzer']}")
