@@ -7,6 +7,14 @@
     <img src="data/images/openai.png" width="350"  height="85" alt="open ai Image"/>
 </p>
 
+<p align="center">
+    <img src="data/images/llama3.png" width="350"  height="85" alt="open ai Image"/>
+</p>
+
+<p align="center">
+    <img src="data/images/gemini.png" width="350"  height="85" alt="open ai Image"/>
+</p>
+
 
 ## **Introduction and motivation**
 
@@ -294,4 +302,4 @@ The RMA web mode (acronym for the Recruiter Multi-Agent) allows you to choose be
 
 It also offers visual graph feedback where you can follow the logic and path the agents take to provide an accurate response.
 
-This is meant to be a scalable and continuously improving project web app, so stay tuned. If you have a good idea, we can collaborate!
+This is meant to be a scalable and continuously improving web app project, so stay tuned. If you have a good idea, we can collaborate!
