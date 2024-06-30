@@ -215,9 +215,7 @@ def run_app(config_graph_path : str) -> None:
             model_available = True
             
         elif option is not None and str(option) == MODELS[2]:
-            st.error(f"{option} no disponible ¡Comming soon!")
-            
-            """
+            # st.error(f"{option} no disponible ¡Comming soon!")
             st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
@@ -232,7 +230,7 @@ def run_app(config_graph_path : str) -> None:
             graph_png = get_png_graph(compiled_graph)
             logger.info("Graph and workflow created")
             model_available = True
-            """
+            
 
         elif option is not None and str(option) == MODELS[3]:
             st.error(f"{option} no disponible ¡Comming soon!")
