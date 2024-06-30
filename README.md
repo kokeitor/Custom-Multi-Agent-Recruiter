@@ -285,7 +285,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 # **Web GUI Streamlit App Mode** 
 
 <p align="center">
-    <img src="data/images/logo.jpg" width="350" alt="Graph Image"/>
+    <img src="data/images/logo.jpg" width="325" alt="Graph Image"/>
 </p>
 
 I have deployed a complete Streamlit app at [RMA-AI-APP](http://www.app) where you can use the Multi-Agent Recruiter to analyze your candidates interactively.
@@ -293,3 +293,5 @@ I have deployed a complete Streamlit app at [RMA-AI-APP](http://www.app) where y
 The RMA web mode (acronym for the Recruiter Multi-Agent) allows you to choose between several LLM models for the analyzer agent (LLMs are all based on Transformer-Decoder Architecture) to perform the analysis.
 
 It also offers visual graph feedback where you can follow the logic and path the agents take to provide an accurate response.
+
+This is meant to be a scalable and continuously improving project web app, so stay tuned. If you have a good idea, we can collaborate!
