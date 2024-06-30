@@ -7,6 +7,7 @@
     <img src="data/images/openai.png" width="350"  height="85" alt="open ai Image"/>
 </p>
 
+
 ## **Introduction and motivation**
 
 I have designed a Multi-Agent Recruiter [graph-like] for processing and analyzing candidates' CVs for a specific job offer. The architecture is based on the LangGraph framework and currently uses the GPT model from OpenAI, specifically **'3.5 turbo'**. 
@@ -280,4 +281,15 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
     **You will find the final Multi-Agent Recruiter graph analysis in JSON format by scrolling down the page**
 
-4. **Chat-Bot Web Mode** [Development Phase]
+
+# **Web GUI Streamlit App Mode** 
+
+<p align="center">
+    <img src="data/images/logo.jpg" width="350" alt="Graph Image"/>
+</p>
+
+I have deployed a complete Streamlit app at [RMA-AI-APP](http://www.app) where you can use the Multi-Agent Recruiter to analyze your candidates interactively.
+
+The RMA web mode (acronym for the Recruiter Multi-Agent) allows you to choose between several LLM models for the analyzer agent (LLMs are all based on Transformer-Decoder Architecture) to perform the analysis.
+
+It also offers visual graph feedback where you can follow the logic and path the agents take to provide an accurate response.
