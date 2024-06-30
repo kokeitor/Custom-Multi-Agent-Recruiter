@@ -84,8 +84,8 @@ def create_graph(config : ConfigGraph) -> StateGraph:
 
 
 def compile_graph(graph : StateGraph) -> CompiledGraph:
-    workflow = graph.compile()
-    return workflow
+    graph_compiled = graph.compile()
+    return graph_compiled
 
 
 def save_graph(compile_graph : CompiledGraph) -> None:

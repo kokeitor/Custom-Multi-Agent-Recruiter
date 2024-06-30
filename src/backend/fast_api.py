@@ -20,22 +20,17 @@ app = FastAPI()
 def get_analisis(cv : str, oferta : str):
     
     candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=oferta)
+    logger.info(f"{candidato=}")
     
     CONFIG_PATH = os.path.join(os.path.dirname(__file__), '..', '..', 'config', 'generation.json')
     logger.info(f"{CONFIG_PATH=}")
     graph_config = ConfigGraphApi(config_path=CONFIG_PATH)
     
     logger.info(f"Graph mode using FAST-API")
-    logger.debug(f"{candidato=}")
-    
     logger.info("Creating graph and compiling workflow...")
     graph = graph_module.create_graph(config=graph_config)
     compiled_graph = graph_module.compile_graph(graph)
     logger.info("Graph and workflow created")
-    
-    logger.info(f"Start analisis for {candidato=}")
-    logger.debug(f"Cv Candidato -> {candidato.cv}")
-    logger.debug(f"Oferta de Empleo para candidato-> {candidato.oferta}")
     
     try:
         response = compiled_graph.invoke(  
