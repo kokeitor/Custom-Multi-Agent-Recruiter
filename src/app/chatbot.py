@@ -33,8 +33,6 @@ logger = logging.getLogger(__name__)
 
 def run_app(config_graph_path : str) -> None: 
     
-    load_dotenv()
-    
     # Locals paths
     IMAGES_PATH = os.path.join('data','images')
     GOOGLE_SECRETS_FILE_NAME = os.path.join("etc","secrets",os.getenv('GOOGLE_BBDD_FILE_NAME_CREDENTIALS'),'.json') # only for local performance
