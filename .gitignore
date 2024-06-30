@@ -11,8 +11,8 @@ etc/secrets/recruiter-427908-67769637005a.json
 .streamlit/secrets.toml
 .requirements.antiguo.txt
 commands.txt
-linkedinpost.txt
-notebook.ipynb
+/data/notes/
+
 
 # Environments
 .env
