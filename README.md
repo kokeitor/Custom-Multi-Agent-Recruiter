@@ -6,8 +6,11 @@
 <div style="text-align: center;">
     <img src="data/images/openai.png" width="310" height="85" alt="OpenAI Image" style="display: inline-block;"/>
     <img src="data/images/llama3.jpg" width="310" height="100" alt="Llama Image" style="display: inline-block;"/>
-    <img src="data/images/gemini.jpg" width="310" height="100" alt="Gemini Image" style="display: inline-block;"/>
 </div>
+
+<p align="center">
+     <img src="data/images/gemini.jpg" width="310" height="110" alt="Gemini Image" style="display: inline-block;"/>
+</p>
 
 ## **Introduction and motivation**
 
