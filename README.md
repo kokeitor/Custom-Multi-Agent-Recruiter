@@ -4,8 +4,8 @@
     <img src="data/images/langgraph.png" width="350" alt="Graph Image"/>
 </p>
 <p align="center">
-    <img src="data/images/openai.png" width="310" height="100" alt="OpenAI Image" style="margin-right: 10px;"/>
-    <img src="data/images/gemini.jpg" width="310" height="100" alt="Gemini Image" style="margin-left: 10px;"/>
+    <img src="data/images/openai.png" width="310" height="80" alt="OpenAI Image" style="margin-right: 10px;"/>
+    <img src="data/images/gemini.jpg" width="320" height="110" alt="Gemini Image" style="margin-left: 10px;"/>
 </p>
 <p align="center">
     <img src="data/images/llama3.jpg" width="320" alt="Llama Image"/>
