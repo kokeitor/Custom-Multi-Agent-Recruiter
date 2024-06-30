@@ -13,6 +13,7 @@ colorama==0.4.6
 dataclasses-json==0.6.7
 distro==1.9.0
 dnspython==2.6.1
+docstring_parser==0.16
 email_validator==2.2.0
 fastapi==0.111.0
 fastapi-cli==0.0.4
@@ -25,9 +26,17 @@ google-api-python-client==2.135.0
 google-auth==2.30.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.0
+google-cloud-aiplatform==1.57.0
+google-cloud-bigquery==3.25.0
+google-cloud-core==2.4.1
+google-cloud-resource-manager==1.12.3
+google-cloud-storage==2.17.0
+google-crc32c==1.5.0
 google-generativeai==0.7.1
+google-resumable-media==2.7.1
 googleapis-common-protos==1.63.2
 greenlet==3.0.3
+grpc-google-iam-v1==0.13.1
 grpcio==1.64.1
 grpcio-status==1.62.2
 gspread==6.1.2
@@ -47,6 +56,7 @@ langchain==0.2.6
 langchain-community==0.2.6
 langchain-core==0.2.10
 langchain-google-genai==1.0.7
+langchain-google-vertexai==1.0.6
 langchain-nvidia-ai-endpoints==0.1.2
 langchain-openai==0.1.13
 langchain-text-splitters==0.2.2
@@ -91,6 +101,7 @@ requests-oauthlib==2.0.0
 rich==13.7.1
 rpds-py==0.18.1
 rsa==4.9
+shapely==2.0.4
 shellingham==1.5.4
 six==1.16.0
 smmap==5.0.1

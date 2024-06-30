@@ -3,6 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain_nvidia_ai_endpoints import ChatNVIDIA
 from langchain_community.chat_models import ChatOllama
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_vertexai.chat_models import ChatVertexAI
 
 
 # Logging configuration
@@ -81,7 +82,13 @@ def get_gemini_pro(temperature=0, model="gemini-pro"):
     Returns:
         _type_: _description_
     """
+    """
     llm = ChatGoogleGenerativeAI(
+                temperature=temperature,
+                model=model
+                )
+    """
+    llm = ChatVertexAI(
                 temperature=temperature,
                 model=model
                 )

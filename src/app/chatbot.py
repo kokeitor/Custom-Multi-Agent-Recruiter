@@ -45,8 +45,8 @@ def run_app(config_graph_path : str) -> None:
     
     # Available models 
     MODELS = (
-            "Meta-llama3-70b-instruct",
             "OpenAI-gpt-3.5-turbo", 
+            "Meta-llama3-70b-instruct",
             "Google-Gemini-Pro",
             "OpenAI-gpt-4"
             )
@@ -182,7 +182,7 @@ def run_app(config_graph_path : str) -> None:
         
         model_available = True
         graph_png = False
-        if option is not None and str(option).startswith(MODELS[1].split("-")[0]):
+        if option is not None and str(option) == MODELS[0]:
             st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
@@ -198,7 +198,7 @@ def run_app(config_graph_path : str) -> None:
             logger.info("Graph and workflow created")
             model_available = True
             
-        elif option is not None and str(option).startswith(MODELS[0].split("-")[0]):
+        elif option is not None and str(option) == MODELS[1]:
             st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
@@ -214,7 +214,7 @@ def run_app(config_graph_path : str) -> None:
             logger.info("Graph and workflow created")
             model_available = True
             
-        elif option is not None and str(option).startswith(MODELS[2].split("-")[0]):
+        elif option is not None and str(option) == MODELS[2]:
             st.success(f"{option} disponible")
             
             # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
@@ -230,7 +230,7 @@ def run_app(config_graph_path : str) -> None:
             logger.info("Graph and workflow created")
             model_available = True
             
-        elif option is not None and str(option).startswith(MODELS[3].split("-")[0]):
+        elif option is not None and str(option) == MODELS[3]:
             st.error(f"{option} no disponible ¡Comming soon!")
 
     with c1:
