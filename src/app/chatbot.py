@@ -21,6 +21,7 @@ from model.models import (
 )
 from model.exceptions import GraphResponseError
 from langgraph.graph.graph import CompiledGraph
+from langgraph.errors import GraphRecursionError
 from databases.google_sheets import GoogleSheet
 import pandas as pd
 import json
@@ -79,11 +80,20 @@ def run_app(config_graph_path : str) -> None:
         graph_state_input = {"candidato": candidato}
         logger.info(f"Candidato a analizar :  {candidato}")
         
-        response = compiled_graph.invoke(
-                                            input=graph_state_input, 
-                                            config=graph_config.runnable_config,
-                                            stream_mode='values'
-                                            )
+        # Invoke langchain graph runnable
+        try:
+            response = compiled_graph.invoke(
+                                                input=graph_state_input, 
+                                                config=graph_config.runnable_config,
+                                                stream_mode='values'
+                                                )
+        except GraphRecursionError as e:
+            logger.exception(f"GraphRecursionError {e}")
+            puntuacion = 'N/A'
+            descripcion = "Error en el análisis pruebe de nuevo"
+            experiencias = pd.DataFrame(data={})
+            return puntuacion,descripcion,experiencias
+            
         if response["analisis_final"]:
             
             # Manejo de respuesta del langcahin graph para almacenar en BBDD ..
