@@ -13,7 +13,7 @@
                           "temperature":0
                           },
             "offer_reviewer": {
-                            "name":"NVIDIA",
+                            "name":"GEMINI",
                             "temperature":0
                             }
       },

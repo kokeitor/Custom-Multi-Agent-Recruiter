@@ -71,7 +71,7 @@ def get_ollama(temperature=0, model='llama3'):
     return llm
 
 
-def get_gemini_pro(model="gemini-pro"):
+def get_gemini_pro(temperature=0, model="gemini-pro"):
     """google gemini pro model
 
     Args:
@@ -82,6 +82,7 @@ def get_gemini_pro(model="gemini-pro"):
         _type_: _description_
     """
     llm = ChatGoogleGenerativeAI(
+                temperature=temperature,
                 model=model
                 )
     return llm

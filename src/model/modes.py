@@ -211,7 +211,7 @@ class ConfigGraph:
         return agents
 
     def get_model_agent_prompt(self, model : str, agent : str) -> PromptTemplate:
-        if model == 'OPENAI':
+        if model == 'OPENAI' or model == 'GEMINI':
             if agent == "analyzer":
                 return analyze_cv_prompt
             elif agent == "re_analyzer":
@@ -305,7 +305,7 @@ class ConfigGraphApi:
         return agents
 
     def get_model_agent_prompt(self, model : str, agent : str) -> PromptTemplate:
-        if model == 'OPENAI':
+        if model == 'OPENAI' or model == 'GEMINI':
             if agent == "analyzer":
                 return analyze_cv_prompt
             elif agent == "re_analyzer":

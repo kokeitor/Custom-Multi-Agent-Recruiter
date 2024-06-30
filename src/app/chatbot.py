@@ -17,7 +17,8 @@ from model.models import (
     get_nvdia,
     get_ollama,
     get_open_ai_json,
-    get_open_ai
+    get_open_ai,
+    get_gemini_pro
 )
 from model.exceptions import GraphResponseError
 from langgraph.graph.graph import CompiledGraph
@@ -46,7 +47,8 @@ def run_app(config_graph_path : str) -> None:
     MODELS = (
             "Meta-llama3-70b-instruct",
             "OpenAI-gpt-3.5-turbo", 
-            "Google-Gemini-Pro"
+            "Google-Gemini-Pro",
+            "OpenAI-gpt-4"
             )
     
     # Google Sheet database object
@@ -202,6 +204,22 @@ def run_app(config_graph_path : str) -> None:
             # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
             logger.warning(f"Previous Analyzer {graph_config.agents['analyzer']}")
             graph_config.agents["analyzer"] = states.Agent(agent_name="analyzer", model="NVIDIA", get_model=get_nvdia, temperature=0.0, prompt=analyze_cv_prompt_nvidia)
+            logger.warning(f"After change Analyzer {graph_config.agents['analyzer']}")
+
+            # Create StateGraph and Compile it
+            logger.info("Creating graph and compiling workflow...")
+            graph = create_graph(config=graph_config)
+            compiled_graph = compile_graph(graph)
+            graph_png = get_png_graph(compiled_graph)
+            logger.info("Graph and workflow created")
+            model_available = True
+            
+        elif option is not None and str(option).startswith(MODELS[3].split("-")[0]):
+            st.success(f"{option} disponible")
+            
+            # Modify AgentConfigApi object atributes : Change analyzer agent atribute instance or object 
+            logger.warning(f"Previous Analyzer {graph_config.agents['analyzer']}")
+            graph_config.agents["analyzer"] = states.Agent(agent_name="analyzer", model="GEMINI", get_model=get_gemini_pro, temperature=0.0, prompt=analyze_cv_prompt)
             logger.warning(f"After change Analyzer {graph_config.agents['analyzer']}")
 
             # Create StateGraph and Compile it
