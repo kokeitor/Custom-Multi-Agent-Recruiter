@@ -7,7 +7,7 @@
 __pycache__/
 /src/test.py
 .secrets
-.streamlit
+.streamlit/secrets.toml
 .requirements.antiguo.txt
 commands.txt
 notebook.ipynb
