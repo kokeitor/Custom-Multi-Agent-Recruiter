@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 
 
-@app.get("/analisis/")
+@app.put("/analisis/")
 def get_analisis(cv : str, oferta : str):
     
     candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=oferta)
@@ -30,21 +30,21 @@ def get_analisis(cv : str, oferta : str):
     
     logger.info("Creating graph and compiling workflow...")
     graph = graph_module.create_graph(config=graph_config)
-    workflow = graph_module.compile_graph(graph)
+    compiled_graph = graph_module.compile_graph(graph)
     logger.info("Graph and workflow created")
     
-    input_candidato = {"candidato": candidato}
     logger.info(f"Start analisis for {candidato=}")
     logger.debug(f"Cv Candidato -> {candidato.cv}")
     logger.debug(f"Oferta de Empleo para candidato-> {candidato.oferta}")
     
     try:
-        response = workflow.invoke(  
-                                    input=input_candidato, 
+        response = compiled_graph.invoke(  
+                                    input={"candidato": candidato}, 
                                     config=graph_config.runnable_config,
                                     stream_mode='values'
                                 )
     except Exception as e:
+        print(f"{e}")
         response = False
         
     if response:
@@ -58,5 +58,5 @@ def get_analisis(cv : str, oferta : str):
     return {"Analysis" : analisis}
 
 def run_fast_api() -> None:
-    uvicorn.run(app, host = "0.0.0.0", port =8000)
+    uvicorn.run(app, host = "0.0.0.0", port =8050)
 
