@@ -8,11 +8,11 @@
 </p>
 
 <p align="center">
-    <img src="data/images/llama3.png" width="350"  height="85" alt="open ai Image"/>
+    <img src="data/images/llama3.jpg" width="350"  height="85" alt="open ai Image"/>
 </p>
 
 <p align="center">
-    <img src="data/images/gemini.png" width="350"  height="85" alt="open ai Image"/>
+    <img src="data/images/gemini.jpg" width="350"  height="85" alt="open ai Image"/>
 </p>
 
 
