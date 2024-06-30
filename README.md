@@ -9,7 +9,7 @@
 </div>
 
 <p align="center">
-     <img src="data/images/gemini.jpg" width="310" height="110" alt="Gemini Image" style="display: inline-block;"/>
+     <img src="data/images/gemini.jpg" width="350" alt="Graph Image"/>
 </p>
 
 ## **Introduction and motivation**
