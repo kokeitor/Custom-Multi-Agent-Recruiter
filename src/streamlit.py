@@ -22,6 +22,10 @@ def main() -> None:
     os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
     os.environ['NVIDIA_API_KEY'] = os.getenv('NVIDIA_API_KEY')
     os.environ['GOOGLE_API_KEY'] = os.getenv('GOOGLE_API_KEY')
+    os.environ['GOOGLE_PROJECT_ID'] = os.getenv('GOOGLE_PROJECT_ID')
+    os.environ['GOOGLE_DOCUMENT_NAME'] = os.getenv('GOOGLE_DOCUMENT_NAME')
+    os.environ['GOOGLE_SHEET_NAME'] = os.getenv('GOOGLE_SHEET_NAME')
+
 
     # Logger set up
     setup_logging()

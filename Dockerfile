@@ -16,5 +16,5 @@ HEALTHCHECK CMD curl --fail http://localhost:8000/_stcore/health
 ENTRYPOINT ["streamlit", "run", "src/streamlit.py", "--server.port=8000", "--server.address=0.0.0.0"]
 
 # Comando por defecto para ejecutar la aplicación Streamlit
-# CMD ["streamlit", "run", "--server.port", "8052", "src/streamlit.py"]
+# CMD ["streamlit", "run", "--server.port", "8000", "src/streamlit.py"]
 # CMD ["python", "src/test2.py"]

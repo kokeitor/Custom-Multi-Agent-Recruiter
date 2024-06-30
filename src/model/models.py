@@ -85,14 +85,15 @@ def get_gemini_pro(temperature=0, model="gemini-pro"):
         _type_: _description_
     """
     """
-    llm = ChatGoogleGenerativeAI(
-                temperature=temperature,
-                model=model
-                )
-    """
     aiplatform.init(project=os.getenv('GOOGLE_PROJECT_ID'))
     llm = ChatVertexAI(
                 temperature=temperature,
                 model=model
                 )
+    """
+    llm = ChatGoogleGenerativeAI(
+            temperature=temperature,
+            model=model
+            )
+    
     return llm
