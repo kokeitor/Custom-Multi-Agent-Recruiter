@@ -8,6 +8,7 @@ __pycache__/
 /src/test.py
 .secrets
 .streamlit
+requirements_antiguo.txt
 commands.txt
 notebook.ipynb
 
