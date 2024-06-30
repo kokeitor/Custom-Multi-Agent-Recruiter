@@ -215,7 +215,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
     - Run the Multi-Agent Graph
 
-        Navigate to your local project directory where *app.py* is located using cmd on Windows:
+       Navigate to the root of your local project where this *README.md* file is located using cmd on Windows:
 
         ```sh
         cd your/dir/path
@@ -271,7 +271,7 @@ To use the Custom Multi-Agent Recruiter, I have designed several **"app modes"**
 
     - Run the API
 
-        Navigate to your local project directory where *api.py* is located using cmd on Windows:
+        Navigate to the root of your local project where this *README.md* file is located using cmd on Windows:
 
         ```sh
         cd your/dir/path

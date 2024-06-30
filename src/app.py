@@ -10,20 +10,21 @@ from model.utils import (
                         )
 
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Set environment variables
-os.environ['LANGCHAIN_TRACING_V2'] = 'true'
-os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
-os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
-
 
 # Logging configuration
 logger = logging.getLogger(__name__)
 
 
 def main() -> None:
+    
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Set environment variables
+    os.environ['LANGCHAIN_TRACING_V2'] = 'true'
+    os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
+    os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
+    
     # Logger set up
     setup_logging()
     
@@ -60,7 +61,7 @@ def main() -> None:
         
         logger.info("Creating graph and compiling workflow...")
         graph = create_graph(config=config_graph)
-        workflow = compile_workflow(graph)
+        workflow = compile_graph(graph)
         logger.info("Graph and workflow created")
         
         thread = {"configurable": {"thread_id": config_graph.thread_id}}
