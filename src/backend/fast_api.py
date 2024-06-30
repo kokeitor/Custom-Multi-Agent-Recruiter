@@ -16,9 +16,11 @@ logger = logging.getLogger(__name__)
 app = FastAPI()
 
 
-@app.put("/analisis/")
+@app.get("/analisis/")
 def get_analisis(cv : str, oferta : str):
     
+    print(cv)
+    print(oferta)
     candidato = states.Candidato(id=utils.get_id(), cv=cv, oferta=oferta)
     logger.info(f"{candidato=}")
     
@@ -31,7 +33,7 @@ def get_analisis(cv : str, oferta : str):
     graph = graph_module.create_graph(config=graph_config)
     compiled_graph = graph_module.compile_graph(graph)
     logger.info("Graph and workflow created")
-    
+
     try:
         response = compiled_graph.invoke(  
                                     input={"candidato": candidato}, 
@@ -44,7 +46,8 @@ def get_analisis(cv : str, oferta : str):
         
     if response:
         if response["analisis_final"]:
-            analisis =  response["analisis_final"]
+            # analisis =  response["analisis_final"]
+            analisis =  response
         else:
             analisis = "ERROR RESPONSE"
     else:
